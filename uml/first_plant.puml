@@ -1,0 +1,17 @@
+@@startuml
+
+class Human {
+    - name : string
+    - age : int
+    - coins : double
+    + Human()
+    + getName() : string
+    + getAge() : int
+    + setAge() : void
+    + const getCoins() : double
+    + setCoins() : void
+    + talk() : void
+    + walk() : void
+}
+
+@@enduml

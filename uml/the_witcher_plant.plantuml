@@ -1,0 +1,72 @@
+@@startuml
+
+class Human {
+    - name : string
+    - age : int
+    - health : int
+    - stamina : int
+    - coins : double
+    + born()
+    + ~die()
+    + getName() : string
+    + getAge() : int
+    + setAge() : void
+    + getHealth() : int
+    + setHealth() : void
+    + getStamina() : int
+    + setStamina() : void
+    + getCoins() : double
+    + setCoins() : void
+    + talk() : void
+    + walk() : void
+}
+
+abstract class Witcher {
+    - name : string
+    - school : WitcherSchool
+    - age : int
+    - health : int
+    - stamina : int
+    - sign : Sign
+    - weapon : Weapon
+    - armor : Armor
+    - potions : Potion[]
+    - coins : int
+}
+
+class WitcherSchool {
+    - name : string
+    - weapon : Weapon
+    - armor : Armor
+}
+
+class Sign {
+    - name : string
+    - damage : int
+    - staminaCost : int
+}
+
+class Weapon {
+    - name : string
+    - damage : int
+    - staminaCost : int
+}
+
+class Armor {
+    - name : string
+    - damageReduction : int
+    - staminaCost : int
+}
+
+class Potion {
+    - name : string
+    - effect : Effect
+}
+
+abstract class Monster {
+    - name : string
+    - race : Race
+}
+
+
+@@enduml
