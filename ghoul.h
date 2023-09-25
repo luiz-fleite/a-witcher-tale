@@ -1,16 +1,16 @@
-#ifndef HUMAN_H
-#define HUMAN_H
+#ifndef GHOUL_H
+#define GHOUL_H
 
 #include <string>
 using std::string;
 
-class Human {
+class Ghoul {
 public:
-    Human();
-    Human(string name, int age=30, double coins=100, int health=100, int stamina=100);
-    Human(const Human &h);
+    Ghoul();
+    Ghoul(string name, int age, double coins);
+    Ghoul(const Ghoul &g);
 
-    string getName() const;
+string getName() const;
     int getAge() const;
     double getCoins() const;
     bool getIs_racional() const;
@@ -29,10 +29,10 @@ public:
 private:
     string name;
     int age;
-    const bool is_rational = true;
+    const bool is_rational = false;
     double coins;
     int health;
     int stamina;
 };
 
-#endif // HUMAN_H
+#endif // GHOUL_H

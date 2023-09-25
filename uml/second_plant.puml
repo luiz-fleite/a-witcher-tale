@@ -1,0 +1,50 @@
+@@startuml
+
+class Human {
+    - name : string
+    - age : int
+    - coins : double
+    - health : int
+    - stamina : int
+    - is_rational const : bool
+    + Human()
+    + getName() const : string
+    + getAge() const : int
+    + getIs_rational() const : bool
+    + getCoins() const : double
+    + getHealth() const : int
+    + getStamina() const : int
+    + setName() : void
+    + setAge() : void
+    + setCoins() : void
+    + setHealth() : void
+    + setStamina() : void
+    + talk() : void
+    + walk() : void
+}
+
+class Ghoul {
+    - name : string
+    - age : int
+    - coins : double
+    - health : int
+    - stamina : int
+    - is_rational const : bool
+    + Ghoul()
+    + getName() const : string
+    + getAge() const : int
+    + getIs_rational() const : bool
+    + getCoins() const : double
+    + getHealth() const : int
+    + getStamina() const : int
+    + setName() : void
+    + setAge() : void
+    + setCoins() : void
+    + setHealth() : void
+    + setStamina() : void
+    + talk() : void
+    + walk() : void
+}
+
+
+@@enduml
