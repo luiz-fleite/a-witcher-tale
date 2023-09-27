@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "human.h"
+#include "Human.h"
 
 using std::cout;
 
