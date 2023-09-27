@@ -2,10 +2,10 @@
 #include <string>
 #include <unistd.h>  
 
-#include "human.h"
-#include "human.cpp"
-#include "ghoul.h"
-#include "ghoul.cpp"
+#include "Human.h"
+#include "Human.cpp"
+#include "Ghoul.h"
+#include "Ghoul.cpp"
 
 using std::cout;
 
