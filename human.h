@@ -13,26 +13,28 @@ public:
     string getName() const;
     int getAge() const;
     double getCoins() const;
-    bool getIs_racional() const;
     int getHealth() const;
     int getStamina() const;
+    bool getIs_stunned() const;
 
     void setName(string name);
     void setAge(int age);
     void setCoins(double coins);
     void setHealth(int health);
     void setStamina(int stamina);
+    void setIs_stunned(bool is_stunned);
 
-    void print_info();
+    void print_info() const;
     void talk();
     void walk();
 private:
     string name;
     int age;
-    const bool is_rational = true;
     double coins;
     int health;
     int stamina;
+    bool is_stunned = false;
+    const int MAX_NAME_SIZE = 20;
 };
 
 #endif // HUMAN_H
