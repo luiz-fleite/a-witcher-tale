@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "ghoul.h"
+#include "Ghoul.h"
 
 using std::cout;
 using std::srand;
