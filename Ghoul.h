@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "uman.h"
+#include "Human.h"
 
 using std::string;
 
