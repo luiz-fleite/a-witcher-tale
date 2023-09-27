@@ -6,11 +6,12 @@ class Human {
     - coins : double
     - health : int
     - stamina : int
-    - is_rational const : bool
+    - is_stunned : bool
+    - MAX_NAME_SIZE const : int
     + Human()
     + getName() const : string
     + getAge() const : int
-    + getIs_rational() const : bool
+    + getIs_stunned() const : bool
     + getCoins() const : double
     + getHealth() const : int
     + getStamina() const : int
@@ -19,6 +20,8 @@ class Human {
     + setCoins() : void
     + setHealth() : void
     + setStamina() : void
+    + setIs_stunned() : void
+    + print_info() const : void
     + talk() : void
     + walk() : void
 }
@@ -29,11 +32,15 @@ class Ghoul {
     - coins : double
     - health : int
     - stamina : int
-    - is_rational const : bool
+    - is_stunned : bool
+    - MAX_NAME_SIZE const : int
+    - GHOUL_ATTACK_COST const : int
+    - MAX_GHOUL_DAMAGE const : int
+    - MIN_GHOUL_DAMAGE const : int
     + Ghoul()
     + getName() const : string
     + getAge() const : int
-    + getIs_rational() const : bool
+    + getIs_stunned() const : bool
     + getCoins() const : double
     + getHealth() const : int
     + getStamina() const : int
@@ -42,6 +49,9 @@ class Ghoul {
     + setCoins() : void
     + setHealth() : void
     + setStamina() : void
+    + setIs_stunned() : void
+    + attack() : void
+    + print_info() const : void
     + talk() : void
     + walk() : void
 }
