@@ -9,8 +9,6 @@
 using std::string;
 
 class Battle {
-    const static int MAX_VICTIMS = 2;
-    const static int MAX_ATTACKERS = 5;
 public:
     Battle(Human &human, Ghoul &ghoul);
     Battle(const Battle &battle);
@@ -21,9 +19,10 @@ public:
     void EndBattle();
     
 private:
+    const static int MAX_VICTIMS = 2;
+    const static int MAX_ATTACKERS = 5;
     Human* victims[MAX_VICTIMS];
     Ghoul* attackers[MAX_ATTACKERS];
-    
 };
 
 #endif // BATTLE_H
