@@ -14,9 +14,10 @@ public:
     Battle(const Battle &battle);
     void getVictims();
     void getAttackers();
-    
-    void BeginBattle();
-    void EndBattle();
+    bool checkVictims();
+    bool checkAttackers();
+    void beginBattle();
+    void endBattle();
     
 private:
     const static int MAX_VICTIMS = 2;
