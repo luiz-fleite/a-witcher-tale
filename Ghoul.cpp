@@ -37,29 +37,17 @@ Ghoul::Ghoul(const Ghoul &ghoul) {
     this->is_stunned = ghoul.is_stunned;
 }
 
-string Ghoul::getName() const{
-    return name;
-}
+inline string Ghoul::getName() const{ return name; }
 
-int Ghoul::getAge() const{
-    return age;
-}
+inline int Ghoul::getAge() const{ return age; }
 
-double Ghoul::getCoins() const {
-    return coins;
-}
+inline double Ghoul::getCoins() const { return coins; }
 
-int Ghoul::getHealth() const {
-    return health;
-}
+inline int Ghoul::getHealth() const { return health; }
 
-int Ghoul::getStamina() const {
-    return stamina;
-}
+inline int Ghoul::getStamina() const { return stamina; }
 
-bool Ghoul::getIs_stunned() const {
-    return is_stunned;
-}
+inline bool Ghoul::getIs_stunned() const { return is_stunned; }
 
 void Ghoul::setName(string name) {
     
@@ -112,9 +100,7 @@ void Ghoul::setStamina(int stamina) {
     this->stamina = stamina;
 }
 
-void Ghoul::setIs_stunned(bool is_stunned) {
-    this->is_stunned = is_stunned;
-}
+inline void Ghoul::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 void Ghoul::print_info() const {
     cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\n";
@@ -136,10 +122,6 @@ void Ghoul::attack(Human &human) {
     return;
 }
 
-void Ghoul::talk() {
-    cout << name << "grawrawrawrawr\n";
-}
+inline void Ghoul::talk() { cout << name << "grawrawrawrawr\n"; }
 
-void Ghoul::walk() {
-    cout << name << "is walking.\n";
-}
+inline void Ghoul::walk() { cout << name << "is walking.\n"; }

@@ -35,29 +35,17 @@ Human::Human(const Human &human) {
     this->is_stunned = human.is_stunned;
 }
 
-string Human::getName() const{
-    return name;
-}
+inline string Human::getName() const{ return name; }
 
-int Human::getAge() const{
-    return age;
-}
+inline int Human::getAge() const{ return age; }
 
-double Human::getCoins() const {
-    return coins;
-}
+inline double Human::getCoins() const { return coins; }
 
-int Human::getHealth() const {
-    return health;
-}
+inline int Human::getHealth() const { return health; }
 
-int Human::getStamina() const {
-    return stamina;
-}
+inline int Human::getStamina() const { return stamina; }
 
-bool Human::getIs_stunned() const {
-    return is_stunned;
-}
+inline bool Human::getIs_stunned() const { return is_stunned; }
 
 void Human::setName(string name) {
     name.erase(0, name.find_first_not_of(' '));
@@ -111,19 +99,13 @@ void Human::setStamina(int stamina) {
     this->stamina = stamina;
 }
 
-void Human::setIs_stunned(bool is_stunned) {
-    this->is_stunned = is_stunned;
-}
+inline void Human::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 void Human::print_info() const{
     cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << getIs_stunned() << "\n";
 }
 
-void Human::talk() {
-    cout << name << " says: \"Hello!\"\n";
-}
+inline void Human::talk() { cout << name << " says: \"Hello!\"\n"; }
 
-void Human::walk() {
-    cout << name << " is walking.\n";
-}
+inline void Human::walk() { cout << name << " is walking.\n"; }
