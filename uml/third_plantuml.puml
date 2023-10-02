@@ -15,6 +15,7 @@ class Human {
     + walk() : void
 }
 
+
 class Ghoul {
     - name : string
     - age : int
@@ -31,6 +32,15 @@ class Ghoul {
     + print_info() const : void
     + talk() : void
     + walk() : void
+}
+
+
+class Battle {
+    - MAX_VICTIMS const static : int
+    - MAX_ATTACKERS const static : int
+    - victims[] : Human*
+    - attackers[] : Ghoul*
+    + Battle(Human&, Ghoul&)
 }
 
 
