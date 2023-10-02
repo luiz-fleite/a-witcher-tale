@@ -11,7 +11,7 @@ class Ghoul {
 public:
     Ghoul();
     Ghoul(string name, int age=200, double coins=30, int health=75, int stamina=75);
-    Ghoul(const Ghoul &g);
+    Ghoul(const Ghoul &ghoul);
 
     string getName() const;
     int getAge() const;

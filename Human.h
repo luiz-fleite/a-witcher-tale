@@ -8,7 +8,7 @@ class Human {
 public:
     Human();
     Human(string name, int age=30, double coins=100, int health=100, int stamina=100);
-    Human(const Human &h);
+    Human(const Human &human);
 
     string getName() const;
     int getAge() const;
