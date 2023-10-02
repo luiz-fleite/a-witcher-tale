@@ -113,7 +113,7 @@ void Ghoul::attack(Human &human) {
         return;
     }
     setStamina(getStamina() - GHOUL_ATTACK_COST);
-
+    // Dano aleatorio entre MIN_GHOUL_DAMAGE e MAX_GHOUL_DAMAGE
     srand(static_cast<unsigned int>(time(nullptr)));
     int damage = MIN_GHOUL_DAMAGE + rand() % (MAX_GHOUL_DAMAGE - MIN_GHOUL_DAMAGE + 1);
     human.setHealth(human.getHealth() - damage);
