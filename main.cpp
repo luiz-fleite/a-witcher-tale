@@ -31,9 +31,7 @@ int main(void) {
     // primeiro ghoul ate q ele morra ou o ghoul canse
 
     Battle b1(h1, g1);
-    b1.getVictims();
-    cout << "\n";
-    b1.getAttackers();
+    b1.beginBattle();
     
     cout << "\n";
     cout << "====After battle:====\n";
