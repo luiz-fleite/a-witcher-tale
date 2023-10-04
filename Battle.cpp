@@ -18,7 +18,7 @@ Battle::Battle(Human &human, Ghoul &ghoul) {
         attackers[i] = 0;
     }
 }
-// INCOMPLETO   
+
 Battle::Battle(const Battle &battle) {
     for (int i = 0; i < MAX_VICTIMS; i++) {
         victims[i] = battle.victims[i];
