@@ -13,8 +13,9 @@ Human::Human() {
     coins = 50.00;
     health = 50;
     stamina = 50;
-    is_stunned = false;
     category = CATEGORIES[0];
+    level = 1;
+    is_stunned = false;
 }
 
 Human::Human(string name, int age, double coins, int health, int stamina, string category) {
@@ -24,6 +25,7 @@ Human::Human(string name, int age, double coins, int health, int stamina, string
     setHealth(health);
     setStamina(stamina);
     setCategory(category);
+    setLevel(1);
     // não é usado set para is_stunned na inicialização para deixar
     // claro que o valor nunca é escolhido pelo jogador, sendo o 
     // padrão false modificado apenas no combate
@@ -36,6 +38,8 @@ Human::Human(const Human &human) {
     this->coins = human.coins;
     this->health = human.health;
     this->stamina = human.stamina;
+    this->category = human.category;
+    this->level = human.level;
     this->is_stunned = human.is_stunned;
 }
 
@@ -50,6 +54,8 @@ inline int Human::getHealth() const { return health; }
 inline int Human::getStamina() const { return stamina; }
 
 inline string Human::getCategory() const { return category; }
+
+inline int Human::getLevel() const { return level; }
 
 inline bool Human::getIs_stunned() const { return is_stunned; }
 
@@ -122,10 +128,29 @@ void Human::setCategory(string category) {
     return;
 }
 
+void Human::setLevel(int level) {
+    if (level < 1) {
+        cout << "Level cannot be less than 1.\n";
+        this->level = 1;
+        return;
+    }
+    if (getCategory() == "F" && level > 10) {
+        cout << "Level cannot be greater than 10 for category F.\n";
+        this->level = 10;
+        return;
+    }
+    if (getCategory() == "E" && level > 20) {
+        cout << "Level cannot be greater than 20 for category E.\n";
+        this->level = 20;
+        return;
+    }
+    this->level = level;
+}
+
 inline void Human::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 void Human::print_info() const{
-    cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\nCategory: " << getCategory() << "\n";
+    cout << "Name: " << getName() << "Level: " << getLevel() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\nCategory: " << getCategory() << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << getIs_stunned() << "\n";
 }
 

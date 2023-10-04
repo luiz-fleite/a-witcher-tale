@@ -24,6 +24,7 @@ public:
     int getHealth() const;
     int getStamina() const;
     string getCategory() const;
+    int getLevel() const;
     bool getIs_stunned() const;
 
     void setName(string name);
@@ -32,6 +33,7 @@ public:
     void setHealth(int health);
     void setStamina(int stamina);
     void setCategory(string category);
+    void setLevel(int level);
     void setIs_stunned(bool is_stunned);
 
     void print_info() const;
@@ -47,7 +49,9 @@ private:
     int health;
     int stamina;
     string category;
+    int level;
     bool is_stunned = false;
+
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
     const static int GHOUL_ATTACK_COST = 10;

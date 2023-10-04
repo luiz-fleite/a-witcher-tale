@@ -21,6 +21,7 @@ public:
     int getHealth() const;
     int getStamina() const;
     string getCategory() const;
+    int getLevel() const;
     bool getIs_stunned() const;
 
     void setName(string name);
@@ -28,9 +29,10 @@ public:
     void setCoins(double coins);
     void setHealth(int health);
     void setStamina(int stamina);
-    void setIs_stunned(bool is_stunned);
     void setCategory(string category);
-
+    void setLevel(int level);
+    void setIs_stunned(bool is_stunned);
+    
     void print_info() const;
     void talk();
     void walk();
@@ -40,8 +42,11 @@ private:
     double coins;
     int health;
     int stamina;
-    bool is_stunned = false;
     string category;
+    int level;
+    
+    bool is_stunned = false;
+
     const static int MAX_NAME_SIZE = 20;
     const static string CATEGORIES[7];
 };

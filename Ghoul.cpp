@@ -18,7 +18,8 @@ Ghoul::Ghoul() {
     coins = 15;
     health = 50;
     stamina = 50;
-    category = CATEGORIES[0];  
+    category = CATEGORIES[0];
+    level = 1;
     bool is_stunned = false;
 }
 
@@ -29,6 +30,7 @@ Ghoul::Ghoul(string name, int age, double coins, int health, int stamina, string
     setHealth(health);
     setStamina(stamina);
     setCategory(category);
+    setLevel(1);
     is_stunned = false;
 }
 
@@ -52,6 +54,8 @@ inline int Ghoul::getHealth() const { return health; }
 inline int Ghoul::getStamina() const { return stamina; }
 
 inline string Ghoul::getCategory() const { return category; }
+
+inline int Ghoul::getLevel() const { return level; }
 
 inline bool Ghoul::getIs_stunned() const { return is_stunned; }
 
@@ -123,6 +127,25 @@ void Ghoul::setCategory(string category) {
     return;
 }
 
+void Ghoul::setLevel(int level) {
+    if (level < 1) {
+        cout << "Level cannot be less than 1. Level set to 1.\n";
+        this->level = 1;
+        return;
+    }
+    if (getCategory() == "F" && level > 10) {
+        cout << "Level cannot be greater than 10 for category F. Level set to 10.\n";
+        this->level = 10;
+        return;
+    }
+    if (getCategory() == "E" && level > 20) {
+        cout << "Level cannot be greater than 20 for category E. Level set to 20.\n";
+        this->level = 20;
+        return;
+    }
+    this->level = level;
+}
+
 inline void Ghoul::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 void Ghoul::print_info() const {
@@ -139,6 +162,10 @@ void Ghoul::attack(Human &human) {
     // Dano aleatorio entre MIN_GHOUL_DAMAGE e MAX_GHOUL_DAMAGE
     srand(static_cast<unsigned int>(time(nullptr)));
     int damage = MIN_GHOUL_DAMAGE + rand() % (MAX_GHOUL_DAMAGE - MIN_GHOUL_DAMAGE + 1);
+    // depois de gerar o dano aleatorio adiciona o level do Ghoul
+    // para nivelar o jogo ao nivel desejado
+    // o valor é propositalmente arredondado para baixo
+    damage = damage + (getLevel() + 0.3);
     human.setHealth(human.getHealth() - damage);
     cout << name << " attacked " << human.getName() << ".\n";
     cout << human.getName() << " -" << damage << " damage.\n";
