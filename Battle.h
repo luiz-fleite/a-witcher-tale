@@ -14,10 +14,11 @@ public:
     Battle(const Battle &battle);
     void getAllies();
     void getEnemies();
+    void addAllies(Human &human);
+    void addEnemies(Ghoul &ghoul);
     bool checkAllies();
     bool checkEnemies();
     void beginBattle();
-    
 private:
     const static int MAX_ALLIES = 2;
     const static int MAX_ENEMIES = 5;
