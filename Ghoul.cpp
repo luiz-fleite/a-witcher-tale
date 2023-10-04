@@ -10,21 +10,25 @@ using std::srand;
 using std::rand;
 using std::time;
 
+const string Ghoul::CATEGORIES[7] = {"F", "E", "D", "C", "B", "A", "S"};
+
 Ghoul::Ghoul() {
     name = "Ghoul";
     age = 100;
     coins = 15;
     health = 50;
     stamina = 50;
+    category = CATEGORIES[0];  
     bool is_stunned = false;
 }
 
-Ghoul::Ghoul(string name, int age, double coins, int health, int stamina) {
+Ghoul::Ghoul(string name, int age, double coins, int health, int stamina, string category) {
     setName(name);
     setAge(age);
     setCoins(coins);
     setHealth(health);
     setStamina(stamina);
+    setCategory(category);
     is_stunned = false;
 }
 
@@ -46,6 +50,8 @@ inline double Ghoul::getCoins() const { return coins; }
 inline int Ghoul::getHealth() const { return health; }
 
 inline int Ghoul::getStamina() const { return stamina; }
+
+inline string Ghoul::getCategory() const { return category; }
 
 inline bool Ghoul::getIs_stunned() const { return is_stunned; }
 
@@ -100,10 +106,27 @@ void Ghoul::setStamina(int stamina) {
     this->stamina = stamina;
 }
 
+void Ghoul::setCategory(string category) {
+    if (category == "") {
+        cout << "Category cannot be empty. Category set to F.\n";
+        this->category = CATEGORIES[0];
+        return;
+    }
+    for (int i = 0; i < 7; i++) {
+        if (category == CATEGORIES[i]) {
+            this->category = category;
+            return;
+        }
+    }
+    cout << "Invalid category. Category set to F.\n";
+    this->category = CATEGORIES[0];
+    return;
+}
+
 inline void Ghoul::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 void Ghoul::print_info() const {
-    cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\n";
+    cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\nCategory: " << getCategory() << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << getIs_stunned() << "\n";
 }
 

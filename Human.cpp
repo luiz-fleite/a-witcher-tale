@@ -5,6 +5,8 @@
 
 using std::cout;
 
+const string Human::CATEGORIES[7] = {"F", "E", "D", "C", "B", "A", "S"};
+
 Human::Human() {
     name = "Peasant";
     age = 30;
@@ -12,14 +14,16 @@ Human::Human() {
     health = 50;
     stamina = 50;
     is_stunned = false;
+    category = CATEGORIES[0];
 }
 
-Human::Human(string name, int age, double coins, int health, int stamina) {
+Human::Human(string name, int age, double coins, int health, int stamina, string category) {
     setName(name);
     setAge(age);
     setCoins(coins);
     setHealth(health);
     setStamina(stamina);
+    setCategory(category);
     // não é usado set para is_stunned na inicialização para deixar
     // claro que o valor nunca é escolhido pelo jogador, sendo o 
     // padrão false modificado apenas no combate
@@ -44,6 +48,8 @@ inline double Human::getCoins() const { return coins; }
 inline int Human::getHealth() const { return health; }
 
 inline int Human::getStamina() const { return stamina; }
+
+inline string Human::getCategory() const { return category; }
 
 inline bool Human::getIs_stunned() const { return is_stunned; }
 
@@ -99,10 +105,27 @@ void Human::setStamina(int stamina) {
     this->stamina = stamina;
 }
 
+void Human::setCategory(string category) {
+    if (category == "") {
+        cout << "Category cannot be empty.\n";
+        this->category = "Empty_Category";
+        return;
+    }
+    for (int i = 0; i < 7; i++) {
+        if (category == CATEGORIES[i]) {
+            this->category = category;
+            return;
+        }
+    }
+    cout << "Invalid category.\n";
+    this->category = "Invalid_Category";
+    return;
+}
+
 inline void Human::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 void Human::print_info() const{
-    cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\n";
+    cout << "Name: " << getName() << "\nAge: " << getAge() << "\nCoins: " << getCoins() << "\nHealth: " << getHealth() << "\nStamina: " << getStamina() << "\nCategory: " << getCategory() << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << getIs_stunned() << "\n";
 }
 

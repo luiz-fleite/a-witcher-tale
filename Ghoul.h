@@ -10,7 +10,12 @@ using std::string;
 class Ghoul {
 public:
     Ghoul();
-    Ghoul(string name, int age=200, double coins=30, int health=75, int stamina=75);
+    Ghoul(string name, 
+        int age=200, 
+        double coins=30, 
+        int health=75, 
+        int stamina=75, 
+        string category="E");
     Ghoul(const Ghoul &ghoul);
 
     string getName() const;
@@ -18,6 +23,7 @@ public:
     double getCoins() const;
     int getHealth() const;
     int getStamina() const;
+    string getCategory() const;
     bool getIs_stunned() const;
 
     void setName(string name);
@@ -25,6 +31,7 @@ public:
     void setCoins(double coins);
     void setHealth(int health);
     void setStamina(int stamina);
+    void setCategory(string category);
     void setIs_stunned(bool is_stunned);
 
     void print_info() const;
@@ -39,11 +46,13 @@ private:
     double coins;
     int health;
     int stamina;
+    string category;
     bool is_stunned = false;
-    const int MAX_NAME_SIZE = 20;
-    const int GHOUL_ATTACK_COST = 10;
-    const int MAX_GHOUL_DAMAGE = 7;
-    const int MIN_GHOUL_DAMAGE = 3;
+    const static string CATEGORIES[7];
+    const static int MAX_NAME_SIZE = 20;
+    const static int GHOUL_ATTACK_COST = 10;
+    const static int MAX_GHOUL_DAMAGE = 7;
+    const static int MIN_GHOUL_DAMAGE = 3;
 };
 
 #endif // GHOUL_H
