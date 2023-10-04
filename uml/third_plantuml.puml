@@ -7,7 +7,10 @@ class Human {
     - coins : double
     - health : int
     - stamina : int
+    - category : string
+    - level : int
     - is_stunned : bool
+    - CATEGORIES[] : string[]
     - MAX_NAME_SIZE const : int
     + Human()
     + print_info() const : void
@@ -22,13 +25,16 @@ class Ghoul {
     - coins : double
     - health : int
     - stamina : int
+    - category : string
+    - level : int
     - is_stunned : bool
+    - CATEGORIES[] : string[]
     - MAX_NAME_SIZE const : int
     - GHOUL_ATTACK_COST const : int
     - MAX_GHOUL_DAMAGE const : int
     - MIN_GHOUL_DAMAGE const : int
     + Ghoul()
-    + attack() : void
+    + attack(Human &) : void
     + print_info() const : void
     + talk() : void
     + walk() : void
@@ -36,11 +42,18 @@ class Ghoul {
 
 
 class Battle {
-    - MAX_VICTIMS const static : int
-    - MAX_ATTACKERS const static : int
-    - victims[] : Human*
-    - attackers[] : Ghoul*
+    - MAX_ALLIES const static : int
+    - MAX_ENEMIES const static : int
+    - allies[] : Human*
+    - enemies[] : Ghoul*
     + Battle(Human&, Ghoul&)
+    + getAlllies() const : void
+    + getEnemies() const : void
+    + addAllies(Human&) : void
+    + addEnemies(Ghoul&) : void
+    + checkAllies() : bool
+    + checkEnemies() : bool
+    + beginBattle() : void 
 }
 
 
