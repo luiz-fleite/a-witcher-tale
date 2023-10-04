@@ -12,18 +12,17 @@ class Battle {
 public:
     Battle(Human &human, Ghoul &ghoul);
     Battle(const Battle &battle);
-    void getVictims();
-    void getAttackers();
-    bool checkVictims();
-    bool checkAttackers();
+    void getAllies();
+    void getEnemies();
+    bool checkAllies();
+    bool checkEnemies();
     void beginBattle();
-    void endBattle();
     
 private:
-    const static int MAX_VICTIMS = 2;
-    const static int MAX_ATTACKERS = 5;
-    Human* victims[MAX_VICTIMS];
-    Ghoul* attackers[MAX_ATTACKERS];
+    const static int MAX_ALLIES = 2;
+    const static int MAX_ENEMIES = 5;
+    Human* allies[MAX_ALLIES];
+    Ghoul* enemies[MAX_ENEMIES];
 };
 
 #endif // BATTLE_H

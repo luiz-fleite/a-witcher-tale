@@ -9,61 +9,61 @@
 using std::cout;
 
 Battle::Battle(Human &human, Ghoul &ghoul) {
-    victims[0] = &human;
-    attackers[0] = &ghoul;
-    for (int i = 1; i < MAX_VICTIMS; i++) {
-        victims[i] = 0;
+    allies[0] = &human;
+    enemies[0] = &ghoul;
+    for (int i = 1; i < MAX_ALLIES; i++) {
+        allies[i] = 0;
     }
-    for (int i = 1; i < MAX_ATTACKERS; i++) {
-        attackers[i] = 0;
+    for (int i = 1; i < MAX_ENEMIES; i++) {
+        enemies[i] = 0;
     }
 }
 
 Battle::Battle(const Battle &battle) {
-    for (int i = 0; i < MAX_VICTIMS; i++) {
-        victims[i] = battle.victims[i];
+    for (int i = 0; i < MAX_ALLIES; i++) {
+        allies[i] = battle.allies[i];
     }
-    for (int i = 0; i < MAX_ATTACKERS; i++) {
-        attackers[i] = battle.attackers[i];
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        enemies[i] = battle.enemies[i];
     }
 }
 
-void Battle::getVictims() {
+void Battle::getAllies() {
     string names;
-    for (int i = 0; i < MAX_VICTIMS; i++) {
-        if (victims[i] == 0) {
+    for (int i = 0; i < MAX_ALLIES; i++) {
+        if (allies[i] == 0) {
             cout << "Victim " << i + 1 << ": NULL\n";
             continue;
         }
-        cout << "Victim " << i + 1 << ": " << victims[i]->getName() << "\n";
+        cout << "Victim " << i + 1 << ": " << allies[i]->getName() << "\n";
     }
     return;
 }
 
-void Battle::getAttackers() {
+void Battle::getEnemies() {
     string names;
-    for (int i = 0; i < MAX_ATTACKERS; i++) {
-        if (attackers[i] == 0) {
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        if (enemies[i] == 0) {
             cout << "Attacker " << i + 1 << ": NULL\n";
             continue;
         }
-        cout << "Attacker " << i + 1 << ": " << attackers[i]->getName() << "\n";
+        cout << "Attacker " << i + 1 << ": " << enemies[i]->getName() << "\n";
     }
     return;
 }
 
-bool Battle::checkVictims() {
-    for (int i = 0; i < MAX_VICTIMS; i++) {
-        if (victims[i] != 0) {
+bool Battle::checkAllies() {
+    for (int i = 0; i < MAX_ALLIES; i++) {
+        if (allies[i] != 0) {
             return true;
         }
     }
     return false;
 }
 
-bool Battle::checkAttackers() {
-    for (int i = 0; i < MAX_ATTACKERS; i++) {
-        if (attackers[i] != 0) {
+bool Battle::checkEnemies() {
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        if (enemies[i] != 0) {
             return true;
         }
     }
@@ -71,60 +71,60 @@ bool Battle::checkAttackers() {
 }
 
 void Battle::beginBattle() {
-    while (checkVictims() && checkAttackers()) {
+    while (checkAllies() && checkEnemies()) {
         // os turnos das vitimas vem primeiro
-        for (int i = 0; i < MAX_VICTIMS; i++) {
+        for (int i = 0; i < MAX_ALLIES; i++) {
             // pula o turno de quem morreu ou fugiu ou não existe
-            if (victims[i] == 0) {
+            if (allies[i] == 0) {
                 continue;
             }
             // pula o turno de quem sofreu o efeito is_stunned
-            if (victims[i]->getIs_stunned()) {
-                victims[i]->setIs_stunned(false);
+            if (allies[i]->getIs_stunned()) {
+                allies[i]->setIs_stunned(false);
                 continue;
             }
             // as vitimas não atacam porque ainda não tem um heroi
             // para defende-las, que sera o witcher
-            // victims[i]->attack(*attackers[0]);
+            // allies[i]->attack(*enemies[0]);
             // sleep(1);
             // apos o ataque do witcher, o monstro pode morrer
-            if (attackers[i]->getHealth() <= 0) {
-                cout << attackers[i]->getName() << " is dead!\n";
-                attackers[i] = NULL;
+            if (enemies[i]->getHealth() <= 0) {
+                cout << enemies[i]->getName() << " is dead!\n";
+                enemies[i] = NULL;
                 continue;
             }
 
         }
         // depois começa o turno dos atacantes, nesse caso os monstros
-        for (int i = 0; i < MAX_ATTACKERS; i++) {
+        for (int i = 0; i < MAX_ENEMIES; i++) {
             // pula o turno de quem morreu ou fugiu ou não existe
-            if (attackers[i] == 0) {
+            if (enemies[i] == 0) {
                 continue;
             }
             // pula o turno de quem sofreu o efeito is_stunned
-            if (attackers[i]->getIs_stunned()) {
-                attackers[i]->setIs_stunned(false);
+            if (enemies[i]->getIs_stunned()) {
+                enemies[i]->setIs_stunned(false);
                 continue;
             }
-            // cada monstro escolhe uma vitima aleatoria entre 0 e MAX_VICTIMS
+            // cada monstro escolhe uma vitima aleatoria entre 0 e MAX_ALLIES
             // obs: abaixo não é utilizado "do while" porque victim_id não pode
             // ser inicializado dentro do escopo do while
             srand(static_cast<unsigned int>(time(nullptr)));
-            int victim_id = rand() % (MAX_VICTIMS);
+            int victim_id = rand() % (MAX_ALLIES);
             //cout << "Victim id: " << victim_id << "\n";
-            while(victims[victim_id] == 0 && checkVictims()) {
+            while(allies[victim_id] == 0 && checkAllies()) {
                 srand(static_cast<unsigned int>(time(nullptr)));
-                victim_id = rand() % (MAX_VICTIMS);
-                //cout << "victim: " << victims[victim_id] << "\n";
+                victim_id = rand() % (MAX_ALLIES);
+                //cout << "victim: " << allies[victim_id] << "\n";
                 //cout << "Victim id: " << victim_id << "\n";
             }
-            attackers[i]->attack(*victims[victim_id]);
+            enemies[i]->attack(*allies[victim_id]);
             sleep(1);
-            attackers[i]->setStamina(attackers[i]->getStamina() + 3);
+            enemies[i]->setStamina(enemies[i]->getStamina() + 3);
             // apos atacar a vitima, verifica se ela morreu
-            if (victims[victim_id]->getHealth() <= 0) {
-                cout << victims[victim_id]->getName() << " is dead!\n";
-                victims[victim_id] = 0;
+            if (allies[victim_id]->getHealth() <= 0) {
+                cout << allies[victim_id]->getName() << " is dead!\n";
+                allies[victim_id] = 0;
             }
         }
     }
