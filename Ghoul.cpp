@@ -165,7 +165,7 @@ void Ghoul::attack(Human &human) {
     // depois de gerar o dano aleatorio adiciona o level do Ghoul
     // para nivelar o jogo ao nivel desejado
     // o valor é propositalmente arredondado para baixo
-    damage = damage + (getLevel() + 0.3);
+    damage = damage + (getLevel() / 3);
     human.setHealth(human.getHealth() - damage);
     cout << name << " attacked " << human.getName() << ".\n";
     cout << human.getName() << " -" << damage << " damage.\n";
