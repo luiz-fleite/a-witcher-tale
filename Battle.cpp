@@ -8,9 +8,9 @@
 
 using std::cout;
 
-Battle::Battle(Human &human, Ghoul &ghoul) {
-    allies[0] = &human;
-    enemies[0] = &ghoul;
+Battle::Battle(Entity &ally, Entity &enemy) {
+    allies[0] = &ally;
+    enemies[0] = &enemy;
     for (int i = 1; i < MAX_ALLIES; i++) {
         allies[i] = 0;
     }
@@ -28,7 +28,7 @@ Battle::Battle(const Battle &battle) {
     }
 }
 
-void Battle::getAllies() {
+void Battle::print_allies() {
     string names;
     for (int i = 0; i < MAX_ALLIES; i++) {
         if (allies[i] == 0) {
@@ -40,7 +40,7 @@ void Battle::getAllies() {
     return;
 }
 
-void Battle::getEnemies() {
+void Battle::print_enemies() {
     string names;
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (enemies[i] == 0) {
@@ -52,10 +52,10 @@ void Battle::getEnemies() {
     return;
 }
 
-void Battle::addAllies(Human &human) {
+void Battle::add_ally(Entity &ally) {
     for (int i = 0; i < MAX_ALLIES; i++) {
         if (allies[i] == 0) {
-            allies[i] = &human;
+            allies[i] = &ally;
             return;
         }
     }
@@ -63,10 +63,10 @@ void Battle::addAllies(Human &human) {
     return;
 }
 
-void Battle::addEnemies(Ghoul &ghoul) {
+void Battle::add_enemy(Entity &enemy) {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (enemies[i] == 0) {
-            enemies[i] = &ghoul;
+            enemies[i] = &enemy;
             return;
         }
     }
@@ -74,7 +74,7 @@ void Battle::addEnemies(Ghoul &ghoul) {
     return;
 }
 
-bool Battle::checkAllies() {
+bool Battle::check_allies() {
     for (int i = 0; i < MAX_ALLIES; i++) {
         if (allies[i] != 0) {
             return true;
@@ -83,7 +83,7 @@ bool Battle::checkAllies() {
     return false;
 }
 
-bool Battle::checkEnemies() {
+bool Battle::check_enemies() {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (enemies[i] != 0) {
             return true;
@@ -93,7 +93,7 @@ bool Battle::checkEnemies() {
 }
 
 void Battle::beginBattle() {
-    while (checkAllies() && checkEnemies()) {
+    while (check_allies() && check_enemies()) {
         // os turnos dos aliados vem primeiro
         for (int i = 0; i < MAX_ALLIES; i++) {
             // pula o turno de quem morreu ou fugiu ou não existe
@@ -105,20 +105,6 @@ void Battle::beginBattle() {
                 allies[i]->setIs_stunned(false);
                 continue;
             }
-            // os aliados não atacam porque ainda não tem um heroi
-            // para defende-los, que sera o witcher
-            // allies[i]->attack(*enemies[0]);
-            // sleep(1);
-            // apos o ataque do witcher, o monstro pode morrer
-            //if (enemies[i]->getHealth() <= 0) {
-            //    cout << enemies[i]->getName() << " is dead!\n";
-            //    enemies[i] = NULL;
-            //    continue;
-            //}
-        }
-        // verifica se a batalha deve acabar entre os turnos dos times
-        if (!checkAllies() || !checkEnemies()) {
-            break;
         }
         // depois começa o turno dos atacantes, nesse caso os monstros
         for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -137,7 +123,7 @@ void Battle::beginBattle() {
             srand(static_cast<unsigned int>(time(nullptr)));
             int allie_id = rand() % (MAX_ALLIES);
             //cout << "allie id: " << allie_id << "\n";
-            while(allies[allie_id] == 0 && checkAllies()) {
+            while(allies[allie_id] == 0 && check_allies()) {
                 srand(static_cast<unsigned int>(time(nullptr)));
                 allie_id = rand() % (MAX_ALLIES);
                 //cout << "allie: " << allies[allie_id] << "\n";
@@ -152,7 +138,7 @@ void Battle::beginBattle() {
                 allies[allie_id] = 0;
                 // verifica se o aliado morto era o ultimo e
                 // a batalha deve acabar entre os turnos dos inimigos
-                if (!checkAllies()) {
+                if (!check_allies()) {
                     break;
                 }
             }
