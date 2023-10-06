@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "Human.h"
+#include "Entity.h"
 
 using std::string;
 
-class Ghoul {
+class Ghoul: public Entity {
 public:
     Ghoul();
     Ghoul(string name, 
@@ -17,43 +17,12 @@ public:
         int stamina=75, 
         string category="E");
     Ghoul(const Ghoul &ghoul);
-
-    string getName() const;
-    int getAge() const;
-    double getCoins() const;
-    int getHealth() const;
-    int getStamina() const;
-    string getCategory() const;
-    int getLevel() const;
-    bool getIs_stunned() const;
-
-    void setName(string name);
-    void setAge(int age);
-    void setCoins(double coins);
-    void setHealth(int health);
-    void setStamina(int stamina);
-    void setCategory(string category);
-    void setLevel(int level);
-    void setIs_stunned(bool is_stunned);
-
-    void print_info() const;
-    // O método attack() recebe a referencia de um objeto tipo "Human" para poder subtrair
+    // O método attack() recebe a referencia de um objeto tipo "Entity" para poder subtrair
     // o atributo "health", e por isso não pode ser passado como "const".
-    void attack(Human &h);
+    void attack(Entity &entity);
     void talk();
     void walk();
 private:
-    string name;
-    int age;
-    double coins;
-    int health;
-    int stamina;
-    string category;
-    int level;
-    bool is_stunned = false;
-
-    const static string CATEGORIES[7];
-    const static int MAX_NAME_SIZE = 20;
     const static int GHOUL_ATTACK_COST = 10;
     const static int MAX_GHOUL_DAMAGE = 7;
     const static int MIN_GHOUL_DAMAGE = 3;
