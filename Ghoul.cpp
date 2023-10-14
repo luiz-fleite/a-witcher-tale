@@ -33,15 +33,6 @@ Ghoul::Ghoul(string name, int age, double coins, int health, int stamina, string
     is_stunned = false;
 }
 
-Ghoul::Ghoul(const Ghoul &ghoul) {
-    this->name = ghoul.name;
-    this->age = ghoul.age;
-    this->coins = ghoul.coins;
-    this->health = ghoul.health;
-    this->stamina = ghoul.stamina;
-    this->is_stunned = ghoul.is_stunned;
-}
-
 void Ghoul::attack(Entity &entity) {
     if (getStamina() < GHOUL_ATTACK_COST) {
         cout << name << " has no stamina left to attack.\n";

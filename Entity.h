@@ -1,12 +1,17 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <iostream>
 #include <string>
 
+using std::cout;
 using std::string;
 
 class Entity {
 public:
+    Entity();
+    Entity(const Entity &other_entity);
+
     string getName() const;
     int getAge() const;
     double getCoins() const;
@@ -42,5 +47,29 @@ protected:
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
 };
+
+
+inline string Entity::getName() const{ return name; }
+
+inline int Entity::getAge() const{ return age; }
+
+inline double Entity::getCoins() const { return coins; }
+
+inline int Entity::getHealth() const { return health; }
+
+inline int Entity::getStamina() const { return stamina; }
+
+inline string Entity::getCategory() const { return category; }
+
+inline int Entity::getLevel() const { return level; }
+
+inline bool Entity::getIs_stunned() const { return is_stunned; }
+
+inline void Entity::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
+
+inline void Entity::talk() { cout << name << " says: \"Hello!\"\n"; }
+
+inline void Entity::walk() { cout << name << " is walking.\n"; }
+
 
 #endif // ENTITY_H

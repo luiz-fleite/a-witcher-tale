@@ -30,15 +30,4 @@ Human::Human(string name, int age, double coins, int health, int stamina, string
     is_stunned = false;
 }
 
-Human::Human(const Human &human) {
-    this->name = human.name;
-    this->age = human.age;
-    this->coins = human.coins;
-    this->health = human.health;
-    this->stamina = human.stamina;
-    this->category = human.category;
-    this->level = human.level;
-    this->is_stunned = human.is_stunned;
-}
-
 inline void Human::attack(Entity &entity) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }

@@ -16,7 +16,7 @@ public:
         int health=100, 
         int stamina=100,
         string category="E");
-    Human(const Human &human);
+    Human(const Human &other_human) : Entity(other_human) { };
     virtual void attack(Entity &entity);
 };
 

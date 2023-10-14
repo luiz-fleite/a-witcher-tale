@@ -7,21 +7,27 @@ using std::cout;
 
 const string Entity::CATEGORIES[7] = {"F", "E", "D", "C", "B", "A", "S"};
 
-inline string Entity::getName() const{ return name; }
+Entity::Entity() {
+    name = "Entity";
+    age = 0;
+    coins = 0;
+    health = 0;
+    stamina = 0;
+    category = "_";
+    level = 0;
+    is_stunned = false;
+}
 
-inline int Entity::getAge() const{ return age; }
-
-inline double Entity::getCoins() const { return coins; }
-
-inline int Entity::getHealth() const { return health; }
-
-inline int Entity::getStamina() const { return stamina; }
-
-inline string Entity::getCategory() const { return category; }
-
-inline int Entity::getLevel() const { return level; }
-
-inline bool Entity::getIs_stunned() const { return is_stunned; }
+Entity::Entity(const Entity &other_entity) {
+    this->name = other_entity.name;
+    this->age = other_entity.age;
+    this->coins = other_entity.coins;
+    this->health = other_entity.health;
+    this->stamina = other_entity.stamina;
+    this->category = other_entity.category;
+    this->level = other_entity.level;
+    this->is_stunned = other_entity.is_stunned;
+}
 
 void Entity::setName(string name) {
     name.erase(0, name.find_first_not_of(' '));
@@ -111,13 +117,7 @@ void Entity::setLevel(int level) {
     this->level = level;
 }
 
-inline void Entity::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
-
 void Entity::print_info() const{
     cout << "Name: " << this->name << "\nCategory: " << this->category << "\nLevel: " << this->level << "\nAge: " << this->age << "\nCoins: " << this->coins << "\nHealth: " << this->health << "\nStamina: " << this->stamina << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << this->is_stunned << "\n";
 }
-
-inline void Entity::talk() { cout << name << " says: \"Hello!\"\n"; }
-
-inline void Entity::walk() { cout << name << " is walking.\n"; }

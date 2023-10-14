@@ -16,7 +16,7 @@ public:
         int health=75, 
         int stamina=75, 
         string category="E");
-    Ghoul(const Ghoul &ghoul);
+    Ghoul(const Ghoul &other_ghoul): Entity(other_ghoul) { };
     // O método attack() recebe a referencia de um objeto tipo "Entity" para poder subtrair
     // o atributo "health", e por isso não pode ser passado como "const".
     void attack(Entity &entity);
