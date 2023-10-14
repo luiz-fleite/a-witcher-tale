@@ -13,6 +13,7 @@ class Battle {
 public:
     Battle(Entity &allie, Entity &enemy);
     Battle(const Battle &battle);
+    
     void print_allies();
     void print_enemies();
     void add_ally(Entity &allie);
