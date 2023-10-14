@@ -17,8 +17,11 @@ public:
         int stamina=100,
         string category="E");
     Human(const Human &other_human) : Entity(other_human) { };
+    ~Human();
     
     virtual void attack(Entity &entity);
 };
+
+inline void Human::attack(Entity &entity) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }
 
 #endif // HUMAN_H

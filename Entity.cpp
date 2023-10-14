@@ -8,6 +8,7 @@ using std::cout;
 const string Entity::CATEGORIES[7] = {"F", "E", "D", "C", "B", "A", "S"};
 
 Entity::Entity() {
+    cout << "Creating a new Entity...\n";
     name = "Entity";
     age = 0;
     coins = 0;
@@ -27,6 +28,10 @@ Entity::Entity(const Entity &other_entity) {
     this->category = other_entity.category;
     this->level = other_entity.level;
     this->is_stunned = other_entity.is_stunned;
+}
+
+Entity::~Entity() {
+    cout << "Destroying Entity...\n";
 }
 
 void Entity::setName(string name) {

@@ -28,6 +28,10 @@ Battle::Battle(const Battle &battle) {
     }
 }
 
+Battle::~Battle() {
+    cout << "Destroying Battle...\n";
+}
+
 void Battle::print_allies() {
     string names;
     for (int i = 0; i < MAX_ALLIES; i++) {

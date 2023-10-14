@@ -6,6 +6,7 @@
 using std::cout;
 
 Human::Human() {
+    cout << "Creating a new Human...\n";
     name = "Peasant";
     age = 30;
     coins = 50.00;
@@ -30,4 +31,7 @@ Human::Human(string name, int age, double coins, int health, int stamina, string
     is_stunned = false;
 }
 
-inline void Human::attack(Entity &entity) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }
+Human::~Human() {
+    cout << "Destroying Human...\n";
+}
+

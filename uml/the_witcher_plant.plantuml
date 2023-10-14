@@ -1,17 +1,17 @@
 @@startuml
 
 abstract class Entity {
-    - name : string
-    - health : int
-    - stamina : int
-    - coins : double
-    - is_stunned : bool
-    - xp_level : int
-    - category : string
     - global_level static : int
-    - all_categorys const static: string[]
-    - MAX_NAME_SIZE const : int
-    + Entity()
+    # name : string
+    # health : int
+    # stamina : int
+    # coins : double
+    # is_stunned : bool
+    # level : int
+    # category : string
+    # CATEGORIES const static: string[]
+    # MAX_NAME_SIZE const : int
+    + {abstract} attack(Entity &) : void
     + print_info() const : void
     + talk() : void
     + walk() : void
@@ -51,6 +51,21 @@ class Ghoul {
     - level : int
     + Ghoul()
     + attack(Entity &) : void
+}
+
+class Battle {
+    - MAX_ALLIES const static : int
+    - MAX_ENEMIES const static : int
+    - allies[] : Entity*
+    - enemies[] : Entity*
+    + Battle(Entity &, Entity &)
+    + print_allies() const : void
+    + print_enemies() const : void
+    + add_ally(Entity &) : void
+    + add_enemy(Entity &) : void
+    + check_allies() : bool
+    + check_enemies() : bool
+    + beginBattle() : void 
 }
 
 Entity <|-- Human

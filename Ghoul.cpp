@@ -12,6 +12,7 @@ using std::time;
 
 
 Ghoul::Ghoul() {
+    cout << "Creating a new Ghoul...\n";
     name = "Ghoul";
     age = 100;
     coins = 15;
@@ -31,6 +32,10 @@ Ghoul::Ghoul(string name, int age, double coins, int health, int stamina, string
     setCategory(category);
     setLevel(1);
     is_stunned = false;
+}
+
+Ghoul::~Ghoul() {
+    cout << "Destroying Ghoul...\n";
 }
 
 void Ghoul::attack(Entity &entity) {

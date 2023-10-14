@@ -11,6 +11,7 @@ class Entity {
 public:
     Entity();
     Entity(const Entity &other_entity);
+    ~Entity();
 
     string getName() const;
     int getAge() const;
