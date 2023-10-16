@@ -56,7 +56,3 @@ void Ghoul::attack(Entity &entity) {
     cout << entity.getName() << " -" << damage << " damage.\n";
     return;
 }
-
-inline void Ghoul::talk() { cout << name << "grawrawrawrawr\n"; }
-
-inline void Ghoul::walk() { cout << name << "is crawling.\n"; }

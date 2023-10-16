@@ -21,8 +21,9 @@ public:
     // O método attack() recebe a referencia de um objeto tipo "Entity" para poder subtrair
     // o atributo "health", e por isso não pode ser passado como "const".
     void attack(Entity &entity);
-    void talk();
-    void walk();
+    
+    inline void Ghoul::talk() { cout << name << "grawrawrawrawr\n"; }
+    inline void Ghoul::walk() { cout << name << "is crawling.\n"; }
 private:
     const static int GHOUL_ATTACK_COST = 10;
     const static int MAX_GHOUL_DAMAGE = 7;
