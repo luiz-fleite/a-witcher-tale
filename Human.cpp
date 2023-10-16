@@ -6,7 +6,7 @@
 using std::cout;
 
 Human::Human() {
-    cout << "Creating a new Human...\n";
+    //cout << "Creating a new Human...\n";
     name = "Peasant";
     age = 30;
     coins = 50.00;
@@ -32,6 +32,6 @@ Human::Human(string name, int age, double coins, int health, int stamina, string
 }
 
 Human::~Human() {
-    cout << "Destroying Human...\n";
+    //cout << "Destroying Human...\n";
 }
 

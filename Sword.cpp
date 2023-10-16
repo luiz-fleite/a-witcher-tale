@@ -6,7 +6,7 @@
 using std::cout;
 
 Sword::Sword() {
-    cout << "Creating a new Sword...\n";
+    //cout << "Creating a new Sword...\n";
     name = "Common Sword";
     damage = 10;
 }
@@ -22,7 +22,7 @@ Sword::Sword(const Sword &other_sword) {
 }
 
 Sword::~Sword() {
-    cout << "Destroying Sword...\n";
+    //cout << "Destroying Sword...\n";
 }
 
 void Sword::setName(string name) {

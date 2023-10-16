@@ -6,7 +6,7 @@
 using std::cout;
 
 Witcher::Witcher() {
-    cout << "Creating a new Witcher...\n";
+    //cout << "Creating a new Witcher...\n";
     name = "Witcher";
     age = 200;
     coins = 150;
@@ -41,7 +41,7 @@ Witcher::Witcher(const Witcher &other_witcher) : Human(other_witcher) {
 }
 
 Witcher::~Witcher() {
-    cout << "Destroying Witcher...\n";
+    //cout << "Destroying Witcher...\n";
     delete [] swordsPtr;
 }
 
