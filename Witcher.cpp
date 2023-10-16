@@ -54,23 +54,32 @@ void Witcher::print_swords() const {
 }
 
 void Witcher::addSword(Sword &sword) {
+    // se o vetor de espadas estiver cheio, aumenta o tamanho
     if (count_swords == max_swords) {
         resize_swords(max_swords + 1);
     }
+    // se o vetor estiver vazio, aloca memoria
     if (count_swords == 0) {
         swordsPtr = new Sword[max_swords];
     }
+    // por fim, adiciona a espada no vetor
     swordsPtr[count_swords++] = sword;
 }
 
 void Witcher::resize_swords(int new_size) {
+    // aloca um novo vetor de espadas com o novo tamanho
     Sword *new_swordsPtr = new Sword[new_size];
     for (int i = 0; i < count_swords; i++) {
+        // copia as espadas do vetor antigo para o novo
         new_swordsPtr[i] = swordsPtr[i];
     }
+    // limpa o vetor antigo para receber o novo
     delete[] swordsPtr;
+    // atualiza os valores
     swordsPtr = new_swordsPtr;
     max_swords = new_size;
+    // por fim volta para a função addSword onde a 
+    // espada será adicionada
 }
 
 void Witcher::attack(Entity &entity) {
