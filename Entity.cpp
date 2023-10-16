@@ -104,21 +104,68 @@ void Entity::setCategory(string category) {
 }
 
 void Entity::setLevel(int level) {
-    if (level < 1) {
-        cout << "Level cannot be less than 1.\n";
-        this->level = 1;
+    if (level < 0) {
+        cout << "Level cannot be negative.\n";
+        this->level = 0;
         return;
     }
-    if (getCategory() == "F" && level > 10) {
-        cout << "Level cannot be greater than 10 for category F.\n";
-        this->level = 10;
-        return;
+    // filtra o level de acordo com a categoria
+    char category_test = this->category[0];
+    switch (category_test) {
+        case 'F':
+            if (level > 10) {
+                cout << "Level cannot be greater than 10 for category F.\n";
+                this->level = 10;
+                return;
+            }
+            break;
+        case 'E':
+            if (level > 20) {
+                cout << "Level cannot be greater than 20 for category E.\n";
+                this->level = 20;
+                return;
+            }
+            break;
+        case 'D':
+            if (level > 30) {
+                cout << "Level cannot be greater than 30 for category D.\n";
+                this->level = 30;
+                return;
+            }
+            break;
+        case 'C':
+            if (level > 40) {
+                cout << "Level cannot be greater than 40 for category C.\n";
+                this->level = 40;
+                return;
+            }
+            break;
+        case 'B':
+            if (level > 50) {
+                cout << "Level cannot be greater than 50 for category B.\n";
+                this->level = 50;
+                return;
+            }
+            break;
+        case 'A':
+            if (level > 60) {
+                cout << "Level cannot be greater than 60 for category A.\n";
+                this->level = 60;
+                return;
+            }
+            break;
+        case 'S':
+            if (level > 70) {
+                cout << "Level cannot be greater than 70 for category S.\n";
+                this->level = 70;
+                return;
+            }
+            break;
+        default:
+            cout << "Invalid category.\n";
+            break;
     }
-    if (getCategory() == "E" && level > 20) {
-        cout << "Level cannot be greater than 20 for category E.\n";
-        this->level = 20;
-        return;
-    }
+    // se passou pelos filtros, seta o level
     this->level = level;
 }
 

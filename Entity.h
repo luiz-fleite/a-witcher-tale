@@ -13,14 +13,14 @@ public:
     Entity(const Entity &other_entity);
     ~Entity();
 
-    string getName() const;
-    int getAge() const;
-    double getCoins() const;
-    int getHealth() const;
-    int getStamina() const;
-    string getCategory() const;
-    int getLevel() const;
-    bool getIs_stunned() const;
+    inline string getName() const{ return name; }
+    inline int getAge() const{ return age; }
+    inline double getCoins() const { return coins; }
+    inline int getHealth() const { return health; }
+    inline int getStamina() const { return stamina; }
+    inline string getCategory() const { return category; }
+    inline int getLevel() const { return level; }
+    inline bool getIs_stunned() const { return is_stunned; }
 
     void setName(string name);
     void setAge(int age);
@@ -29,7 +29,7 @@ public:
     void setStamina(int stamina);
     void setCategory(string category);
     void setLevel(int level);
-    void setIs_stunned(bool is_stunned);
+    inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
     void print_info() const;
     virtual void attack(Entity &) = 0;
@@ -48,25 +48,6 @@ protected:
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
 };
-
-
-inline string Entity::getName() const{ return name; }
-
-inline int Entity::getAge() const{ return age; }
-
-inline double Entity::getCoins() const { return coins; }
-
-inline int Entity::getHealth() const { return health; }
-
-inline int Entity::getStamina() const { return stamina; }
-
-inline string Entity::getCategory() const { return category; }
-
-inline int Entity::getLevel() const { return level; }
-
-inline bool Entity::getIs_stunned() const { return is_stunned; }
-
-inline void Entity::setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
 inline void Entity::talk() { cout << name << " says: \"Hello!\"\n"; }
 
