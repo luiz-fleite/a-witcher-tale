@@ -29,7 +29,7 @@ Battle::Battle(const Battle &battle) {
 }
 
 Battle::~Battle() {
-    cout << "Destroying Battle...\n";
+    //cout << "End Battle...\n";
 }
 
 void Battle::print_allies() {
@@ -109,6 +109,31 @@ void Battle::beginBattle() {
                 allies[i]->setIs_stunned(false);
                 continue;
             }
+            // cada aliado escolhe uma vitima aleatoria entre 0 e MAX_ENEMIES
+            // obs: abaixo não é utilizado "do while" porque allie_id não pode
+            // ser inicializado dentro do escopo do while
+            srand(static_cast<unsigned int>(time(nullptr)));
+            int enemy_id = rand() % (MAX_ENEMIES);
+            //cout << "enemy id: " << enemy_id << "\n";
+            while(enemies[enemy_id] == 0 && check_enemies()) {
+                srand(static_cast<unsigned int>(time(nullptr)));
+                enemy_id = rand() % (MAX_ENEMIES);
+                //cout << "enemy: " << enemies[enemy_id] << "\n";
+                //cout << "enemy id: " << enemy_id << "\n";
+            }
+            allies[i]->attack(*enemies[enemy_id]);
+            sleep(1);
+            allies[i]->setStamina(enemies[i]->getStamina() + 5);
+            // apos atacar a vitima, verifica se ela morreu
+            if (enemies[enemy_id]->getHealth() <= 0) {
+                cout << enemies[enemy_id]->getName() << " is dead!\n";
+                enemies[enemy_id] = 0;
+                // verifica se o aliado morto era o ultimo e
+                // a batalha deve acabar entre os turnos dos inimigos
+                if (!check_enemies()) {
+                    break;
+                }
+            }
         }
         // depois começa o turno dos atacantes, nesse caso os monstros
         for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -122,24 +147,22 @@ void Battle::beginBattle() {
                 continue;
             }
             // cada monstro escolhe uma vitima aleatoria entre 0 e MAX_ALLIES
-            // obs: abaixo não é utilizado "do while" porque allie_id não pode
-            // ser inicializado dentro do escopo do while
             srand(static_cast<unsigned int>(time(nullptr)));
-            int allie_id = rand() % (MAX_ALLIES);
-            //cout << "allie id: " << allie_id << "\n";
-            while(allies[allie_id] == 0 && check_allies()) {
+            int ally_id = rand() % (MAX_ALLIES);
+            //cout << "ally id: " << ally_id << "\n";
+            while(allies[ally_id] == 0 && check_allies()) {
                 srand(static_cast<unsigned int>(time(nullptr)));
-                allie_id = rand() % (MAX_ALLIES);
-                //cout << "allie: " << allies[allie_id] << "\n";
-                //cout << "allie id: " << allie_id << "\n";
+                ally_id = rand() % (MAX_ALLIES);
+                //cout << "ally: " << allies[ally_id] << "\n";
+                //cout << "ally id: " << ally_id << "\n";
             }
-            enemies[i]->attack(*allies[allie_id]);
+            enemies[i]->attack(*allies[ally_id]);
             sleep(1);
-            enemies[i]->setStamina(enemies[i]->getStamina() + 3);
+            enemies[i]->setStamina(enemies[i]->getStamina() + 5);
             // apos atacar a vitima, verifica se ela morreu
-            if (allies[allie_id]->getHealth() <= 0) {
-                cout << allies[allie_id]->getName() << " is dead!\n";
-                allies[allie_id] = 0;
+            if (allies[ally_id]->getHealth() <= 0) {
+                cout << allies[ally_id]->getName() << " is dead!\n";
+                allies[ally_id] = 0;
                 // verifica se o aliado morto era o ultimo e
                 // a batalha deve acabar entre os turnos dos inimigos
                 if (!check_allies()) {
