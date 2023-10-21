@@ -3,9 +3,8 @@
 
 #include <string>
 
-#include "Entity.h"
 #include "Human.h"
-#include "Sword.h"
+#include "../Items/Sword.h"
 
 using std::string;
 

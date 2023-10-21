@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Entity.h"
+#include "../Entity.h"
 
 using std::string;
 

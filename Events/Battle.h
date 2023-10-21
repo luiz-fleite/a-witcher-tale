@@ -3,9 +3,7 @@
 
 #include <string>
 
-#include "Entity.h"
-#include "Human.h"
-#include "Ghoul.h"
+#include "../Entities/Entity.h"
 
 using std::string;
 

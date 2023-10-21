@@ -3,8 +3,6 @@
 #include <unistd.h>
 
 #include "Battle.h"
-#include "Ghoul.h"
-#include "Human.h"
 
 using std::cout;
 

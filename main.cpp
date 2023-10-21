@@ -2,12 +2,12 @@
 #include <string>
 #include <unistd.h>  
 
-#include "Entity.cpp"
-#include "Human.cpp"
-#include "Ghoul.cpp"
-#include "Battle.cpp"
-#include "Witcher.cpp"
-#include "Sword.cpp"
+#include "./Entities/Entity.cpp"
+#include "./Entities/Human.cpp"
+#include "./Entities/Monsters/Ghoul.cpp"
+#include "./Events/Battle.cpp"
+#include "./Entities/Witcher.cpp"
+#include "./Items/Sword.cpp"
 
 using std::cout;
 

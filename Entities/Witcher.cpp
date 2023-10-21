@@ -62,6 +62,7 @@ void Witcher::addSword(Sword &sword) {
     if (count_swords == 0) {
         swordsPtr = new Sword[max_swords];
     }
+    
     // por fim, adiciona a espada no vetor
     swordsPtr[count_swords++] = sword;
 }
