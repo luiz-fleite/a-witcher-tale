@@ -16,6 +16,7 @@ Entity::Entity() {
     stamina = 0;
     category = "_";
     level = 0;
+    total_defense = 0;
     is_stunned = false;
 }
 
@@ -27,6 +28,7 @@ Entity::Entity(const Entity &other_entity) {
     this->stamina = other_entity.stamina;
     this->category = other_entity.category;
     this->level = other_entity.level;
+    this->total_defense = other_entity.total_defense;
     this->is_stunned = other_entity.is_stunned;
 }
 
@@ -70,7 +72,7 @@ void Entity::setCoins(double coins) {
 
 void Entity::setHealth(int health) {
     if (health < 0) {
-        cout << "Health cannot be negative.\n";
+        //cout << "Health cannot be negative.\n";
         this->health = 0;
         return;
     }
@@ -169,7 +171,43 @@ void Entity::setLevel(int level) {
     this->level = level;
 }
 
+void Entity::setTotal_defense(int total_defense) {
+    if (total_defense < 0) {
+        cout << "Total defense cannot be negative.\n";
+        this->total_defense = 0;
+        return;
+    }
+    this->total_defense = total_defense;
+}
+
+void Entity::receive_damage(int damage) {
+    if (damage < 0) {
+        cout << "Damage cannot be negative.\n";
+        return;
+    }
+    damage -= this->total_defense;
+    if (damage <= 0) {
+        cout << this->name << " received no damage.\n";
+        return;
+    }
+    if (damage >= getHealth()) {
+        damage = getHealth();
+    }
+    setHealth(getHealth() - damage);
+    if (getHealth() == 0) {
+        cout << name << " died.\n";
+    }
+    return;
+}
+
 void Entity::print_info() const{
-    cout << "Name: " << this->name << "\nCategory: " << this->category << "\nLevel: " << this->level << "\nAge: " << this->age << "\nCoins: " << this->coins << "\nHealth: " << this->health << "\nStamina: " << this->stamina << "\n";
+    cout << "Name: " << this->name << "\n";
+    cout << "Category: " << this->category << "\n";
+    cout << "Level: " << this->level << "\n";
+    cout << "Age: " << this->age << "\n";
+    cout << "Coins: " << this->coins << "\n";
+    cout << "Health: " << this->health << "\n";
+    cout << "Stamina: " << this->stamina << "\n";
+    cout << "Total defense: " << this->total_defense << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << this->is_stunned << "\n";
 }

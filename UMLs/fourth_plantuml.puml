@@ -2,12 +2,13 @@
 
 abstract class Entity {
     # name : string
+    # age : int
+    # coins : double
     # health : int
     # stamina : int
-    # coins : double
-    # is_stunned : bool
-    # level : int
     # category : string
+    # level : int
+    # is_stunned : bool
     # CATEGORIES const static: string[]
     # MAX_NAME_SIZE const : int
     + Entity()
@@ -21,7 +22,7 @@ abstract class Entity {
 class Human {
     + Human()
     + Human(const Human &)
-    + attack(Entity &) : void
+    + virtual attack(Entity &) : void
 }
 
 class Witcher {

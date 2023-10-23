@@ -38,6 +38,18 @@ Ghoul::~Ghoul() {
     //cout << "Destroying Ghoul...\n";
 }
 
+void Ghoul::setIs_enraged(bool is_enraged) {
+    this->is_enraged = is_enraged;
+    update_total_defense();
+    cout << name << " is enraged!\n";
+}
+
+void Ghoul::update_total_defense() {
+    if (is_enraged) {
+        setTotal_defense(getTotal_defense() + 5);
+    }
+}
+
 void Ghoul::attack(Entity &entity) {
     if (getStamina() < GHOUL_ATTACK_COST) {
         cout << name << " has no stamina left to attack.\n";
@@ -51,8 +63,16 @@ void Ghoul::attack(Entity &entity) {
     // para nivelar o jogo ao nivel desejado
     // o valor é propositalmente arredondado para baixo
     damage = damage + (getLevel() / 3);
-    entity.setHealth(entity.getHealth() - damage);
+    entity.receive_damage(damage);
     cout << name << " attacked " << entity.getName() << ".\n";
     cout << entity.getName() << " -" << damage << " damage.\n";
+    return;
+}
+
+void Ghoul::receive_damage(int damage) {
+    Entity::receive_damage(damage);
+    if (getHealth() < 10) {
+        setIs_enraged(true);
+    }
     return;
 }

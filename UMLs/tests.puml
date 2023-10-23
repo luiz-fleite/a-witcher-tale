@@ -1,0 +1,28 @@
+
+====================
+opção 1
+====================
+struct equipped_items{
+    Sword* sword;
+    Armor* armor;
+}
+struct inventory{
+    vector <Sword*> swords;
+    vector <Armor*> armors;
+}
+class Human {
+    ...
+    equipped_items
+    inventory
+}
+
+====================
+opção 2
+====================
+class Human {
+    ...
+    Sword* equipped_sword;
+    Armor* equipped_armor;
+    vector <Sword*> swords;
+    vector <Armor*> armors;
+}

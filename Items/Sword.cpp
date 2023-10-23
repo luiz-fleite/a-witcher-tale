@@ -50,6 +50,7 @@ void Sword::setDamage(int damage) {
     this->damage = damage;
 }
 
-void Sword::print_info() const {
-    cout << "Sword name: " << name << "\nDamage: " << damage << "\n";
+ostream &operator<< (ostream &out, const Sword &sword){
+    out << sword.name << " (+" << sword.damage << " damage)";
+    return out;
 }

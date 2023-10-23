@@ -30,7 +30,9 @@ Witcher::Witcher(string name, int age, double coins, int health, int stamina, st
 
 }
 
+
 Witcher::Witcher(const Witcher &other_witcher) : Human(other_witcher) {
+    /*
     this->max_swords = other_witcher.max_swords;
     this->count_swords = other_witcher.count_swords;
 
@@ -38,13 +40,14 @@ Witcher::Witcher(const Witcher &other_witcher) : Human(other_witcher) {
     for (int i = 0; i < this->count_swords; i++) {
         this->swordsPtr[i] = other_witcher.swordsPtr[i];
     }
+    */
 }
 
 Witcher::~Witcher() {
     //cout << "Destroying Witcher...\n";
-    delete [] swordsPtr;
+    //delete [] swordsPtr;
 }
-
+/*
 void Witcher::print_swords() const {
     cout << "Swords:\n";
     for (int i = 0; i < count_swords; i++) {
@@ -82,7 +85,7 @@ void Witcher::resize_swords(int new_size) {
     // por fim volta para a função addSword onde a 
     // espada será adicionada
 }
-
+*/
 void Witcher::attack(Entity &entity) {
     if (getStamina() < WITCHER_ATTACK_COST) {
         cout << name << " has no stamina left to attack.\n";
@@ -92,12 +95,19 @@ void Witcher::attack(Entity &entity) {
     // Dano aleatorio entre MIN_WITCHER_DAMAGE e MAX_WITCHER_DAMAGE
     srand(static_cast<unsigned int>(time(nullptr)));
     int damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
-    // depois de gerar o dano aleatorio adiciona o level do Witcher
-    // para nivelar o jogo ao nivel desejado
-    // o valor é propositalmente arredondado para baixo
-    damage = damage + (getLevel() / 3) + swordsPtr->getDamage();
-    entity.setHealth(entity.getHealth() - damage);
+    // Dano aumenta com o level
+    damage = damage + (getLevel() / 3);
+    // Dano aumenta com a espada equipada
+    if (equipped.steel_sword != 0) damage += equipped.steel_sword->getDamage();
+    // Dano diminui com a defesa da armadura do alvo
+    //damage -= entity.getDefense();
+    entity.receive_damage(damage);
     cout << name << " attacked " << entity.getName() << ".\n";
     cout << entity.getName() << " -" << damage << " damage.\n";
     return;
+}
+
+ostream &operator<< (ostream &out, const Witcher &witcher){
+    out << static_cast<Human>(witcher);
+    return out;
 }

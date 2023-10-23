@@ -1,34 +1,34 @@
-#ifndef SWORD_H
-#define SWORD_H
+#ifndef ARMOR_H
+#define ARMOR_H
 
 #include <string>
 
 using std::ostream;
 using std::string;
 
-class Sword {
-    friend ostream &operator<< (ostream &out, const Sword &sword);
+class Armor {
+    friend ostream &operator<< (ostream &out, const Armor &armor);
 public:
-    Sword();
-    Sword(string name, int damage=10);
-    Sword(const Sword &other_sword);
-    ~Sword();
+    Armor();
+    Armor(string name, int defense=5);
+    Armor(const Armor &other_armor);
+    ~Armor();
     
     inline string getName() const { return name; }
-    inline int getDamage() const { return damage; }
+    inline int getDefense() const { return defense; }
     //inline string getCategory() const { return category; }
     
     void setName(string name);
-    void setDamage(int damage);
+    void setDefense(int defense);
     //void setCategory(string category);
 
 private:
     string name;
-    int damage;
+    int defense;
     //string category;
 
     //const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
 };
 
-#endif // SWORD_H
+#endif // ARMOR_H

@@ -18,13 +18,19 @@ public:
         string category="E");
     Ghoul(const Ghoul &other_ghoul): Entity(other_ghoul) { };
     ~Ghoul();
-    // O método attack() recebe a referencia de um objeto tipo "Entity" para poder subtrair
-    // o atributo "health", e por isso não pode ser passado como "const".
+
+    inline bool getIs_enraged() const { return is_enraged; }
+
+    void setIs_enraged(bool is_enraged);
+    
+    void update_total_defense();
     void attack(Entity &entity);
+    void receive_damage(int damage);
     
     inline void talk() { cout << name << "grawrawrawrawr\n"; }
     inline void walk() { cout << name << "is crawling.\n"; }
 private:
+    bool is_enraged = false;
     const static int GHOUL_ATTACK_COST = 10;
     const static int MAX_GHOUL_DAMAGE = 7;
     const static int MIN_GHOUL_DAMAGE = 3;

@@ -8,11 +8,20 @@
 #include "./Events/Battle.cpp"
 #include "./Entities/Witcher.cpp"
 #include "./Items/Sword.cpp"
+#include "./Items/Armor.cpp"
 
 using std::cout;
 
 int main(void) {
-
+    Human h1;
+    cout << h1;
+    h1.print_equipped_items();
+    cout << "\n";
+    Human h2(h1);
+    cout << h2;
+    h2.print_equipped_items();
+    cout << "\n";
+/*
     cout << "====Before first battle====\n";
     Witcher w1;
     w1.print_info();
@@ -74,6 +83,6 @@ int main(void) {
 
     w2.print_info();
     w2.print_swords();
-
+*/
     return 0;
 }
