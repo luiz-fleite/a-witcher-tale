@@ -60,6 +60,35 @@ Human::Human(const Human &other_human) : Entity(other_human) {
 
 }
 
+void Human::equip_sword(int sword_index) {
+    if (sword_index < 0 || sword_index >= inventory.swords.size()) {
+        cout << "Invalid sword index.\n";
+        return;
+    }
+    if (equipped.steel_sword != 0) {
+        add_sword(*equipped.steel_sword);
+        cout << "Unequipped " << *equipped.steel_sword << ".\n";
+    }
+    equipped.steel_sword = inventory.swords[sword_index];
+    inventory.swords.erase(inventory.swords.begin() + sword_index);
+    cout << "Equipped " << *equipped.steel_sword << ".\n";
+}
+
+void Human::equip_armor(int armor_index) {
+    if (armor_index < 0 || armor_index >= inventory.armors.size()) {
+        cout << "Invalid armor index.\n";
+        return;
+    }
+    if (equipped.armor != 0) {
+        add_armor(*equipped.armor);
+        cout << "Unequipped " << *equipped.armor << ".\n";
+    }
+    equipped.armor = inventory.armors[armor_index];
+    inventory.armors.erase(inventory.armors.begin() + armor_index);
+    cout << "Equipped " << *equipped.armor << ".\n";
+    update_total_defense();
+}
+
 void Human::drop_item(string item_type_name) {
     if (item_type_name == "Steel Sword")
         equipped.steel_sword = 0;
@@ -84,7 +113,9 @@ void Human::print_equipped_items() {
 
 void Human::update_total_defense() {
     if (equipped.armor != 0)
-        setTotal_defense(getTotal_defense() + equipped.armor->getDefense());
+        setTotal_defense(equipped.armor->getDefense());
+    else
+        setTotal_defense(0);
 }
 
 void Human::receive_damage(int damage) {

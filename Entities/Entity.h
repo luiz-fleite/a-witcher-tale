@@ -3,9 +3,19 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+
+#include "../Items/Sword.h"
+#include "../Items/Armor.h"
 
 using std::cout;
 using std::string;
+using std::vector;
+
+struct inventory_items {
+    vector<Sword*> swords;
+    vector<Armor*> armors;
+};
 
 class Entity {
 public:
@@ -33,6 +43,12 @@ public:
     void setTotal_defense(int total_defense);
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
 
+    void add_sword(Sword &);
+    void add_armor(Armor &);
+    void drop_sword(int);
+    void drop_armor(int);
+    void print_inventory() const;
+    
     void print_info() const;
     virtual void update_total_defense() = 0;
     virtual void attack(Entity &) = 0;
@@ -49,6 +65,8 @@ protected:
     int level;
     int total_defense;
     bool is_stunned = false;
+
+    inventory_items inventory;
 
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;

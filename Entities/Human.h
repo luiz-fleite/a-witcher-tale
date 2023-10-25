@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
 
 #include "Entity.h"
 #include "../Items/Sword.h"
@@ -11,7 +10,6 @@
 
 using std::ostream;
 using std::string;
-using std::vector;
 
 struct equipped_items {
     Sword* steel_sword; // steel_swordPtr ?
@@ -30,6 +28,9 @@ public:
         string category="E");
     Human(const Human &other_human);
     ~Human();
+
+    void equip_sword(int sword_index);
+    void equip_armor(int armor_index);
 
     void drop_item(string item_type_name);
     virtual void print_equipped_items();

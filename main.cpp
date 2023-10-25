@@ -14,13 +14,33 @@ using std::cout;
 
 int main(void) {
     Human h1;
-    cout << h1;
+    cout << "============Criado h1===========\n";
+    cout << h1 << "\n";
+    Sword s1 = Sword();
+    Sword s2 = Sword("Silver Sword", 20);
+    h1.add_sword(s1);
+    h1.add_sword(s2);
+    Armor a1 = Armor();
+    Armor a2 = Armor("Steel Armor", 10);
+    h1.add_armor(a1);
+    h1.add_armor(a2);
     h1.print_equipped_items();
+    h1.print_inventory();
     cout << "\n";
-    Human h2(h1);
-    cout << h2;
-    h2.print_equipped_items();
+    h1.equip_sword(0);
+    h1.equip_armor(0);
+    cout << "==============Equipado h1=============\n";
+    cout << h1 << "\n";
+    h1.print_equipped_items();
+    h1.print_inventory();
     cout << "\n";
+    h1.equip_sword(0);
+    h1.equip_armor(0);
+    cout << "=============Trocando equipamento h1==========\n";
+    cout << h1 << "\n";
+    h1.print_equipped_items();
+    h1.print_inventory();
+
 /*
     cout << "====Before first battle====\n";
     Witcher w1;

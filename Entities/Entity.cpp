@@ -180,6 +180,45 @@ void Entity::setTotal_defense(int total_defense) {
     this->total_defense = total_defense;
 }
 
+
+void Entity::add_sword(Sword &sword) {
+    Sword * new_sword = new Sword(sword);
+    inventory.swords.push_back(new_sword);
+}
+
+void Entity::add_armor(Armor &armor) {
+    Armor * new_armor = new Armor(armor);
+    inventory.armors.push_back(new_armor);
+}
+
+void Entity::drop_sword(int index) {
+    if (index < 0 || index >= inventory.swords.size()) {
+        cout << "Invalid index.\n";
+        return;
+    }
+    inventory.swords.erase(inventory.swords.begin() + index);
+}
+
+void Entity::drop_armor(int index) {
+    if (index < 0 || index >= inventory.armors.size()) {
+        cout << "Invalid index.\n";
+        return;
+    }
+    inventory.armors.erase(inventory.armors.begin() + index);
+}
+
+void Entity::print_inventory() const {
+    cout << "Inventory of " << this->name << ":\n";
+    cout << "Swords:\n";
+    for (auto sword : inventory.swords) {
+        cout << *sword << "\n";
+    }
+    cout << "Armors:\n";
+    for (auto armor : inventory.armors) {
+        cout << *armor << "\n";
+    }
+}
+
 void Entity::receive_damage(int damage) {
     if (damage < 0) {
         cout << "Damage cannot be negative.\n";
