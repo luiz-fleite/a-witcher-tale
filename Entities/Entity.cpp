@@ -34,6 +34,12 @@ Entity::Entity(const Entity &other_entity) {
 
 Entity::~Entity() {
     //cout << "Destroying Entity...\n";
+    for (auto sword : inventory.swords) {
+        delete sword;
+    }
+    for (auto armor : inventory.armors) {
+        delete armor;
+    }
 }
 
 void Entity::setName(string name) {
