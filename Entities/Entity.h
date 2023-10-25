@@ -32,6 +32,7 @@ public:
     inline int getLevel() const { return level; }
     inline int getTotal_defense() const { return total_defense; }
     inline bool getIs_stunned() const { return is_stunned; }
+    inline int getGlobal_level() const { return global_level; }
 
     void setName(string name);
     void setAge(int age);
@@ -42,6 +43,7 @@ public:
     void setLevel(int level);
     void setTotal_defense(int total_defense);
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
+    void setGlobal_level(int global_level);
 
     void add_sword(Sword &);
     void add_armor(Armor &);
@@ -55,6 +57,8 @@ public:
     virtual void receive_damage(int);
     virtual void talk();
     virtual void walk();
+
+    void update_global_level();
 protected:
     string name;
     int age;
@@ -70,6 +74,8 @@ protected:
 
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
+private:
+    static int global_level;
 };
 
 inline void Entity::talk() { cout << name << " says: \"Hello!\"\n"; }

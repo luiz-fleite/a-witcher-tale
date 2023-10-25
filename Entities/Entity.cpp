@@ -21,6 +21,7 @@ Entity::Entity() {
 }
 
 Entity::Entity(const Entity &other_entity) {
+    //cout << "Copying Entity...\n";
     this->name = other_entity.name;
     this->age = other_entity.age;
     this->coins = other_entity.coins;
@@ -30,6 +31,14 @@ Entity::Entity(const Entity &other_entity) {
     this->level = other_entity.level;
     this->total_defense = other_entity.total_defense;
     this->is_stunned = other_entity.is_stunned;
+    for (auto sword : other_entity.inventory.swords) {
+        Sword * new_sword = new Sword(*sword);
+        this->inventory.swords.push_back(new_sword);
+    }
+    for (auto armor : other_entity.inventory.armors) {
+        Armor * new_armor = new Armor(*armor);
+        this->inventory.armors.push_back(new_armor);
+    }
 }
 
 Entity::~Entity() {

@@ -46,7 +46,7 @@ int main(void) {
     cout << h1 << "\n";
     h1.print_equipped_items();
     h1.print_inventory();
-
+    
 /*
     cout << "====Before first battle====\n";
     Witcher w1;
