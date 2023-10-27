@@ -85,6 +85,24 @@ void Entity::setCoins(double coins) {
     this->coins = coins;
 }
 
+void Entity::setMax_health(int max_health) {
+    if (max_health < 0) {
+        cout << "Max health cannot be negative.\n";
+        this->max_health = 0;
+        return;
+    }
+    this->max_health = max_health;
+}
+
+void Entity::setMax_stamina(int max_stamina) {
+    if (max_stamina < 0) {
+        cout << "Max stamina cannot be negative.\n";
+        this->max_stamina = 0;
+        return;
+    }
+    this->max_stamina = max_stamina;
+}
+
 void Entity::setHealth(int health) {
     if (health < 0) {
         //cout << "Health cannot be negative.\n";
@@ -234,6 +252,30 @@ void Entity::print_inventory() const {
     }
 }
 
+void Entity::life_regen(int life_regen) {
+    if (life_regen < 0) {
+        cout << "Life regen cannot be negative.\n";
+        return;
+    }
+    if (getHealth() + life_regen > max_health) {
+        setHealth(max_health);
+        return;
+    }
+    this->health += life_regen;
+}
+
+void Entity::stamina_regen(int stamina_regen) {
+    if (stamina_regen < 0) {
+        cout << "Stamina regen cannot be negative.\n";
+        return;
+    }
+    if (getStamina() + stamina_regen > max_stamina) {
+        setStamina(max_stamina);
+        return;
+    }
+    this->stamina += stamina_regen;
+}
+
 void Entity::receive_damage(int damage) {
     if (damage < 0) {
         cout << "Damage cannot be negative.\n";
@@ -264,4 +306,31 @@ void Entity::print_info() const{
     cout << "Stamina: " << this->stamina << "\n";
     cout << "Total defense: " << this->total_defense << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << this->is_stunned << "\n";
+}
+
+const Entity &Entity::operator=(const Entity &assigned_entity) {
+    if (this != &assigned_entity) {
+        this->name = assigned_entity.name;
+        this->age = assigned_entity.age;
+        this->coins = assigned_entity.coins;
+        this->health = assigned_entity.health;
+        this->stamina = assigned_entity.stamina;
+        this->category = assigned_entity.category;
+        this->level = assigned_entity.level;
+        this->total_defense = assigned_entity.total_defense;
+        this->is_stunned = assigned_entity.is_stunned;
+        // primeiro limpa o vetor para preenche-lo
+        this->inventory.swords.clear();
+        for (auto sword : assigned_entity.inventory.swords) {
+            Sword * new_sword = new Sword(*sword);
+            this->inventory.swords.push_back(new_sword);
+        }
+        this->inventory.armors.clear();
+        for (auto armor : assigned_entity.inventory.armors) {
+            Armor * new_armor = new Armor(*armor);
+            this->inventory.armors.push_back(new_armor);
+        }
+    }
+
+    return *this; // permite a forma a = b = c
 }

@@ -126,3 +126,18 @@ ostream &operator<< (ostream &out, const Human &human){
     human.print_info();
     return out;
 }
+
+const Human &Human::operator=(const Human &other_human) {
+    if (this != &other_human) {
+        // forma não permitida pela classe abstrata
+        //*static_cast< Entity * >( this ) = static_cast< Entity >( other_human );
+        // forma sugerida pela IA
+        Entity::operator=(other_human);
+        if (other_human.equipped.steel_sword == 0) equipped.steel_sword = 0;
+        else equipped.steel_sword = new Sword(*other_human.equipped.steel_sword);
+
+        if (other_human.equipped.armor == 0) equipped.armor = 0;
+        else equipped.armor = new Armor(*other_human.equipped.armor);
+    }
+    return *this;
+}

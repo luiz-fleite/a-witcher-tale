@@ -38,6 +38,8 @@ public:
     virtual void update_total_defense();
     virtual void attack(Entity &entity);
     virtual void receive_damage(int damage);
+
+    const Human &operator=(const Human &);
 protected:
     equipped_items equipped;
 };
