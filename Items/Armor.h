@@ -22,6 +22,9 @@ public:
     void setDefense(int defense);
     //void setCategory(string category);
 
+    const Armor &operator=(const Armor &);
+    int operator==(const Armor &other_armor) const;
+    int operator!=(const Armor &other_armor) const;
 private:
     string name;
     int defense;

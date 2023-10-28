@@ -24,6 +24,8 @@ public:
     virtual void attack(Entity &entity);
 
     const Witcher &operator=(const Witcher &);
+    bool operator==(const Witcher &other_witcher) const;
+    bool operator!=(const Witcher &other_witcher) const;
 private:
     const static int WITCHER_ATTACK_COST = 10;
     const static int MAX_WITCHER_DAMAGE = 10;

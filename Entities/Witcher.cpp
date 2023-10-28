@@ -73,3 +73,11 @@ const Witcher &Witcher::operator=(const Witcher &other_witcher) {
     }
     return *this;
 }
+
+bool Witcher::operator==(const Witcher &other_witcher) const {
+    return static_cast< Human >( *this ) == static_cast< Human >( other_witcher );
+}
+
+bool Witcher::operator!=(const Witcher &other_witcher) const {
+    return static_cast< Human >( *this ) != static_cast< Human >( other_witcher );
+}

@@ -65,7 +65,10 @@ public:
     virtual void walk();
 
     void update_global_level();
+    
     const Entity &operator=(const Entity &);
+    int operator==(const Entity &) const;
+    int operator!=(const Entity &) const;
 protected:
     string name;
     int age;

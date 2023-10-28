@@ -54,3 +54,19 @@ ostream &operator<< (ostream &out, const Armor &Armor){
     out << Armor.name << " (+" << Armor.defense << " defense)";
     return out;
 }
+
+const Armor &Armor::operator=(const Armor &other_Armor) {
+    this->name = other_Armor.name;
+    this->defense = other_Armor.defense;
+    return *this;
+}
+
+int Armor::operator==(const Armor &other_Armor) const {
+    if (this->name != other_Armor.name) return 0;
+    if (this->defense != other_Armor.defense) return 0;
+    return 1;
+}
+
+int Armor::operator!=(const Armor &other_Armor) const {
+    return !(*this == other_Armor);
+}

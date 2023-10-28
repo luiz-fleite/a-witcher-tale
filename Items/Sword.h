@@ -22,6 +22,9 @@ public:
     void setDamage(int damage);
     //void setCategory(string category);
 
+    const Sword &operator=(const Sword &);
+    int operator==(const Sword &other_sword) const;
+    int operator!=(const Sword &other_sword) const;
 private:
     string name;
     int damage;

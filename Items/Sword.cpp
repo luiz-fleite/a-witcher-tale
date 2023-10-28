@@ -54,3 +54,19 @@ ostream &operator<< (ostream &out, const Sword &sword){
     out << sword.name << " (+" << sword.damage << " damage)";
     return out;
 }
+
+const Sword &Sword::operator=(const Sword &other_sword) {
+    this->name = other_sword.name;
+    this->damage = other_sword.damage;
+    return *this;
+}
+
+int Sword::operator==(const Sword &other_sword) const {
+    if (this->name != other_sword.name) return 0;
+    if (this->damage != other_sword.damage) return 0;
+    return 1;
+}
+
+int Sword::operator!=(const Sword &other_sword) const {
+    return !(*this == other_sword);
+}

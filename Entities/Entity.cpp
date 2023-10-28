@@ -334,3 +334,39 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
 
     return *this; // permite a forma a = b = c
 }
+
+int Entity::operator==(const Entity &other_entity) const {
+    // atributes check
+    if (this->name != other_entity.name) return 0;
+    if (this->age != other_entity.age) return 0;
+    if (this->coins != other_entity.coins) return 0;
+    if (this->health != other_entity.health) return 0;
+    if (this->stamina != other_entity.stamina) return 0;
+    if (this->category != other_entity.category) return 0;
+    if (this->level != other_entity.level) return 0;
+    if (this->total_defense != other_entity.total_defense) return 0;
+    if (this->is_stunned != other_entity.is_stunned) return 0;
+    // inventory check
+    //if (this->inventory.swords.empty() != other_entity.inventory.swords.empty()) return 0;
+    if (this->inventory.swords.size() != other_entity.inventory.swords.size()) return 0;
+    if (this->inventory.armors.size() != other_entity.inventory.armors.size()) return 0;
+    for (auto sword : inventory.swords) {
+        for (auto other_sword : other_entity.inventory.swords) {
+            if (*sword != *other_sword) {
+                return 0;
+            }
+        }
+    }
+    for (auto armor : inventory.armors) {
+        for (auto other_armor : other_entity.inventory.armors) {
+            if (*armor != *other_armor) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+int Entity::operator!=(const Entity &other_entity) const {
+    return !(*this == other_entity);
+}

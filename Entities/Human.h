@@ -40,6 +40,8 @@ public:
     virtual void receive_damage(int damage);
 
     const Human &operator=(const Human &);
+    bool operator==(const Human &other_human) const;
+    bool operator!=(const Human &other_human) const;
 protected:
     equipped_items equipped;
 };
