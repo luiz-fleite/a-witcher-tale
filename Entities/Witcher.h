@@ -22,6 +22,8 @@ public:
     ~Witcher();
 
     virtual void attack(Entity &entity);
+
+    const Witcher &operator=(const Witcher &);
 private:
     const static int WITCHER_ATTACK_COST = 10;
     const static int MAX_WITCHER_DAMAGE = 10;

@@ -13,15 +13,15 @@
 using std::cout;
 
 int main(void) {
-    Human *h1 = new Human();
-    cout << *h1 << "\n";
+    Witcher *w1 = new Witcher();
+    cout << *w1 << "\n";
 
-    Human h2 = *h1;
-    cout << h2 << "\n";
+    Human w2 = *w1;
+    cout << w2 << "\n";
 
     // deep copy
-    delete h1;
-    cout << h2 << "\n";
+    delete w1;
+    cout << w2 << "\n";
 
     
 /*

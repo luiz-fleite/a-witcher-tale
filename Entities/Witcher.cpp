@@ -64,3 +64,12 @@ ostream &operator<< (ostream &out, const Witcher &witcher){
     out << static_cast<Human>(witcher);
     return out;
 }
+
+const Witcher &Witcher::operator=(const Witcher &other_witcher) {
+    if (this != &other_witcher) {
+        *static_cast< Human * >( this ) = static_cast< Human >( other_witcher );
+        // forma sugerida pela IA
+        // Human::operator=(other_witcher);
+    }
+    return *this;
+}
