@@ -5,8 +5,6 @@
 #include <string>
 
 #include "Entity.h"
-#include "../Items/Sword.h"
-#include "../Items/Armor.h"
 
 using std::ostream;
 using std::string;

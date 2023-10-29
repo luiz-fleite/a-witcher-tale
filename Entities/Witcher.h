@@ -4,7 +4,6 @@
 #include <string>
 
 #include "Human.h"
-#include "../Items/Sword.h"
 
 using std::string;
 

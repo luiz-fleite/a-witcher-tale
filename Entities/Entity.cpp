@@ -39,6 +39,7 @@ Entity::Entity(const Entity &other_entity) {
         Armor * new_armor = new Armor(*armor);
         this->inventory.armors.push_back(new_armor);
     }
+
 }
 
 Entity::~Entity() {
@@ -49,6 +50,7 @@ Entity::~Entity() {
     for (auto armor : inventory.armors) {
         delete armor;
     }
+    //delete date_of_birth;
 }
 
 void Entity::setName(string name) {
@@ -301,6 +303,9 @@ void Entity::print_info() const{
     cout << "Category: " << this->category << "\n";
     cout << "Level: " << this->level << "\n";
     cout << "Age: " << this->age << "\n";
+    cout << "Date of birth: ";
+    this->date_of_birth.print();
+    cout << "\n";
     cout << "Coins: " << this->coins << "\n";
     cout << "Health: " << this->health << "\n";
     cout << "Stamina: " << this->stamina << "\n";

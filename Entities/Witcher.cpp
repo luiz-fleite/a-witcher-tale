@@ -16,6 +16,8 @@ Witcher::Witcher() {
     level = 1;
     is_stunned = false;
 
+    date_of_birth = Date(1, 1, 1000 - age);
+
 }
 
 Witcher::Witcher(string name, int age, double coins, int health, int stamina, string category) {
@@ -28,6 +30,7 @@ Witcher::Witcher(string name, int age, double coins, int health, int stamina, st
     setLevel(1);
     is_stunned = false;
 
+    date_of_birth = Date(1, 1, 1000 - age);
 }
 
 

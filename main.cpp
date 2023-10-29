@@ -9,31 +9,14 @@
 #include "./Entities/Witcher.cpp"
 #include "./Items/Sword.cpp"
 #include "./Items/Armor.cpp"
+#include "./Utils/Date.cpp"
 
 using std::cout;
 
 int main(void) {
-    Witcher *w1 = new Witcher();
-    cout << *w1 << "\n";
+    Witcher w1 = Witcher();
+    cout << w1 << "\n";
 
-    Witcher w2 = *w1;
-    cout << w2 << "\n";
-
-    bool test1 = *w1 == w2;
-    cout << "test1:\n";
-    cout << test1 << "\n";
-
-    Sword s1;
-    w1->add_sword(s1);
-    bool test2 = *w1 == w2;  // defeituoso
-    cout << "test2:\n";
-    cout << test2 << "\n";
-
-    w1->equip_sword(0);
-    bool test3 = *w1 == w2;
-    cout << "test3:\n";
-    cout << test3 << "\n";
-    
 /*
     cout << "====Before first battle====\n";
     Witcher w1;

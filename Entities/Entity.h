@@ -7,6 +7,7 @@
 
 #include "../Items/Sword.h"
 #include "../Items/Armor.h"
+#include "../Utils/Date.h"
 
 using std::cout;
 using std::string;
@@ -46,6 +47,7 @@ public:
     void setLevel(int level);
     void setTotal_defense(int total_defense);
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
+    void setDate_of_birth(Date &date_of_birth);
 
     void add_sword(Sword &);
     void add_armor(Armor &);
@@ -86,6 +88,7 @@ protected:
 
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
+    Date date_of_birth;
 private:
     static int global_danger;
 };

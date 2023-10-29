@@ -22,6 +22,8 @@ Human::Human() {
 
     is_stunned = false;
 
+    date_of_birth = Date(1, 1, 1000 - age);
+
     update_total_defense();
 }
 
@@ -39,6 +41,8 @@ Human::Human(string name, int age, double coins, int health, int stamina, string
     equipped.armor = new Armor();
 
     is_stunned = false;
+
+    date_of_birth = Date(1, 1, 1000 - age);
 
     update_total_defense();
 }
