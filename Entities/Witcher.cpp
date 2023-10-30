@@ -40,6 +40,28 @@ Witcher::Witcher(const Witcher &other_witcher) : Human(other_witcher) {
 
 Witcher::~Witcher() {
     //cout << "Destroying Witcher...\n";
+    for_each(chest_swords.begin(), chest_swords.end(), [](pair<string, Sword*> pair) {
+        delete pair.second;
+    });
+}
+
+void Witcher::store_sword(Sword &sword) {
+    Sword * new_sword = new Sword(sword);
+    chest_swords[sword.getName()] = new_sword;
+}
+
+void Witcher::unstore_sword(string sword_name) {
+    chest_swords.erase(sword_name);
+}
+
+void Witcher::print_chest_swords() const {
+    for (auto const& x : chest_swords)
+    {
+        cout << x.first  // string (key)
+            << ':'
+            << *x.second // string's value 
+            << "\n";
+    }
 }
 
 void Witcher::attack(Entity &entity) {
@@ -71,8 +93,6 @@ ostream &operator<< (ostream &out, const Witcher &witcher){
 const Witcher &Witcher::operator=(const Witcher &other_witcher) {
     if (this != &other_witcher) {
         *static_cast< Human * >( this ) = static_cast< Human >( other_witcher );
-        // forma sugerida pela IA
-        // Human::operator=(other_witcher);
     }
     return *this;
 }

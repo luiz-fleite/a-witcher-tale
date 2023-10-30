@@ -11,74 +11,45 @@
 #include "./Items/Armor.cpp"
 #include "./Utils/Date.cpp"
 
-using std::cout;
+// carregamento de arquivo
+using std::cerr;
+using std::getline;
+#include <fstream>
+using std::fstream;
+using std::ifstream;
+#include <sstream>
+using std::istringstream;
 
 int main(void) {
     Witcher w1 = Witcher();
     cout << w1 << "\n";
 
-/*
-    cout << "====Before first battle====\n";
-    Witcher w1;
-    w1.print_info();
-    Sword s1;
-    w1.addSword(s1);
-    Sword s2("Silver Sword", 20);
-    w1.addSword(s2);
-    w1.print_swords();
+    ifstream inputFile("./Items/swords_chest.txt");
+    if (!inputFile.is_open()) {
+        cerr << "Error opening file." << '\n';
+        return 1; // Exit with an error code
+    }
 
-    cout << "\n";
+    string line;    
+    string variableName;
+    char equalsSign;
+    double value;
+    while (getline(inputFile, line)) 
+    {
+        istringstream iss(line);
+        if (iss >> variableName >> equalsSign >> value && equalsSign == '=') {
+            Sword * loaded_sword = new Sword(variableName, value);
+            w1.store_sword(*loaded_sword);
+            delete loaded_sword;
+        }
+        else {
+            cerr << "Error parsing line: " << line << '\n';
+        }
+    }
 
-    Witcher w2(w1);
-    w2.setName("Geralt");
+    inputFile.close();
 
-    cout << "\n";
+    w1.print_chest_swords();
 
-    Human h1;
-    h1.print_info();
-
-    cout << "\n";
-
-    Ghoul g1;
-    g1.print_info();
-
-    cout << "\n";
-    cout << "====First Battle:====\n";
-    // durante a batalha o primeiro aldeão é atacado pelo
-    // primeiro ghoul e o witcher tenta protege-lo
-
-    cout << "\n";
-
-    Battle b1(w1, g1);
-    b1.print_allies();
-    b1.print_enemies();
-    b1.beginBattle();
-
-    cout << "\n";
-    cout << "====After first battle:====\n";
-    // após a primeira batalha o witcher matou o ghoul e 
-    // o aldeão sobreviveu. O witcher ganha uma nova espada e 
-    // ocorre resize em seu vetor de espadas. A copia do witcher
-    // fica intacta. 
-    cout << "\n";
-
-    Sword s3("Steel Sword", 15);
-    w1.addSword(s3);
-    w1.print_info();
-    w1.print_swords();
-
-    cout << "\n";
-
-    g1.print_info();
-
-    cout << "\n";
-
-    h1.print_info();
-
-    cout << "\n";
-
-    w2.print_info();
-    w2.print_swords();
-*/
     return 0;
 }
