@@ -1,0 +1,152 @@
+@@startuml
+
+abstract class Entity {
+    # name : string
+    # age : int
+    # coins : double
+    # health : int
+    # stamina : int
+    # category : string
+    # level : int
+    # total_defense : int
+    # is_stunned : bool
+    # inventory : inventory_items
+    # date_of_birth : Date
+    # CATEGORIES const static: string[]
+    # MAX_NAME_SIZE const : int
+    + Entity()
+    + Entity(const Entity &)
+    + add_sword(Sword&) : void
+    + add_armor(Armor&) : void
+    + drop_sword(int, Sword*[]) : void
+    + drop_armor(int, Armor*[]) : void
+    + print_inventory() const : void
+    + virtual update_total_defense() : void
+    + {abstract} attack(Entity &) : void
+    + virtual receive_damage(int) : void
+    + print_info() const : void
+    + virtual talk() : void
+    + virtual walk() : void
+    + operator=(const Entity &) : Entity &
+    + operator==(const Entity &) : bool
+    + operator!=(const Entity &) : bool
+}
+
+class Human {
+    # equipped : equipped_items
+    + Human()
+    + Human(const Human &)
+    + equip_sword(int) : void
+    + equip_armor(int) : void
+    + drop_item(string) : void
+    + print_equipped() const : void
+    + virtual attack(Entity &) : void
+    + display_human() const : void
+    + operator=(const Human &) : Human &
+    + operator==(const Human &) : bool
+    + operator!=(const Human &) : bool
+}
+
+class Witcher {
+    - WITCHER_ATTACK_COST const : int
+    - MAX_WITCHER_DAMAGE const : int
+    - MIN_WITCHER_DAMAGE const : int
+    - chest_swords[] : Sword*
+    + Witcher()
+    + Witcher(const Witcher &)
+    + store_sword(Sword&) : void
+    + unstore_sword(string) : void
+    + print_chest_swords() const : void
+    + attack(Entity &) : void
+    + display_witcher() const : void
+    + operator=(const Witcher &) : Witcher &
+    + operator==(const Witcher &) : bool
+    + operator!=(const Witcher &) : bool
+}
+
+class Sword {
+    - name : string
+    - damage : int
+    - MAX_NAME_SIZE const static : int
+    + Sword()
+    + Sword(const Sword &)
+    + display_sword const : void
+    + operator=(const Sword &) : Sword &
+    + operator==(const Sword &) : bool
+    + operator!=(const Sword &) : bool
+}
+
+class Armor {
+    - name : string
+    - defense : int
+    - MAX_NAME_SIZE const static : int
+    + Armor()
+    + Armor(const Armor &)
+    + display_armor() const : void
+    + operator=(const Armor &) : Armor &
+    + operator==(const Armor &) : bool
+    + operator!=(const Armor &) : bool
+}
+
+class Ghoul {
+    - GHOUL_ATTACK_COST const static : int
+    - MAX_GHOUL_DAMAGE const static : int
+    - MIN_GHOUL_DAMAGE const static : int
+    - is_enraged : bool
+    + Ghoul()
+    + Ghoul(const Ghoul &)
+    + update_total_defense() : void
+    + attack(Entity &) : void
+    + receive_damage(int) : void
+    + talk() : void
+    + walk() : void
+    + display_ghoul() const : void
+    + operator=(const Ghoul &) : Ghoul &
+    + operator==(const Ghoul &) : bool
+    + operator!=(const Ghoul &) : bool
+}
+
+class Battle {
+    - MAX_ALLIES const static : int
+    - MAX_ENEMIES const static : int
+    - allies[] : Entity*
+    - enemies[] : Entity*
+    + Battle(Entity&, Entity&)
+    + print_allies() const : void
+    + print_enemies() const : void
+    + add_ally(Entity&) : void
+    + add_enemy(Entity&) : void
+    + check_allies() : bool
+    + check_enemies() : bool
+    + beginBattle() : void 
+}
+
+struct inventory_items {
+    swords[] : Sword*
+    armors[] : Armor*
+}
+
+struct equipped_items {
+    sword : Sword*
+    armor : Armor*
+}
+
+class Date {
+    - day : int
+    - month : int
+    - year : int
+    + Date(int, int, int)
+    + print_date() const : void
+}
+
+Entity <|-- Human
+Human <|-- Witcher
+Entity <|-- Ghoul
+Date --* Entity
+Entity *-- inventory_items
+Human *-- equipped_items
+inventory_items o-- Sword
+inventory_items o-- Armor
+Battle o-- Entity
+
+@@enduml
