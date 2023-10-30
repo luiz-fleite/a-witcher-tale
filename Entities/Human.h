@@ -10,7 +10,7 @@ using std::ostream;
 using std::string;
 
 struct equipped_items {
-    Sword* steel_sword; // steel_swordPtr ?
+    Sword* steel_sword; 
     Armor* armor;
 };
 

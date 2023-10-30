@@ -47,12 +47,6 @@ Human::Human(string name, int age, double coins, int health, int stamina, string
     update_total_defense();
 }
 
-Human::~Human() {
-    //cout << "Destroying Human...\n";
-    delete equipped.steel_sword;
-    delete equipped.armor;
-}
-
 Human::Human(const Human &other_human) : Entity(other_human) {
     //cout << "Copying Human...\n";
 
@@ -62,6 +56,12 @@ Human::Human(const Human &other_human) : Entity(other_human) {
     if (other_human.equipped.armor == 0) equipped.armor = 0;
     else equipped.armor = new Armor(*other_human.equipped.armor);
 
+}
+
+Human::~Human() {
+    //cout << "Destroying Human...\n";
+    delete equipped.steel_sword;
+    delete equipped.armor;
 }
 
 void Human::equip_sword(int sword_index) {

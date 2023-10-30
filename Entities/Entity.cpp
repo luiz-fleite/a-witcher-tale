@@ -210,7 +210,6 @@ void Entity::setTotal_defense(int total_defense) {
     this->total_defense = total_defense;
 }
 
-
 void Entity::add_sword(Sword &sword) {
     Sword * new_sword = new Sword(sword);
     inventory.swords.push_back(new_sword);
