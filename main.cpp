@@ -58,34 +58,39 @@ int main(void) {
     w1.print_chest_swords();
 
     // Ele sai de sua casa e entra em uma caverna
-    // misteriosa onde tem um ghoul
+    // misteriosa onde tem dois ghouls identicos
     vector <Sword*> cave_floor_swords;
     Ghoul *g1 = new Ghoul();
+    Ghoul *g2 = new Ghoul(*g1);
     cout << *g1 << "\n";
+    cout << *g2 << "\n";
     Sword * s1 = new Sword("Ancient Sword", 20);
     g1->add_sword(*s1);
     g1->print_inventory();
+    cout << "\n";
 
-    // O jogador entra em batalha com o ghoul
+    // O jogador entra em batalha com um ghoul
     w1.attack(*g1);
     //sleep(1);
     g1->attack(w1);
     //sleep(1);
 
-    // se o ghoul morre ele dropa a espada no chão
-    // e é deletado para liberar memória
+    // o ghoul morre ele dropa a espada no chão
+    // e o outro foge, ambos são deletados
+    // para liberar memória
     cout << "dropa espada\n";
     g1->drop_sword(0, cave_floor_swords);
     cout << "deleta ghoul\n";
     delete g1;
+    delete g2;
     cout << "ghoul deletado\n";
 
     // o jogador pega a espada do chão
-    cout << "endereço da espada: " << cave_floor_swords[0] << "\n";
-    cout << "espada: " << *cave_floor_swords[0] << "\n";
-    cout << "pega espada\n";
+    cout << "\nendereço da espada: " << cave_floor_swords[0] << "\n";
+    cout << "\nespada: " << *cave_floor_swords[0] << "\n";
+    cout << "\npega espada\n";
     w1.add_sword(*cave_floor_swords[0]);
-    cout << "espada pega\n";
+    cout << "\nespada pega\n";
     cout << w1 << "\n";
     w1.print_inventory();
 
