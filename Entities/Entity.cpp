@@ -44,13 +44,8 @@ Entity::Entity(const Entity &other_entity) {
 
 Entity::~Entity() {
     //cout << "Destroying Entity...\n";
-    for (auto sword : inventory.swords) {
-        delete sword;
-    }
-    for (auto armor : inventory.armors) {
-        delete armor;
-    }
-    //delete date_of_birth;
+    for_each(inventory.swords.begin(), inventory.swords.end(), [](Sword * sword) { delete sword; });
+    for_each(inventory.armors.begin(), inventory.armors.end(), [](Armor * armor) { delete armor; });
 }
 
 void Entity::setName(string name) {
@@ -374,4 +369,8 @@ int Entity::operator==(const Entity &other_entity) const {
 
 int Entity::operator!=(const Entity &other_entity) const {
     return !(*this == other_entity);
+}
+
+bool Entity::operator!() const {
+    return (this->health <= 0);
 }

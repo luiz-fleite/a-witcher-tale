@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 
 #include "../Items/Sword.h"
 #include "../Items/Armor.h"
@@ -12,6 +14,9 @@
 using std::cout;
 using std::string;
 using std::vector;
+using std::map;
+using std::pair;
+using std::for_each;
 
 struct inventory_items {
     vector<Sword*> swords;
@@ -71,6 +76,7 @@ public:
     const Entity &operator=(const Entity &);
     int operator==(const Entity &) const;
     int operator!=(const Entity &) const;
+    bool operator!() const;
 protected:
     string name;
     int age;
