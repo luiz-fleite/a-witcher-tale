@@ -56,10 +56,10 @@ public:
 
     void add_sword(Sword &);
     void add_armor(Armor &);
-    void drop_sword(int);
+    void drop_sword(int, vector<Sword*> &dropped_swords);
     void drop_armor(int);
     void print_inventory() const;
-    
+
     virtual void life_regen(int);
     virtual void stamina_regen(int);
     //virtual void level_up() = 0;

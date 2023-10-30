@@ -221,11 +221,12 @@ void Entity::add_armor(Armor &armor) {
     inventory.armors.push_back(new_armor);
 }
 
-void Entity::drop_sword(int index) {
+void Entity::drop_sword(int index, vector<Sword *> &dropped_swords) {
     if (index < 0 || index >= inventory.swords.size()) {
         cout << "Invalid index.\n";
         return;
     }
+    dropped_swords.push_back(inventory.swords[index]);
     inventory.swords.erase(inventory.swords.begin() + index);
 }
 
@@ -372,5 +373,5 @@ int Entity::operator!=(const Entity &other_entity) const {
 }
 
 bool Entity::operator!() const {
-    return (this->health <= 0);
+    return (this->health >= 0);
 }

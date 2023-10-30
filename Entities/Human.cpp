@@ -148,8 +148,6 @@ const Human &Human::operator=(const Human &other_human) {
 
 bool Human::operator==(const Human &other_human) const {
     if (!Entity::operator==(other_human)) return false;
-    if (this->equipped.steel_sword != other_human.equipped.steel_sword) return false;
-    if (this->equipped.armor != other_human.equipped.armor) return false;
     return true;
 }
 
