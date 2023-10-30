@@ -36,6 +36,8 @@ Ghoul::Ghoul(string name, int age, double coins, int health, int stamina, string
 
 Ghoul::~Ghoul() {
     //cout << "Destroying Ghoul...\n";
+    for_each(inventory.swords.begin(), inventory.swords.end(), [](Sword *s) { delete s; });
+    for_each(inventory.armors.begin(), inventory.armors.end(), [](Armor *a) { delete a; });
 }
 
 void Ghoul::setIs_enraged(bool is_enraged) {
@@ -72,7 +74,34 @@ void Ghoul::attack(Entity &entity) {
 void Ghoul::receive_damage(int damage) {
     Entity::receive_damage(damage);
     if (getHealth() < 10) {
-        setIs_enraged(true);
+        if (!is_enraged) {
+            setIs_enraged(true);
+        }
     }
     return;
+}
+
+ostream &operator<<(ostream &out, const Ghoul &ghoul) {
+    ghoul.print_info();
+    return out;
+}
+
+const Ghoul &Ghoul::operator=(const Ghoul &other_ghoul) {
+    if (this == &other_ghoul) {
+        return *this;
+    }
+    Entity::operator=(other_ghoul);
+    return *this;
+}
+
+int Ghoul::operator==(const Ghoul &other_ghoul) const {
+    return Entity::operator==(other_ghoul);
+}
+
+int Ghoul::operator!=(const Ghoul &other_ghoul) const {
+    return Entity::operator!=(other_ghoul);
+}
+
+bool Ghoul::operator!() const {
+    return (this->getHealth() <= 0);
 }

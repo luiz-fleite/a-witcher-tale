@@ -8,6 +8,7 @@
 using std::string;
 
 class Ghoul: public Entity {
+    friend ostream &operator<<(ostream &out, const Ghoul &ghoul);
 public:
     Ghoul();
     Ghoul(string name, 
@@ -29,6 +30,11 @@ public:
     
     inline void talk() { cout << name << "grawrawrawrawr\n"; }
     inline void walk() { cout << name << "is crawling.\n"; }
+
+    const Ghoul &operator=(const Ghoul &);
+    int operator==(const Ghoul &) const;
+    int operator!=(const Ghoul &) const;
+    bool operator!() const;
 private:
     bool is_enraged = false;
     const static int GHOUL_ATTACK_COST = 10;
