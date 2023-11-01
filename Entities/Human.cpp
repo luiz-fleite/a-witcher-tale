@@ -15,9 +15,8 @@ Human::Human() {
     category = CATEGORIES[0];
     level = 1;
     total_defense = 0;
-    //equipped.steel_sword = new Sword();
+
     equipped.steel_sword = 0;
-    //equipped.armor = new Armor();
     equipped.armor = 0;
 
     is_stunned = false;

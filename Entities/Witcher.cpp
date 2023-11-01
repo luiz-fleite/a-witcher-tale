@@ -34,7 +34,7 @@ Witcher::Witcher(string name, int age, double coins, int health, int stamina, st
 }
 
 
-Witcher::Witcher(const Witcher &other_witcher) : Human(other_witcher) {
+Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_witcher)) {
     //cout << "Copying Witcher...\n";
 }
 
