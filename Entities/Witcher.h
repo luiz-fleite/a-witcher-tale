@@ -14,8 +14,8 @@ public:
     Witcher(string name,
         int age=200,
         double coins=200, 
-        int health=200, 
-        int stamina=200,
+        int max_health=150, 
+        int max_stamina=150,
         string category="E");
     Witcher(const Witcher &other_witcher);
     ~Witcher();

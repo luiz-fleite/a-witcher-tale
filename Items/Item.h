@@ -19,7 +19,7 @@ public:
     void setName(string name);
     void setDescription(string description);
 
-    void print_info() const;
+    virtual void print_info() const;
 
     const Item &operator=(const Item &);
     int operator==(const Item &other_Item) const;

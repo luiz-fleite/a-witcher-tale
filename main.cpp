@@ -30,9 +30,9 @@ int main(void) {
     Sword s1;
     Sword s2 = Sword("Silver Sword", "Good against monsters", 10);
     Armor a1 = Armor();
-    w1.add_sword(s1);
-    w1.add_sword(s2);
-    w1.add_armor(a1);
+    w1.add_item(s1);
+    w1.add_item(s2);
+    w1.add_item(a1);
     w1.print_inventory();
     w1.equip_sword(0);
     w1.equip_armor(0);

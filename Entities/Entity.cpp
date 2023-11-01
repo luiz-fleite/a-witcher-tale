@@ -12,7 +12,9 @@ Entity::Entity() {
     name = "Entity";
     age = 0;
     coins = 0;
+    max_health = 0;
     health = 0;
+    max_stamina = 0;
     stamina = 0;
     category = "_";
     level = 0;
@@ -25,7 +27,9 @@ Entity::Entity(const Entity &other_entity) {
     this->name = other_entity.name;
     this->age = other_entity.age;
     this->coins = other_entity.coins;
+    this->max_health = other_entity.max_health;
     this->health = other_entity.health;
+    this->max_stamina = other_entity.max_stamina;
     this->stamina = other_entity.stamina;
     this->category = other_entity.category;
     this->level = other_entity.level;
@@ -210,14 +214,15 @@ void Entity::setTotal_defense(int total_defense) {
     this->total_defense = total_defense;
 }
 
-void Entity::add_sword(Sword &sword) {
-    Sword * new_sword = new Sword(sword);
-    inventory.swords.push_back(new_sword);
-}
-
-void Entity::add_armor(Armor &armor) {
-    Armor * new_armor = new Armor(armor);
-    inventory.armors.push_back(new_armor);
+void Entity::add_item(Item &item) {
+    if (Sword * sword = dynamic_cast<Sword *>(&item)) {
+        Sword * new_sword = new Sword(*sword);
+        inventory.swords.push_back(new_sword);
+    }
+    if (Armor * armor = dynamic_cast<Armor *>(&item)) {
+        Armor * new_armor = new Armor(*armor);
+        inventory.armors.push_back(new_armor);
+    }
 }
 
 void Entity::drop_sword(int index, vector<Sword *> &dropped_swords) {
@@ -302,8 +307,8 @@ void Entity::print_info() const{
     this->date_of_birth.print();
     cout << "\n";
     cout << "Coins: " << this->coins << "\n";
-    cout << "Health: " << this->health << "\n";
-    cout << "Stamina: " << this->stamina << "\n";
+    cout << "Health: " << this->health << "/" << this->max_health << "\n";
+    cout << "Stamina: " << this->stamina << "/" << this->max_stamina << "\n";
     cout << "Total defense: " << this->total_defense << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << this->is_stunned << "\n";
 }
@@ -313,7 +318,9 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
         this->name = assigned_entity.name;
         this->age = assigned_entity.age;
         this->coins = assigned_entity.coins;
+        this->max_health = assigned_entity.max_health;
         this->health = assigned_entity.health;
+        this->max_stamina = assigned_entity.max_stamina;
         this->stamina = assigned_entity.stamina;
         this->category = assigned_entity.category;
         this->level = assigned_entity.level;
@@ -340,8 +347,8 @@ int Entity::operator==(const Entity &other_entity) const {
     if (this->name != other_entity.name) return 0;
     if (this->age != other_entity.age) return 0;
     if (this->coins != other_entity.coins) return 0;
-    if (this->health != other_entity.health) return 0;
-    if (this->stamina != other_entity.stamina) return 0;
+    if (this->max_health != other_entity.max_health) return 0;
+    if (this->max_stamina != other_entity.max_stamina) return 0;
     if (this->category != other_entity.category) return 0;
     if (this->level != other_entity.level) return 0;
     if (this->total_defense != other_entity.total_defense) return 0;

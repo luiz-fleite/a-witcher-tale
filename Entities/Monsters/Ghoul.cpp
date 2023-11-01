@@ -16,19 +16,23 @@ Ghoul::Ghoul() {
     name = "Ghoul";
     age = 100;
     coins = 15;
-    health = 50;
-    stamina = 50;
+    max_health = 50;
+    health = max_health;
+    max_stamina = 50;
+    stamina = max_stamina;
     category = CATEGORIES[0];
     level = 1;
     bool is_stunned = false;
 }
 
-Ghoul::Ghoul(string name, int age, double coins, int health, int stamina, string category) {
+Ghoul::Ghoul(string name, int age, double coins, int max_health, int max_stamina, string category) {
     setName(name);
     setAge(age);
     setCoins(coins);
-    setHealth(health);
-    setStamina(stamina);
+    setMax_health(max_health);
+    life_regen(max_health);
+    setMax_stamina(max_stamina);
+    stamina_regen(max_stamina);
     setCategory(category);
     setLevel(1);
     is_stunned = false;
@@ -73,7 +77,7 @@ void Ghoul::attack(Entity &entity) {
 
 void Ghoul::receive_damage(int damage) {
     Entity::receive_damage(damage);
-    if (getHealth() < 10) {
+    if (getHealth() < getMax_health() * 0.1) {
         if (!is_enraged) {
             setIs_enraged(true);
         }

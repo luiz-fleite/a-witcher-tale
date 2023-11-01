@@ -10,8 +10,10 @@ Witcher::Witcher() {
     name = "Witcher";
     age = 200;
     coins = 150;
-    health = 150;
-    stamina = 150;
+    max_health = 100;
+    health = max_health;
+    max_stamina = 100;
+    stamina = max_stamina;
     category = CATEGORIES[0];
     level = 1;
     is_stunned = false;
@@ -20,12 +22,14 @@ Witcher::Witcher() {
 
 }
 
-Witcher::Witcher(string name, int age, double coins, int health, int stamina, string category) {
+Witcher::Witcher(string name, int age, double coins, int max_health, int max_stamina, string category) {
     setName(name);
     setAge(age);
     setCoins(coins);
-    setHealth(health);
-    setStamina(stamina);
+    setMax_health(max_health);
+    life_regen(max_health);
+    setMax_stamina(max_stamina);
+    stamina_regen(max_stamina);
     setCategory(category);
     setLevel(1);
     is_stunned = false;

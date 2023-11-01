@@ -14,8 +14,8 @@ public:
     Ghoul(string name, 
         int age=200, 
         double coins=30, 
-        int health=75, 
-        int stamina=75, 
+        int max_health=75, 
+        int max_stamina=75, 
         string category="E");
     Ghoul(const Ghoul &other_ghoul): Entity(other_ghoul) { };
     ~Ghoul();

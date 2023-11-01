@@ -54,8 +54,7 @@ public:
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
     void setDate_of_birth(Date &date_of_birth);
 
-    void add_sword(Sword &);
-    void add_armor(Armor &);
+    void add_item(Item &);
     void drop_sword(int, vector<Sword*> &dropped_swords);
     void drop_armor(int);
     void print_inventory() const;

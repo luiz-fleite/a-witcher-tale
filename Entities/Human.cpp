@@ -10,8 +10,10 @@ Human::Human() {
     name = "Peasant";
     age = 30;
     coins = 50.00;
-    health = 50;
-    stamina = 50;
+    max_health = 25;
+    health = max_health;
+    max_stamina = 25;
+    stamina = max_stamina;
     category = CATEGORIES[0];
     level = 1;
     total_defense = 0;
@@ -26,12 +28,14 @@ Human::Human() {
     update_total_defense();
 }
 
-Human::Human(string name, int age, double coins, int health, int stamina, string category) {
+Human::Human(string name, int age, double coins, int max_health, int max_stamina, string category) {
     setName(name);
     setAge(age);
     setCoins(coins);
-    setHealth(health);
-    setStamina(stamina);
+    setMax_health(max_health);
+    life_regen(max_health);
+    setMax_stamina(max_stamina);
+    stamina_regen(max_stamina);
     setCategory(category);
     setLevel(1);
     setTotal_defense(0);
@@ -69,7 +73,7 @@ void Human::equip_sword(int sword_index) {
         return;
     }
     if (equipped.steel_sword != 0) {
-        add_sword(*equipped.steel_sword);
+        add_item(*equipped.steel_sword);
         cout << "Unequipped " << *equipped.steel_sword << ".\n";
     }
     equipped.steel_sword = inventory.swords[sword_index];
@@ -83,7 +87,7 @@ void Human::equip_armor(int armor_index) {
         return;
     }
     if (equipped.armor != 0) {
-        add_armor(*equipped.armor);
+        add_item(*equipped.armor);
         cout << "Unequipped " << *equipped.armor << ".\n";
     }
     equipped.armor = inventory.armors[armor_index];
