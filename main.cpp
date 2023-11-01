@@ -7,6 +7,7 @@
 #include "./Entities/Monsters/Ghoul.cpp"
 #include "./Events/Battle.cpp"
 #include "./Entities/Witcher.cpp"
+#include "./Items/Item.cpp"
 #include "./Items/Sword.cpp"
 #include "./Items/Armor.cpp"
 #include "./Utils/Date.cpp"
@@ -21,15 +22,25 @@ using std::ifstream;
 using std::istringstream;
 
 int main(void) {
+
     // O jogador começa em sua casa, em Kaer Morhen
     // E tem acesso ao seu baú pessoal de espadas
     Witcher w1 = Witcher("Geralt");
     cout << w1;
-    Sword * s2 = new Sword("Silver Sword", 10);
-    w1.add_sword(*s2);
+    Sword s1;
+    Sword s2 = Sword("Silver Sword", "Good against monsters", 10);
+    Armor a1 = Armor();
+    w1.add_sword(s1);
+    w1.add_sword(s2);
+    w1.add_armor(a1);
+    w1.print_inventory();
     w1.equip_sword(0);
+    w1.equip_armor(0);
     w1.print_equipped_items();
+    cout << "\n";
 
+
+/*
     ifstream inputFile("./Items/swords_chest.txt");
     if (!inputFile.is_open()) {
         cerr << "Error opening file." << '\n';
@@ -56,54 +67,9 @@ int main(void) {
     inputFile.close();
 
     w1.print_chest_swords();
+*/
 
-    // Ele sai de sua casa e entra em uma caverna
-    // misteriosa onde tem dois ghouls identicos
-    vector <Sword*> cave_floor_swords;
-    Ghoul *g1 = new Ghoul();
-    Ghoul *g2 = new Ghoul(*g1);
-    cout << *g1 << "\n";
-    cout << *g2 << "\n";
-    Sword * s1 = new Sword("Ancient Sword", 20);
-    g1->add_sword(*s1);
-    g1->print_inventory();
-    cout << "\n";
-
-    // O jogador entra em batalha com um ghoul
-    w1.attack(*g1);
-    //sleep(1);
-    g1->attack(w1);
-    //sleep(1);
-
-    // o ghoul morre ele dropa a espada no chão
-    // e o outro foge, ambos são deletados
-    // para liberar memória
-    cout << "dropa espada\n";
-    g1->drop_sword(0, cave_floor_swords);
-    cout << "deleta ghoul\n";
-    delete g1;
-    delete g2;
-    cout << "ghoul deletado\n";
-
-    // o jogador pega a espada do chão
-    cout << "\nendereço da espada: " << cave_floor_swords[0] << "\n";
-    cout << "\nespada: " << *cave_floor_swords[0] << "\n";
-    cout << "\npega espada\n";
-    w1.add_sword(*cave_floor_swords[0]);
-    cout << "\nespada pega\n";
-    cout << w1 << "\n";
-    w1.print_inventory();
-
-    // Testes de operadores
-    Witcher w2 = Witcher("Vesemir");
-    cout << "Testes de operadores\n";
-    cout << "Witcher1 == Witcher1: " << (w1 == w1) << "\n";
-    cout << "Witcher1 != Witcher1: " << (w1 != w1) << "\n";
-    cout << "Witcher1 == Witcher2: " << (w1 == w2) << "\n";
-    cout << "Witcher1 != Witcher2: " << (w1 != w2) << "\n";
-    cout << "Witcher1 = Witcher2\n";
-    w1 = w2;
-    cout << "Witcher1 == Witcher2: " << (w1 == w2) << "\n";
+    
 
     return 0;
 }

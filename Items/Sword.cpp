@@ -8,37 +8,22 @@ using std::cout;
 Sword::Sword() {
     //cout << "Creating a new Sword...\n";
     name = "Common Sword";
+    description = "A common sword. Very Used by the common folk.";
     damage = 10;
 }
 
-Sword::Sword(string name, int damage) {
+Sword::Sword(string name, string description, int damage) {
     setName(name);
+    setDescription(description);
     setDamage(damage);
 }
 
-Sword::Sword(const Sword &other_sword) {
-    this->name = other_sword.name;
+Sword::Sword(const Sword &other_sword) : Item(static_cast<Item>(other_sword)){
     this->damage = other_sword.damage;
 }
 
 Sword::~Sword() {
     //cout << "Destroying Sword...\n";
-}
-
-void Sword::setName(string name) {
-    name.erase(0, name.find_first_not_of(' '));
-    name.erase(name.find_last_not_of(' ') + 1);
-    if (name == "") {
-        cout << "Name cannot be empty.\n";
-        this->name = "Empty_Name";
-        return;
-    }
-    if (name.length() > MAX_NAME_SIZE) {
-        cout << "Max name size is " << MAX_NAME_SIZE << " characters. Name shortened.\n";
-        this->name = name.substr(0, MAX_NAME_SIZE);
-        return;
-    }
-    this->name = name;
 }
 
 void Sword::setDamage(int damage) {
@@ -52,17 +37,18 @@ void Sword::setDamage(int damage) {
 
 ostream &operator<< (ostream &out, const Sword &sword){
     out << sword.name << " (+" << sword.damage << " damage)";
+    out << "\n\"" << sword.description << "\"";
     return out;
 }
 
 const Sword &Sword::operator=(const Sword &other_sword) {
-    this->name = other_sword.name;
+    static_cast<Item>(*this) = static_cast<Item>(other_sword);
     this->damage = other_sword.damage;
     return *this;
 }
 
 int Sword::operator==(const Sword &other_sword) const {
-    if (this->name != other_sword.name) return 0;
+    static_cast<Item>(*this) == static_cast<Item>(other_sword);
     if (this->damage != other_sword.damage) return 0;
     return 1;
 }

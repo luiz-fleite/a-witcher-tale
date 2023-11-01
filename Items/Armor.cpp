@@ -8,37 +8,22 @@ using std::cout;
 Armor::Armor() {
     //cout << "Creating a new Armor...\n";
     name = "Common Armor";
+    description = "A common armor. Very used and not very protective.";
     defense = 3;
 }
 
-Armor::Armor(string name, int defense) {
+Armor::Armor(string name, string description, int defense) {
     setName(name);
+    setDescription(description);
     setDefense(defense);
 }
 
-Armor::Armor(const Armor &other_Armor) {
-    this->name = other_Armor.name;
+Armor::Armor(const Armor &other_Armor) : Item(static_cast<Item>(other_Armor)) {
     this->defense = other_Armor.defense;
 }
 
 Armor::~Armor() {
     //cout << "Destroying Armor...\n";
-}
-
-void Armor::setName(string name) {
-    name.erase(0, name.find_first_not_of(' '));
-    name.erase(name.find_last_not_of(' ') + 1);
-    if (name == "") {
-        cout << "Name cannot be empty.\n";
-        this->name = "Empty_Name";
-        return;
-    }
-    if (name.length() > MAX_NAME_SIZE) {
-        cout << "Max name size is " << MAX_NAME_SIZE << " characters. Name shortened.\n";
-        this->name = name.substr(0, MAX_NAME_SIZE);
-        return;
-    }
-    this->name = name;
 }
 
 void Armor::setDefense(int defense) {
@@ -52,17 +37,18 @@ void Armor::setDefense(int defense) {
 
 ostream &operator<< (ostream &out, const Armor &Armor){
     out << Armor.name << " (+" << Armor.defense << " defense)";
+    out << "\n\"" << Armor.description << "\"";
     return out;
 }
 
 const Armor &Armor::operator=(const Armor &other_Armor) {
-    this->name = other_Armor.name;
+    static_cast<Item &>(*this) = static_cast<const Item &>(other_Armor);
     this->defense = other_Armor.defense;
     return *this;
 }
 
 int Armor::operator==(const Armor &other_Armor) const {
-    if (this->name != other_Armor.name) return 0;
+    static_cast<const Item &>(*this) == static_cast<const Item &>(other_Armor);
     if (this->defense != other_Armor.defense) return 0;
     return 1;
 }
