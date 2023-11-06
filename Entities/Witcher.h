@@ -20,9 +20,9 @@ public:
     Witcher(const Witcher &other_witcher);
     ~Witcher();
 
-    void store_sword(Sword &sword);
-    void unstore_sword(string sword_name);
-    void print_chest_swords() const;
+    void store_item(Item &item);
+    void unstore_item(string item_name);
+    void print_personal_chest() const;
 
     virtual void attack(Entity &entity);
 
@@ -30,11 +30,11 @@ public:
     bool operator==(const Witcher &other_witcher) const;
     bool operator!=(const Witcher &other_witcher) const;
 private:
-    map<string, Sword*> chest_swords;
+    map<string, Item*> personal_chest;
     const static int WITCHER_ATTACK_COST = 10;
     const static int MAX_WITCHER_DAMAGE = 10;
     const static int MIN_WITCHER_DAMAGE = 7;
-    static int player_level;
+    //static int player_level;
 };
 
 #endif // WITCHER_H

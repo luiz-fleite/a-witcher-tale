@@ -70,7 +70,7 @@ public:
     virtual void talk();
     virtual void walk();
 
-    void update_global_level();
+    //void update_global_level();
     
     const Entity &operator=(const Entity &);
     int operator==(const Entity &) const;
@@ -86,6 +86,8 @@ protected:
     int stamina;
     string category;
     int level;
+    //int next_level_xp;
+    //int xp;
     int total_defense;
     bool is_stunned = false;
 
@@ -95,7 +97,7 @@ protected:
     const static int MAX_NAME_SIZE = 20;
     Date date_of_birth;
 private:
-    static int global_danger;
+    //static int global_danger;
 };
 
 inline void Entity::talk() { cout << name << " says: \"Hello!\"\n"; }

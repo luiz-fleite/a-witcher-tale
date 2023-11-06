@@ -44,27 +44,36 @@ Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_
 
 Witcher::~Witcher() {
     //cout << "Destroying Witcher...\n";
-    for_each(chest_swords.begin(), chest_swords.end(), [](pair<string, Sword*> pair) {
+    for_each(personal_chest.begin(), personal_chest.end(), [](pair<string, Item*> pair) {
         delete pair.second;
     });
 }
 
-void Witcher::store_sword(Sword &sword) {
-    Sword * new_sword = new Sword(sword);
-    chest_swords[sword.getName()] = new_sword;
+void Witcher::store_item(Item &item) {
+    if (Sword * sword = dynamic_cast<Sword *>(&item)) {
+        Sword * new_sword = new Sword(*sword);
+        personal_chest[new_sword->getName()] = new_sword;
+    }
+    else if (Armor * armor = dynamic_cast<Armor *>(&item)) {
+        Armor * new_armor = new Armor(*armor);
+        personal_chest[new_armor->getName()] = new_armor;
+    }
+    else {
+        cout << "Item not stored.\n";
+    }
+    
 }
 
-void Witcher::unstore_sword(string sword_name) {
-    chest_swords.erase(sword_name);
+void Witcher::unstore_item(string item_name) {
+    personal_chest.erase(item_name);
 }
 
-void Witcher::print_chest_swords() const {
-    for (auto const& x : chest_swords)
+void Witcher::print_personal_chest() const {
+    for (auto const& x : personal_chest)
     {
-        cout << x.first  // string (key)
-            << ':'
-            << *x.second // string's value 
-            << "\n";
+        cout << x.first << ':'; // string (key)
+        x.second->print_info(); // string's value 
+        cout << "\n";
     }
 }
 
