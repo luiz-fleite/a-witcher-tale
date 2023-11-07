@@ -11,6 +11,7 @@
 #include "./Items/Sword.cpp"
 #include "./Items/Armor.cpp"
 #include "./Utils/Date.cpp"
+#include "./Utils/load_save.h"
 
 // carregamento de arquivo
 using std::cerr;
@@ -23,14 +24,15 @@ using std::istringstream;
 
 int main(void) {
 
-    // O jogador começa em sua casa, em Kaer Morhen
-    // E tem acesso ao seu baú pessoal de itens
     Witcher w1 = Witcher("Geralt");
     cout << w1;
     
-    
     cout << "\n";
 
+    
+    
+
+/*
     ifstream inputFile("./Items/swords_chest.txt");
     if (!inputFile.is_open()) {
         cerr << "Error opening file." << '\n';
@@ -57,7 +59,7 @@ int main(void) {
     inputFile.close();
 
     w1.print_personal_chest();
-
+*/
     
 
     return 0;
