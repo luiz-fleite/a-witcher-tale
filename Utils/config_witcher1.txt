@@ -1,0 +1,11 @@
+Witcher = 1
+age = 200
+category = F
+coins = 150.000000
+health = 100
+level = 1
+max_health = 100
+max_stamina = 100
+name = Witcher
+stamina = 100
+total_defense = 0
