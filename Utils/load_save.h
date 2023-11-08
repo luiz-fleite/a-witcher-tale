@@ -18,8 +18,6 @@ using std::istringstream;
 #include <map>
 using std::map;
 
-using std::to_string;
-
 bool load_witcher( map<string, string>& atributes, string name_file ) {
 
     // Open the file for reading
@@ -78,6 +76,9 @@ bool load_witcher( map<string, string>& atributes, string name_file ) {
             cerr << "Error parsing line: (incorrect separator) " << line << '\n';
             return false;
         }
+
+        if (!getline(iss, value)) 
+            cerr << "Error parsing line: (unknown)" << line << '\n';
 
         // Remove leading and trailing whitespaces from the value
         value = value.substr(value.find_first_not_of(" \t"));
