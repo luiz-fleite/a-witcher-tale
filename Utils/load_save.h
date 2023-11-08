@@ -18,9 +18,11 @@ using std::istringstream;
 #include <map>
 using std::map;
 
+using std::to_string;
 
-bool load_witcher( map<string, string>& atributes, string name_file )
-{
+bool load_witcher( map<string, string>& atributes, string name_file ) {
+
+    // Open the file for reading
     ifstream input_file(name_file);
     if (!input_file.is_open()) {
         cerr << "Error opening file." << '\n';
@@ -43,17 +45,17 @@ bool load_witcher( map<string, string>& atributes, string name_file )
     istringstream iss(line);
     // Check if it has the number of specifiers I want
     if (!(iss >> atribute_type >> atribute_name >> equal_sign >> value)) {
-        cerr << "Error parsing line: " << line << '\n';
+        cerr << "Error parsing line: (unexpected arguments number)" << line << '\n';
         return false;
     }
     // Check if the specifiers are the ones I want
     if (!(atribute_type == "*" && atribute_name == "Witcher" && equal_sign == '=')) {
-        cerr << "Error parsing line: " << line << '\n';
+        cerr << "Error parsing line: (incorrect separators)" << line << '\n';
         return false;
     }
     // Check if the value is valid on my convention
     if (!(value == "1" || value == "0")) {
-        cerr << "Error parsing line: " << line << '\n';
+        cerr << "Error parsing line: (expected \"0\" or \"1\")" << line << '\n';
         return false;
     }
     // Finally checks if a Witcher was already saved before:
@@ -64,21 +66,17 @@ bool load_witcher( map<string, string>& atributes, string name_file )
     // If a Witcher was saved before, then load it:
     while (getline(input_file, line)) 
     {
+        // cout << "Parsing line: " << line << "\n";
         // Do the checks above but for every line
         // in a generic way
         istringstream iss(line);
         if (!(iss >> atribute_type >> atribute_name >> equal_sign >> value)) {
-        cerr << "Error parsing line: " << line << '\n';
+        cerr << "Error parsing line: (unexpected arguments number) " << line << '\n';
         return false;
         }
         
         if (!(equal_sign == '=')) {
-            cerr << "Error parsing line: " << line << '\n';
-            return false;
-        }
-
-        if (!(getline(iss, value))) {
-            cerr << "Error parsing line: " << line << '\n';
+            cerr << "Error parsing line: (incorrect separator) " << line << '\n';
             return false;
         }
 
@@ -89,19 +87,19 @@ bool load_witcher( map<string, string>& atributes, string name_file )
         // Checking if value corresponds to its own type
         if (atribute_type == "int") {
             if (!stoi(value)) {
-                cerr << "Error parsing line: " << line << '\n';
+                cerr << "Error parsing line: (expected \"int\")" << line << '\n';
                 return false;
             }
         }
         else if (atribute_type == "double") {
             if (!stod(value)) {
-                cerr << "Error parsing line: " << line << '\n';
+                cerr << "Error parsing line: (expected \"double\")" << line << '\n';
                 return false;
             }
         }
         else if (atribute_type == "string") {
             if (value.empty()) {
-                cerr << "Error parsing line: " << line << '\n';
+                cerr << "Error parsing line: (expected \"string\")" << line << '\n';
                 return false;
             }
         }
@@ -109,18 +107,58 @@ bool load_witcher( map<string, string>& atributes, string name_file )
         // putting values inside the map
         atributes[atribute_name] = value;
 
-        input_file.close();
-
-        if (atributes.empty()) {
-            cerr << "No variables found.\n";
-            return false;
-        }
-
-        return true;
-
     }
 
+    input_file.close();
+
+    if (atributes.empty()) {
+        cerr << "No variables found.\n";
+        return false;
+    }
+
+    return true;
 }
+
+bool save_witcher( Witcher &witcher, map<string, string> &atributes, string name_file )
+{
+    // First update the atributes map
+    atributes["name"] = witcher.getName();
+    atributes["age"] = to_string(witcher.getAge());
+    atributes["coins"] = to_string(witcher.getCoins());
+    atributes["max_health"] = to_string(witcher.getMax_health());
+    atributes["health"] = to_string(witcher.getHealth());
+    atributes["max_stamina"] = to_string(witcher.getMax_stamina());
+    atributes["stamina"] = to_string(witcher.getStamina());
+    atributes["category"] = witcher.getCategory();
+    atributes["level"] = to_string(witcher.getLevel());
+    atributes["total_defense"] = to_string(witcher.getTotal_defense());
+    
+    // Open the file for writing
+    ofstream output_file(name_file, std::ios::out | std::ios::trunc);
+    if (!output_file.is_open()) {
+        cerr << "Erro ao abrir aquivo para escrita!" << '\n';
+        return false; //
+    }
+    // First writes that there is a witcher saved
+    output_file << "* Witcher = 1\n";
+    // Then writes all the atributes according to their type
+    for (const auto& pair : atributes) {
+        cout << pair.first << " = " << pair.second << '\n';
+        if (stoi(pair.second)) {
+            output_file << "int " << pair.first << " = " << pair.second << '\n';
+        }
+        else if (stod(pair.second)) {
+            output_file << "double " << pair.first << " = " << pair.second << '\n';
+        }
+        else {
+            output_file << "string " << pair.first << " = " << pair.second << '\n';
+        }
+    }
+    output_file.close();
+    cout << "Witcher " << atributes["name"] << " has been saved.\n";
+    return true;
+}
+
 /*
 bool loadConfig( map<string, double>& variables, string nameFile )
 {
