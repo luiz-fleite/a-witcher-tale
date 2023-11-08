@@ -30,7 +30,6 @@ bool load_witcher( map<string, string>& atributes, string name_file ) {
     }
 
     string line;
-    string atribute_type;
     string atribute_name;
     char equal_sign;
     string value;
@@ -44,12 +43,12 @@ bool load_witcher( map<string, string>& atributes, string name_file ) {
     // Then put it in a istringstream to manipulate it
     istringstream iss(line);
     // Check if it has the number of specifiers I want
-    if (!(iss >> atribute_type >> atribute_name >> equal_sign >> value)) {
+    if (!(iss >> atribute_name >> equal_sign >> value)) {
         cerr << "Error parsing line: (unexpected arguments number)" << line << '\n';
         return false;
     }
     // Check if the specifiers are the ones I want
-    if (!(atribute_type == "*" && atribute_name == "Witcher" && equal_sign == '=')) {
+    if (!(atribute_name == "Witcher" && equal_sign == '=')) {
         cerr << "Error parsing line: (incorrect separators)" << line << '\n';
         return false;
     }
@@ -70,7 +69,7 @@ bool load_witcher( map<string, string>& atributes, string name_file ) {
         // Do the checks above but for every line
         // in a generic way
         istringstream iss(line);
-        if (!(iss >> atribute_type >> atribute_name >> equal_sign >> value)) {
+        if (!(iss >> atribute_name >> equal_sign >> value)) {
         cerr << "Error parsing line: (unexpected arguments number) " << line << '\n';
         return false;
         }
@@ -83,26 +82,6 @@ bool load_witcher( map<string, string>& atributes, string name_file ) {
         // Remove leading and trailing whitespaces from the value
         value = value.substr(value.find_first_not_of(" \t"));
         value = value.substr(0, value.find_last_not_of(" \t") + 1);
-
-        // Checking if value corresponds to its own type
-        if (atribute_type == "int") {
-            if (!stoi(value)) {
-                cerr << "Error parsing line: (expected \"int\")" << line << '\n';
-                return false;
-            }
-        }
-        else if (atribute_type == "double") {
-            if (!stod(value)) {
-                cerr << "Error parsing line: (expected \"double\")" << line << '\n';
-                return false;
-            }
-        }
-        else if (atribute_type == "string") {
-            if (value.empty()) {
-                cerr << "Error parsing line: (expected \"string\")" << line << '\n';
-                return false;
-            }
-        }
         
         // putting values inside the map
         atributes[atribute_name] = value;
@@ -140,19 +119,11 @@ bool save_witcher( Witcher &witcher, map<string, string> &atributes, string name
         return false; //
     }
     // First writes that there is a witcher saved
-    output_file << "* Witcher = 1\n";
+    output_file << "Witcher = 1\n";
     // Then writes all the atributes according to their type
     for (const auto& pair : atributes) {
         cout << pair.first << " = " << pair.second << '\n';
-        if (stoi(pair.second)) {
-            output_file << "int " << pair.first << " = " << pair.second << '\n';
-        }
-        else if (stod(pair.second)) {
-            output_file << "double " << pair.first << " = " << pair.second << '\n';
-        }
-        else {
-            output_file << "string " << pair.first << " = " << pair.second << '\n';
-        }
+        output_file << pair.first << " = " << pair.second << '\n';
     }
     output_file.close();
     cout << "Witcher " << atributes["name"] << " has been saved.\n";
