@@ -1,5 +1,5 @@
 Witcher = 1
-name = Max Neuralink
+name = Max_Neuralink
 age = 20
 coins = 30
 max_health = 10

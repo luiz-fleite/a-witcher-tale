@@ -6,6 +6,7 @@ using std::cout;
 #include <string>
 using std::string;
 using std::getline;
+using std::to_string;
 
 #include <fstream>
 using std::fstream;
@@ -18,12 +19,14 @@ using std::istringstream;
 #include <map>
 using std::map;
 
-bool load_witcher( map<string, string>& atributes, string name_file ) {
+bool load_witcher( Witcher &loaded_witcher, string name_file ) {
+    // First creates a buffer map to store the atributes of wicther
+    map<string, string> atributes_buffer;
 
     // Open the file for reading
     ifstream input_file(name_file);
     if (!input_file.is_open()) {
-        cerr << "Error opening file." << '\n';
+        cerr << "Error opening " << name_file << " file." << '\n';
         return false; // Exit with an error code
     }
 
@@ -77,30 +80,46 @@ bool load_witcher( map<string, string>& atributes, string name_file ) {
             return false;
         }
 
-        if (!getline(iss, value)) 
-            cerr << "Error parsing line: (unknown)" << line << '\n';
-
         // Remove leading and trailing whitespaces from the value
         value = value.substr(value.find_first_not_of(" \t"));
         value = value.substr(0, value.find_last_not_of(" \t") + 1);
         
         // putting values inside the map
-        atributes[atribute_name] = value;
-
+        atributes_buffer[atribute_name] = value;
+    }
+    // Converts underscores from string atributes to spaces
+    // so that the string turns back to original form
+    for (auto &x : atributes_buffer) {
+        replace(x.second.begin(), x.second.end(), '_', ' ');
     }
 
     input_file.close();
 
-    if (atributes.empty()) {
+    if (atributes_buffer.empty()) {
         cerr << "No variables found.\n";
         return false;
     }
+
+    // Then set the atributes to witcher
+    loaded_witcher.setName(atributes_buffer["name"]);
+    loaded_witcher.setAge(stoi(atributes_buffer["age"]));
+    loaded_witcher.setCoins(stod(atributes_buffer["coins"]));
+    loaded_witcher.setMax_health(stoi(atributes_buffer["max_health"]));
+    loaded_witcher.setHealth(stoi(atributes_buffer["health"]));
+    loaded_witcher.setMax_stamina(stoi(atributes_buffer["max_stamina"]));
+    loaded_witcher.setStamina(stoi(atributes_buffer["stamina"]));
+    loaded_witcher.setCategory(atributes_buffer["category"]);
+    loaded_witcher.setLevel(stoi(atributes_buffer["level"]));
+    loaded_witcher.setTotal_defense(stoi(atributes_buffer["total_defense"]));
+    // Then load the inventory
+    loaded_witcher.load_inventory();
 
     return true;
 }
 
 bool save_witcher( Witcher &witcher, map<string, string> &atributes, string name_file )
 {
+    // First save the witcher atributes
     // First update the atributes map
     atributes["name"] = witcher.getName();
     atributes["age"] = to_string(witcher.getAge());
@@ -125,8 +144,14 @@ bool save_witcher( Witcher &witcher, map<string, string> &atributes, string name
     for (const auto& pair : atributes) {
         output_file << pair.first << " = " << pair.second << '\n';
     }
+    // Then closes the file
     output_file.close();
+
+    // Then save the witcher inventory
+    witcher.save_inventory();
+
     cout << "Witcher " << atributes["name"] << " has been saved.\n";
+
     return true;
 }
 

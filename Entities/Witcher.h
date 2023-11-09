@@ -1,7 +1,20 @@
 #ifndef WITCHER_H
 #define WITCHER_H
 
+using std::cerr;
+
 #include <string>
+using std::getline;
+using std::to_string;
+
+#include <fstream>
+using std::fstream;
+using std::ifstream;
+using std::ofstream;
+
+#include <sstream>
+using std::istringstream;
+
 
 #include "Human.h"
 
@@ -19,6 +32,11 @@ public:
         string category="E");
     Witcher(const Witcher &other_witcher);
     ~Witcher();
+
+    void load_inventory(string file_name_swords="./save-files/config_witcher_swords.txt", 
+                        string file_name_armors="./save-files/config_witcher_armors.txt");
+    void save_inventory(string file_name_swords="./save-files/config_witcher_swords1.txt", 
+                        string file_name_armors="./save-files/config_witcher_armors1.txt");
 
     void store_item(Item &item);
     void unstore_item(string item_name);

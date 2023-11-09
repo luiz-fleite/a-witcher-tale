@@ -26,32 +26,37 @@ map<string, string> buffer_atributes;
 
 int main(void) {
 
-    if (!load_witcher(buffer_atributes, "./Utils/config_witcher.txt")) {
+    Witcher w1;
+    if (!load_witcher(w1, "./save-files/config_witcher.txt")) {
         cerr << "Error loading witcher.\n";
         return 1;
     }
 
-    Witcher w1(buffer_atributes["name"], 
-        stoi(buffer_atributes["age"]), 
-        stod(buffer_atributes["coins"]), 
-        stoi(buffer_atributes["max_health"]), 
-        stoi(buffer_atributes["max_stamina"]), 
-        buffer_atributes["category"]);
-    w1.setHealth(stoi(buffer_atributes["health"]));
-    w1.setStamina(stoi(buffer_atributes["stamina"]));
-
     cout << w1 << "\n";
+    w1.print_inventory();
+    cout << "========================\n";
 
+/*
     Witcher w2;
+    Sword s1;
+    Sword s2("Silver Sword", "Good against monsters", 20);
+    Armor a1;
+    Armor a2("Witcher Armor", "Good against monsters", 10);
+    w2.add_item(s1);
+    w2.add_item(s2);
+    w2.add_item(a1);
+    w2.add_item(a2);
     cout << "Witcher 2:\n";
     cout << w2 << "\n";
+    w2.print_inventory();
+    cout << "========================\n";
 
-    if (!save_witcher(w2, buffer_atributes, "./Utils/config_witcher1.txt")) {
+    if (!save_witcher(w2, buffer_atributes, "./save-files/config_witcher1.txt")) {
         cerr << "Error saving witcher.\n";
         return 1;
     }
 
-    if (!load_witcher(buffer_atributes, "./Utils/config_witcher1.txt")) {
+    if (!load_witcher(buffer_atributes, "./save-files/config_witcher1.txt")) {
         cerr << "Error loading witcher.\n";
         return 1;
     }
@@ -64,45 +69,13 @@ int main(void) {
         buffer_atributes["category"]);
     w3.setHealth(stoi(buffer_atributes["health"]));
     w3.setStamina(stoi(buffer_atributes["stamina"]));
+
+    w3.load_inventory("./save-files/config_witcher_swords1", "./save-files/config_witcher_armors1");
     cout << "Witcher 3:\n";
     cout << w3 << "\n";
+    w3.print_inventory();
 
-/*
-    Witcher w1 = Witcher("Geralt");
-    cout << w1;
-    
-    cout << "\n";
-*/  
-
-/*
-    ifstream inputFile("./Items/swords_chest.txt");
-    if (!inputFile.is_open()) {
-        cerr << "Error opening file." << '\n';
-        return 1; // Exit with an error code
-    }
-
-    string line;    
-    string variableName;
-    char equalsSign;
-    double value;
-    while (getline(inputFile, line)) 
-    {
-        istringstream iss(line);
-        if (iss >> variableName >> equalsSign >> value && equalsSign == '=') {
-            Sword * loaded_sword = new Sword(variableName, "Sword", value);
-            w1.store_item(*loaded_sword);
-            delete loaded_sword;
-        }
-        else {
-            cerr << "Error parsing line: " << line << '\n';
-        }
-    }
-
-    inputFile.close();
-
-    w1.print_personal_chest();
 */
-    
 
     return 0;
 }

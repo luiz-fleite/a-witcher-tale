@@ -1,0 +1,8 @@
+damage = 10
+description = A_common_sword._Very_Used_by_the_common_folk.
+name = Common_Sword
+next = item
+damage = 20
+description = Good_against_monsters
+name = Silver_Sword
+next = item

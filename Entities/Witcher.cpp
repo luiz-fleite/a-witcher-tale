@@ -49,6 +49,147 @@ Witcher::~Witcher() {
     });
 }
 
+void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
+
+    // First creates a buffer map to store the atributes of each item
+    map<string, string> items_atributes_buffer;
+    // First load the swords
+    ifstream input_file(name_file_swords);
+    if (!input_file.is_open()) {
+        cerr << "Error opening  " << name_file_swords << " file." << '\n';
+        return; // Exit with an error code
+    }
+    // Unpacking variables
+    string line;
+    string atribute_name;
+    char equal_sign;
+    string value;
+
+    while (getline(input_file, line)) {
+        istringstream line_stream(line);
+        line_stream >> atribute_name >> equal_sign >> value;
+        // Skips to next sword and stores the previous one
+        // reusing the same buffer for all swords
+        if (atribute_name == "next" && equal_sign == '=' && value == "item") {
+            // Converts underscores from string atributes to spaces
+            // so that the string turns back to original form
+            for (auto &x : items_atributes_buffer) {
+                replace(x.second.begin(), x.second.end(), '_', ' ');
+            }
+            // Creates a temporary sword and adds it to the inventory
+            Sword * new_sword = new Sword(items_atributes_buffer["name"], 
+                                    items_atributes_buffer["description"], 
+                                    stoi(items_atributes_buffer["damage"]));
+            add_item(*new_sword);
+            // Cleans buffer variables
+            delete new_sword;
+            items_atributes_buffer.clear();
+        }
+        // Stores values in buffer iteratively
+        items_atributes_buffer[atribute_name] = value;
+    }
+    // Closes swords file
+    input_file.close();
+
+    // Then load the armors
+    // Reuse same ifstream variable
+    input_file.open(name_file_armors);
+        if (!input_file.is_open()) {
+        cerr << "Error opening " << name_file_armors << " file." << '\n';
+        return; // Exit with an error code
+    }
+
+    while (getline(input_file, line)) {
+        istringstream line_stream(line);
+        // Reuses same unpacking variables
+        line_stream >> atribute_name >> equal_sign >> value;
+        // Skips to next armor and stores the previous one
+        // reusing the same buffer for all armors
+        if (atribute_name == "next" && equal_sign == '=' && value == "item") {
+            // Converts underscores from string atributes to spaces
+            // so that the string turns back to original form
+            for (auto &x : items_atributes_buffer) {
+                replace(x.second.begin(), x.second.end(), '_', ' ');
+            }
+            // Creates a temporary armor and adds it to the inventory
+            Armor * new_armor = new Armor(items_atributes_buffer["name"], 
+                                    items_atributes_buffer["description"], 
+                                    stoi(items_atributes_buffer["defense"]));
+            add_item(*new_armor);
+            // Cleans buffer variables
+            delete new_armor;
+            items_atributes_buffer.clear();
+        }
+        // Stores values in buffer iteratively
+        // Reuses same map
+        items_atributes_buffer[atribute_name] = value;
+    }
+    // Closes armors file
+    input_file.close();
+
+    return;
+}
+
+void Witcher::save_inventory(string name_file_swords, string name_file_armors) {
+    // First creates a buffer map to store the atributes of each item
+    map<string, string> items_atributes_buffer;
+    // First save the swords
+    ofstream output_file(name_file_swords);
+    if (!output_file.is_open()) {
+        cerr << "Error opening file." << '\n';
+        return; // Exit with an error code
+    }
+
+    for (auto sword : this->inventory.swords) {
+        items_atributes_buffer["name"] = sword->getName();
+        items_atributes_buffer["description"] = sword->getDescription();
+        items_atributes_buffer["damage"] = to_string(sword->getDamage());
+        // Convert string spaces from string atributes to underscores
+        // so that the file can be read again
+        for (auto &x : items_atributes_buffer) {
+            replace(x.second.begin(), x.second.end(), ' ', '_');
+        }
+        // Stores values in buffer iteratively
+        for (auto const& x : items_atributes_buffer) {
+            output_file << x.first << " = " << x.second << '\n';
+        }
+        // Stores next item separator
+        output_file << "next = item\n";
+        items_atributes_buffer.clear();
+    }
+    // Closes swords file
+    output_file.close();
+
+    // Then save the armors
+    // Reuse same ofstream variable
+    output_file.open(name_file_armors);
+        if (!output_file.is_open()) {
+        cerr << "Error opening file." << '\n';
+        return; // Exit with an error code
+    }
+
+    for (auto armor : this->inventory.armors) {
+        items_atributes_buffer["name"] = armor->getName();
+        items_atributes_buffer["description"] = armor->getDescription();
+        items_atributes_buffer["defense"] = to_string(armor->getDefense());
+        // Convert string spaces from string atributes to underscores
+        // so that the file can be read again
+        for (auto &x : items_atributes_buffer) {
+            replace(x.second.begin(), x.second.end(), ' ', '_');
+        }
+        // Stores values in buffer iteratively
+        for (auto const& x : items_atributes_buffer) {
+            output_file << x.first << " = " << x.second << '\n';
+        }
+        // Stores next item separator
+        output_file << "next = item\n";
+        items_atributes_buffer.clear();
+    }
+
+    // Closes armors file
+    output_file.close();
+}
+
 void Witcher::store_item(Item &item) {
     if (Sword * sword = dynamic_cast<Sword *>(&item)) {
         Sword * new_sword = new Sword(*sword);
