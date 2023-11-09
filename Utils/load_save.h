@@ -19,6 +19,8 @@ using std::istringstream;
 #include <map>
 using std::map;
 
+#include "../Entities/Witcher.h"
+
 bool load_witcher( Witcher &loaded_witcher, string name_file ) {
     // First creates a buffer map to store the atributes of wicther
     map<string, string> atributes_buffer;
@@ -117,8 +119,9 @@ bool load_witcher( Witcher &loaded_witcher, string name_file ) {
     return true;
 }
 
-bool save_witcher( Witcher &witcher, map<string, string> &atributes, string name_file )
+bool save_witcher( Witcher &witcher, string name_file )
 {
+    map<string, string> atributes;
     // First save the witcher atributes
     // First update the atributes map
     atributes["name"] = witcher.getName();

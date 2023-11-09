@@ -33,10 +33,10 @@ public:
     Witcher(const Witcher &other_witcher);
     ~Witcher();
 
-    void load_inventory(string file_name_swords="./save-files/config_witcher_swords.txt", 
-                        string file_name_armors="./save-files/config_witcher_armors.txt");
-    void save_inventory(string file_name_swords="./save-files/config_witcher_swords1.txt", 
-                        string file_name_armors="./save-files/config_witcher_armors1.txt");
+    void load_inventory(string file_name_swords="./save-files/config-witcher/config_swords.txt", 
+                        string file_name_armors="./save-files/config-witcher/config_armors.txt");
+    void save_inventory(string file_name_swords="./save-files//config-witcher/config_swords.txt", 
+                        string file_name_armors="./save-files/config-witcher/config_armors.txt");
 
     void store_item(Item &item);
     void unstore_item(string item_name);
