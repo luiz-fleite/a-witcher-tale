@@ -258,6 +258,8 @@ void Entity::grab_item(vector<Item *> &source_items, int item_index) {
         cout << "Invalid item index.\n";
         return;
     }
+    // prints the action message
+    cout << this->name << " grabs " << source_items[item_index]->getName() << ".\n";
     // adds to inventory and deletes the item from source
     add_item(*source_items[item_index]);
     // updates the source indexes

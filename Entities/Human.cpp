@@ -67,45 +67,62 @@ Human::~Human() {
     delete equipped.armor;
 }
 
-void Human::equip_sword(int sword_index) {
-    if (sword_index < 0 || sword_index >= inventory.swords.size()) {
-        cout << "Invalid sword index.\n";
-        return;
+void Human::equip_item(int item_type, int item_index) {
+    if (item_type == SWORD) {
+        if (item_index < 0 || item_index >= inventory.swords.size()) {
+            cout << "Invalid sword index.\n";
+            return;
+        }
+        if (equipped.steel_sword != 0) {
+            cout << "Unequipped " << *equipped.steel_sword << ".\n";
+            unequip_item(item_type);
+        }
+        equipped.steel_sword = new Sword(*inventory.swords[item_index]);
+        cout << "Equipped " << *equipped.steel_sword << ".\n";
+        delete inventory.swords[item_index];
+        inventory.swords.erase(inventory.swords.begin() + item_index);
     }
-    if (equipped.steel_sword != 0) {
+    else if (item_type == ARMOR) {
+        if (item_index < 0 || item_index >= inventory.armors.size()) {
+            cout << "Invalid armor index.\n";
+            return;
+        }
+        if (equipped.armor != 0) {
+            cout << "Unequipped " << *equipped.armor << ".\n";
+            unequip_item(item_type);
+        }
+        equipped.armor = new Armor(*inventory.armors[item_index]);
+        cout << "Equipped " << *equipped.armor << ".\n";
+        delete inventory.armors[item_index];
+        inventory.armors.erase(inventory.armors.begin() + item_index);
+        update_total_defense();
+    }
+    else {
+        cout << "Item type not recognized.\n";
+    }
+}
+
+void Human::unequip_item(int item_type) {
+    if (item_type == SWORD) {
+        if (equipped.steel_sword == 0) {
+            cout << "No sword equipped.\n";
+            return;
+        }
         add_item(*equipped.steel_sword);
-        cout << "Unequipped " << *equipped.steel_sword << ".\n";
-    }
-    equipped.steel_sword = inventory.swords[sword_index];
-    inventory.swords.erase(inventory.swords.begin() + sword_index);
-    cout << "Equipped " << *equipped.steel_sword << ".\n";
-}
-
-void Human::equip_armor(int armor_index) {
-    if (armor_index < 0 || armor_index >= inventory.armors.size()) {
-        cout << "Invalid armor index.\n";
-        return;
-    }
-    if (equipped.armor != 0) {
-        add_item(*equipped.armor);
-        cout << "Unequipped " << *equipped.armor << ".\n";
-    }
-    equipped.armor = inventory.armors[armor_index];
-    inventory.armors.erase(inventory.armors.begin() + armor_index);
-    cout << "Equipped " << *equipped.armor << ".\n";
-    update_total_defense();
-}
-
-void Human::unequip_item(string item_type_name) {
-    if (item_type_name == "Steel Sword")
         equipped.steel_sword = 0;
-    else if (item_type_name == "Armor") {
-        setTotal_defense(getTotal_defense() - equipped.armor->getDefense());
+    }
+    else if (item_type == ARMOR) {
+        if (equipped.armor == 0) {
+            cout << "No armor equipped.\n";
+            return;
+        }
+        add_item(*equipped.armor);
         equipped.armor = 0;
         update_total_defense();
     }
-    else
-        cout << "Item type name not recognized.\n";
+    else {
+        cout << "Item type not recognized.\n";
+    }
 }
 
 void Human::print_equipped_items() {
