@@ -38,7 +38,7 @@ public:
     void save_inventory(string file_name_swords="./save-files//config-witcher/config_swords.txt", 
                         string file_name_armors="./save-files/config-witcher/config_armors.txt");
 
-    void store_item(Item &item);
+    void store_item(int item_type, int item_index);
     void unstore_item(string item_name);
     void print_personal_chest() const;
 

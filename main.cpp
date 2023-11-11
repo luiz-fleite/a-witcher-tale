@@ -26,19 +26,58 @@ int main(void) {
 
     Witcher w1;
     w1.setName("Geralt");
-    Sword s1;
-    Sword s2("Silver Sword", "Good against monsters", 20);
-    Armor a1;
-    Armor a2("Witcher Armor", "Good against monsters", 10);
-    w1.add_item(s1);
-    w1.add_item(s2);
-    w1.add_item(a1);
-    w1.add_item(a2);
-    cout << "Witcher 2:\n";
+    cout << "Witcher 1: \n" << w1 << "\n";
+
+    Witcher w2;
+    cout << "Witcher 2: \n" <<  w2 << "\n";
+
+    vector<Item*> floor_items;
+
+    Sword * s1 = new Sword();
+    Sword * s2 = new Sword("Silver Sword", "Good against monsters", 20);
+    Armor * a1 = new Armor();
+    Armor * a2 = new Armor("Witcher Armor", "Good against monsters", 10);
+    floor_items.push_back(s1);
+    floor_items.push_back(s2);
+    floor_items.push_back(a1);
+    floor_items.push_back(a2);
+
+    cout << "Floor items:\n";
+    cout << floor_items.size() << "\n";
+
+    for (int i = 0; i < 4; i++) {
+        cout << "Grabbing item " << i << "\n";
+        w1.grab_item(floor_items, 0);
+    }
+
+    cout << "Witcher 1:\n";
     cout << w1 << "\n";
     w1.print_inventory();
+    cout << "Floor items:\n";
+    cout << floor_items.size() << "\n";
+
+    cout << "========================\n";
+    Sword * s3 = new Sword("Aerondight", "levels up with owner", 100);
+    w2.add_item(*s3);
+    w2 = w1;
+    cout << "Witcher 2 = Witcher 1: \n" <<  w2 << "\n";
+    w2.print_inventory();
+
     cout << "========================\n";
 
+/*
+    w1.print_personal_chest();
+    cout << "========================\n";
+    cout << "Guardando no bau:\n";
+    w1.store_item();
+    w1.store_item();
+    w1.store_item();
+    w1.store_item();
+    w1.print_inventory();
+    w1.print_personal_chest();
+*/
+
+/*
     if (!save_witcher(w1, "./save-files/config-witcher/config_atributes.txt")) {
         cerr << "Error saving witcher.\n";
         return 1;
@@ -53,6 +92,6 @@ int main(void) {
     cout << w2 << "\n";
     w2.print_inventory();
     cout << "========================\n";
-
+*/
     return 0;
 }

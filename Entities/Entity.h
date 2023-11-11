@@ -18,6 +18,11 @@ using std::map;
 using std::pair;
 using std::for_each;
 
+enum item_type {
+    SWORD = 0,
+    ARMOR = 1
+};
+
 struct inventory_items {
     vector<Sword*> swords;
     vector<Armor*> armors;
@@ -54,9 +59,16 @@ public:
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
     void setDate_of_birth(Date &date_of_birth);
 
+    // add an item and deletes it
     void add_item(Item &);
-    void drop_sword(int, vector<Sword*> &dropped_swords);
-    void drop_armor(int);
+    // just deletes an inventory item
+    void remove_item(int item_type, int item_index);
+
+    // add an item from a source and deletes it
+    void grab_item(vector<Item*> &source_items, int item_index);
+    // remove an item and put it somewhere
+    void drop_item(vector<Item*> &destiny_items, int item_type, int item_index);
+
     void print_inventory() const;
 
     virtual void life_regen(int);

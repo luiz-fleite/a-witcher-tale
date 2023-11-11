@@ -223,34 +223,79 @@ void Entity::add_item(Item &item) {
         Armor * new_armor = new Armor(*armor);
         inventory.armors.push_back(new_armor);
     }
+    delete &item;
 }
 
-void Entity::drop_sword(int index, vector<Sword *> &dropped_swords) {
-    if (index < 0 || index >= inventory.swords.size()) {
-        cout << "Invalid index.\n";
+void Entity::remove_item(int item_type, int item_index) {
+    if (item_type == SWORD) {
+        if (item_index < 0 || item_index >= inventory.swords.size()) {
+            cout << "Invalid sword index.\n";
+            return;
+        }
+        delete inventory.swords[item_index];
+        inventory.swords.erase(inventory.swords.begin() + item_index);
+    }
+    else if (item_type == ARMOR) {
+        if (item_index < 0 || item_index >= inventory.armors.size()) {
+            cout << "Invalid armor index.\n";
+            return;
+        }
+        delete inventory.armors[item_index];
+        inventory.armors.erase(inventory.armors.begin() + item_index);
+    }
+    else {
+        cout << "Invalid item type.\n";
         return;
     }
-    dropped_swords.push_back(inventory.swords[index]);
-    inventory.swords.erase(inventory.swords.begin() + index);
 }
 
-void Entity::drop_armor(int index) {
-    if (index < 0 || index >= inventory.armors.size()) {
-        cout << "Invalid index.\n";
+void Entity::grab_item(vector<Item *> &source_items, int item_index) {
+    if (item_index < 0 || item_index >= source_items.size()) {
+        cout << "Invalid item index.\n";
         return;
     }
-    inventory.armors.erase(inventory.armors.begin() + index);
+    // adds to inventory and deletes the item from source
+    add_item(*source_items[item_index]);
+    // updates the source indexes
+    source_items.erase(source_items.begin() + item_index);
+}
+
+void Entity::drop_item(vector<Item *> &destiny_items, int item_type, int item_index) {
+    if (item_type == SWORD) {
+        if (item_index < 0 || item_index >= inventory.swords.size()) {
+            cout << "Invalid sword index.\n";
+            return;
+        }
+        destiny_items.push_back(inventory.swords[item_index]);
+        inventory.swords.erase(inventory.swords.begin() + item_index);
+    }
+    else if (item_type == ARMOR) {
+        if (item_index < 0 || item_index >= inventory.armors.size()) {
+            cout << "Invalid armor index.\n";
+            return;
+        }
+        destiny_items.push_back(inventory.armors[item_index]);
+        inventory.armors.erase(inventory.armors.begin() + item_index);
+    }
+    else {
+        cout << "Invalid item type.\n";
+        return;
+    }
 }
 
 void Entity::print_inventory() const {
     cout << "Inventory of " << this->name << ":\n";
     cout << "Swords:\n";
+
+    int counter = 0;
     for (auto sword : inventory.swords) {
-        cout << *sword << "\n";
+        cout << ++counter << ". " << *sword << "\n";
     }
+
+    counter = 0;
     cout << "Armors:\n";
     for (auto armor : inventory.armors) {
-        cout << *armor << "\n";
+        cout << ++counter << ". " << *armor << "\n";
     }
 }
 
@@ -327,10 +372,16 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
         this->total_defense = assigned_entity.total_defense;
         this->is_stunned = assigned_entity.is_stunned;
         // primeiro limpa o vetor para preenche-lo
+        for (auto sword : this->inventory.swords) {
+            delete sword;
+        }
         this->inventory.swords.clear();
         for (auto sword : assigned_entity.inventory.swords) {
             Sword * new_sword = new Sword(*sword);
             this->inventory.swords.push_back(new_sword);
+        }
+        for (auto armor : this->inventory.armors) {
+            delete armor;
         }
         this->inventory.armors.clear();
         for (auto armor : assigned_entity.inventory.armors) {

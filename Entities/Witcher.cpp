@@ -190,22 +190,49 @@ void Witcher::save_inventory(string name_file_swords, string name_file_armors) {
     output_file.close();
 }
 
-void Witcher::store_item(Item &item) {
-    if (Sword * sword = dynamic_cast<Sword *>(&item)) {
-        Sword * new_sword = new Sword(*sword);
-        personal_chest[new_sword->getName()] = new_sword;
+void Witcher::store_item(int item_type, int item_index) {
+    // Checks if item_type is valid for existing items
+    if (item_type < 0 || item_type > 1) {
+        cout << "Item type not found.\n";
+        return;
     }
-    else if (Armor * armor = dynamic_cast<Armor *>(&item)) {
-        Armor * new_armor = new Armor(*armor);
-        personal_chest[new_armor->getName()] = new_armor;
+    // Checks if item_index is valid for corresponding inventory section
+    if (item_type == SWORD) {
+        if (item_index < 0 || item_index >= inventory.swords.size() ) {
+            cout << "Item not found.\n";
+            return;
+        }
+        personal_chest[this->inventory.swords[item_index]->getName()] = this->inventory.swords[item_index];
+    }
+    else if (item_type == ARMOR) {
+        if (item_index < 0 || item_index >= inventory.armors.size() ) {
+            cout << "Item not found.\n";
+            return;
+        }
+        personal_chest[this->inventory.armors[item_index]->getName()] = this->inventory.armors[item_index];
     }
     else {
-        cout << "Item not stored.\n";
+        cout << "Item not found.\n";
+        return;
     }
-    
 }
 
 void Witcher::unstore_item(string item_name) {
+    if (personal_chest.find(item_name) == personal_chest.end()) {
+        cout << "Item not found.\n";
+        return;
+    }
+    if (Sword * sword = dynamic_cast<Sword *>(personal_chest[item_name])) {
+        this->inventory.swords.push_back(sword);
+        delete sword;
+    }
+    else if (Armor * armor = dynamic_cast<Armor *>(personal_chest[item_name])) {
+        this->inventory.armors.push_back(armor);
+        delete armor;
+    }
+    else {
+        cout << "Item not deleted.\n";
+    }
     personal_chest.erase(item_name);
 }
 
