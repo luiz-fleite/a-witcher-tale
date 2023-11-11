@@ -59,9 +59,25 @@ int main(void) {
     cout << "========================\n";
     Sword * s3 = new Sword("Aerondight", "levels up with owner", 100);
     w2.add_item(*s3);
-    w2 = w1;
-    cout << "Witcher 2 = Witcher 1: \n" <<  w2 << "\n";
+    cout << "Witcher 2:\n";
+    cout << w2 << "\n";
     w2.print_inventory();
+
+    w2.drop_item(floor_items, SWORD, 0);
+    cout << "Witcher 2 inventory:\n";
+    w2.print_inventory();
+    cout << "Floor items:\n";
+    cout << floor_items.size() << "\n";
+    cout << "Witcher 1 grabs the item:\n";
+    w1.grab_item(floor_items, 0);
+    cout << "Witcher 1 inventory:\n";
+    w1.print_inventory();
+    cout << "Floor items:\n";
+    cout << floor_items.size() << "\n";
+    cout << "Witcher 1 trows the item on trash\n";
+    w1.remove_item(SWORD, 0);
+    cout << "Witcher 1 inventory:\n";
+    w1.print_inventory();
 
     cout << "========================\n";
 

@@ -96,7 +96,7 @@ void Human::equip_armor(int armor_index) {
     update_total_defense();
 }
 
-void Human::drop_item(string item_type_name) {
+void Human::unequip_item(string item_type_name) {
     if (item_type_name == "Steel Sword")
         equipped.steel_sword = 0;
     else if (item_type_name == "Armor") {

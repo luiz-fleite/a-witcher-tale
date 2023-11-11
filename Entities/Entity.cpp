@@ -215,6 +215,7 @@ void Entity::setTotal_defense(int total_defense) {
 }
 
 void Entity::add_item(Item &item) {
+    // adds to inventory acording to item type
     if (Sword * sword = dynamic_cast<Sword *>(&item)) {
         Sword * new_sword = new Sword(*sword);
         inventory.swords.push_back(new_sword);
@@ -223,10 +224,13 @@ void Entity::add_item(Item &item) {
         Armor * new_armor = new Armor(*armor);
         inventory.armors.push_back(new_armor);
     }
+    // and deletes the item from the source
     delete &item;
 }
 
 void Entity::remove_item(int item_type, int item_index) {
+    // deletes item and updates the inventory indexes
+    // according to item type
     if (item_type == SWORD) {
         if (item_index < 0 || item_index >= inventory.swords.size()) {
             cout << "Invalid sword index.\n";
@@ -261,26 +265,29 @@ void Entity::grab_item(vector<Item *> &source_items, int item_index) {
 }
 
 void Entity::drop_item(vector<Item *> &destiny_items, int item_type, int item_index) {
+    // adds to destiny acording to item type
     if (item_type == SWORD) {
         if (item_index < 0 || item_index >= inventory.swords.size()) {
             cout << "Invalid sword index.\n";
             return;
         }
-        destiny_items.push_back(inventory.swords[item_index]);
-        inventory.swords.erase(inventory.swords.begin() + item_index);
+        Sword * dropped_sword = new Sword(*inventory.swords[item_index]);
+        destiny_items.push_back(dropped_sword);
     }
     else if (item_type == ARMOR) {
         if (item_index < 0 || item_index >= inventory.armors.size()) {
             cout << "Invalid armor index.\n";
             return;
         }
-        destiny_items.push_back(inventory.armors[item_index]);
-        inventory.armors.erase(inventory.armors.begin() + item_index);
+        Armor * dropped_armor = new Armor(*inventory.armors[item_index]);
+        destiny_items.push_back(dropped_armor);
     }
     else {
         cout << "Invalid item type.\n";
         return;
     }
+    // removes from inventory
+    remove_item(item_type, item_index);
 }
 
 void Entity::print_inventory() const {

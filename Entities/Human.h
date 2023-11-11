@@ -30,7 +30,7 @@ public:
     void equip_sword(int sword_index);
     void equip_armor(int armor_index);
 
-    void drop_item(string item_type_name);
+    void unequip_item(string item_type_name);
     virtual void print_equipped_items();
     
     virtual void update_total_defense();
