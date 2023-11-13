@@ -33,6 +33,10 @@ public:
     Witcher(const Witcher &other_witcher);
     ~Witcher();
 
+    inline void setIs_close_to_chest(bool is_close_to_chest) { this->is_close_to_chest = is_close_to_chest; };
+
+    inline bool getIs_close_to_chest() const { return is_close_to_chest; }
+
     void load_inventory(string file_name_swords="./save-files/config-witcher/config_swords.txt", 
                         string file_name_armors="./save-files/config-witcher/config_armors.txt");
     void save_inventory(string file_name_swords="./save-files//config-witcher/config_swords.txt", 
@@ -48,6 +52,7 @@ public:
     bool operator==(const Witcher &other_witcher) const;
     bool operator!=(const Witcher &other_witcher) const;
 private:
+    bool is_close_to_chest;
     map<string, Item*> personal_chest;
     const static int WITCHER_ATTACK_COST = 10;
     const static int MAX_WITCHER_DAMAGE = 10;

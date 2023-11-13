@@ -57,7 +57,7 @@ public:
     void setLevel(int level);
     void setTotal_defense(int total_defense);
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
-    void setDate_of_birth(Date &date_of_birth);
+    //void setDate_of_birth(Date &date_of_birth);
 
     // add an item and deletes it
     void add_item(Item &);

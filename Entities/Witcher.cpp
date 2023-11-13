@@ -18,6 +18,8 @@ Witcher::Witcher() {
     level = 1;
     is_stunned = false;
 
+    is_close_to_chest = false;
+
     date_of_birth = Date(1, 1, 1000 - age);
 
 }
@@ -34,9 +36,10 @@ Witcher::Witcher(string name, int age, double coins, int max_health, int max_sta
     setLevel(1);
     is_stunned = false;
 
+    is_close_to_chest = false;
+
     date_of_birth = Date(1, 1, 1000 - age);
 }
-
 
 Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_witcher)) {
     //cout << "Copying Witcher...\n";
@@ -191,6 +194,10 @@ void Witcher::save_inventory(string name_file_swords, string name_file_armors) {
 }
 
 void Witcher::store_item(int item_type, int item_index) {
+    if (!is_close_to_chest) {
+        cout << "You are not close to the personal chest.\n";
+        return;
+    }
     // Checks if item_type is valid for existing items
     if (item_type < 0 || item_type > 1) {
         cout << "Item type not found.\n";
@@ -218,6 +225,10 @@ void Witcher::store_item(int item_type, int item_index) {
 }
 
 void Witcher::unstore_item(string item_name) {
+    if (!is_close_to_chest) {
+        cout << "You are not close to the personal chest.\n";
+        return;
+    }
     if (personal_chest.find(item_name) == personal_chest.end()) {
         cout << "Item not found.\n";
         return;

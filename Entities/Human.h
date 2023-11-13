@@ -27,11 +27,7 @@ public:
     Human(const Human &other_human);
     ~Human();
 
-    void equip_sword(int sword_index);
-    void equip_armor(int armor_index);
-
     virtual void equip_item(int item_type, int item_index);
-
     virtual void unequip_item(int item_type);
     virtual void print_equipped_items();
     
