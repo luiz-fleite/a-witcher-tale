@@ -16,7 +16,6 @@ Human::Human() {
     stamina = max_stamina;
     category = CATEGORIES[0];
     level = 1;
-    total_defense = 0;
 
     equipped.steel_sword = 0;
     equipped.armor = 0;
@@ -25,7 +24,7 @@ Human::Human() {
 
     date_of_birth = Date(1, 1, 1000 - age);
 
-    update_total_defense();
+    update_all_resistances();
 }
 
 Human::Human(string name, int age, double coins, int max_health, int max_stamina, string category) {
@@ -38,7 +37,6 @@ Human::Human(string name, int age, double coins, int max_health, int max_stamina
     stamina_regen(max_stamina);
     setCategory(category);
     setLevel(1);
-    setTotal_defense(0);
 
     equipped.steel_sword = new Sword();
     equipped.armor = new Armor();
@@ -47,7 +45,7 @@ Human::Human(string name, int age, double coins, int max_health, int max_stamina
 
     date_of_birth = Date(1, 1, 1000 - age);
 
-    update_total_defense();
+    update_all_resistances();
 }
 
 Human::Human(const Human &other_human) : Entity(other_human) {
@@ -95,7 +93,7 @@ void Human::equip_item(int item_type, int item_index) {
         cout << "Equipped " << *equipped.armor << ".\n";
         delete inventory.armors[item_index];
         inventory.armors.erase(inventory.armors.begin() + item_index);
-        update_total_defense();
+        update_all_resistances();
     }
     else {
         cout << "Item type not recognized.\n";
@@ -118,7 +116,7 @@ void Human::unequip_item(int item_type) {
         }
         add_item(*equipped.armor);
         equipped.armor = 0;
-        update_total_defense();
+        update_all_resistances();
     }
     else {
         cout << "Item type not recognized.\n";
@@ -135,15 +133,25 @@ void Human::print_equipped_items() {
     else cout << *equipped.armor << "\n";
 }
 
-void Human::update_total_defense() {
-    if (equipped.armor != 0)
-        setTotal_defense(equipped.armor->getDefense());
-    else
-        setTotal_defense(0);
+void Human::update_all_resistances() {
+    if (equipped.armor != 0) {
+        setTotal_physical_resistance(equipped.armor->getPhysical_defense());
+        setTotal_fire_resistance(equipped.armor->getFire_defense());
+        setTotal_poison_resistance(equipped.armor->getPoison_defense());
+        setTotal_ice_resistance(equipped.armor->getIce_defense());
+        setTotal_silver_resistance(equipped.armor->getSilver_defense());
+    }
+    else {
+        setTotal_physical_resistance(0);
+        setTotal_fire_resistance(0);
+        setTotal_poison_resistance(0);
+        setTotal_ice_resistance(0);
+        setTotal_silver_resistance(0);
+    }
 }
 
-void Human::receive_damage(int damage) {
-    Entity::receive_damage(damage);
+void Human::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
+    Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
 }
 
 ostream &operator<< (ostream &out, const Human &human){

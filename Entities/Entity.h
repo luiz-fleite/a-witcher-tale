@@ -43,8 +43,17 @@ public:
     inline int getStamina() const { return stamina; }
     inline string getCategory() const { return category; }
     inline int getLevel() const { return level; }
-    inline int getTotal_defense() const { return total_defense; }
     inline bool getIs_stunned() const { return is_stunned; }
+    inline int getPhysical_weakness() const { return physical_weakness; }
+    inline int getFire_weakness() const { return fire_weakness; }
+    inline int getPoison_weakness() const { return poison_weakness; }
+    inline int getIce_weakness() const { return ice_weakness; }
+    inline int getSilver_weakness() const { return silver_weakness; }
+    inline int getTotal_physical_resistance() const { return total_physical_resistance; }
+    inline int getTotal_fire_resistance() const { return total_fire_resistance; }
+    inline int getTotal_poison_resistance() const { return total_poison_resistance; }
+    inline int getTotal_ice_resistance() const { return total_ice_resistance; }
+    inline int getTotal_silver_resistance() const { return total_silver_resistance; }
 
     void setName(string name);
     void setAge(int age);
@@ -55,9 +64,18 @@ public:
     void setStamina(int stamina);
     void setCategory(string category);
     void setLevel(int level);
-    void setTotal_defense(int total_defense);
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
     //void setDate_of_birth(Date &date_of_birth);
+    inline void setPhysical_weakness(int physical_weakness) {if (physical_weakness >= 0) this->physical_weakness = physical_weakness;}
+    inline void setFire_weakness(int fire_weakness) {if (fire_weakness >= 0) this->fire_weakness = fire_weakness;}
+    inline void setPoison_weakness(int poison_weakness) {if (poison_weakness >= 0) this->poison_weakness = poison_weakness;}
+    inline void setIce_weakness(int ice_weakness) {if (ice_weakness >= 0) this->ice_weakness = ice_weakness;}
+    inline void setSilver_weakness(int silver_weakness) {if (silver_weakness >= 0) this->silver_weakness = silver_weakness;}
+    inline void setTotal_physical_resistance(int total_physical_resistance) {if (total_physical_resistance >= 0) this->total_physical_resistance = total_physical_resistance;}
+    inline void setTotal_fire_resistance(int total_fire_resistance) {if (total_fire_resistance >= 0) this->total_fire_resistance = total_fire_resistance;}
+    inline void setTotal_poison_resistance(int total_poison_resistance) {if (total_poison_resistance >= 0) this->total_poison_resistance = total_poison_resistance;}
+    inline void setTotal_ice_resistance(int total_ice_resistance) {if (total_ice_resistance >= 0) this->total_ice_resistance = total_ice_resistance;}
+    inline void setTotal_silver_resistance(int total_silver_resistance) {if (total_silver_resistance >= 0) this->total_silver_resistance = total_silver_resistance;}
 
     // add an item and deletes it
     void add_item(Item &);
@@ -75,9 +93,13 @@ public:
     virtual void stamina_regen(int);
     //virtual void level_up() = 0;
     //virtual void update_atributes() = 0;
-    virtual void update_total_defense() = 0;
+    virtual void update_all_resistances() = 0;
     virtual void attack(Entity &) = 0;
-    virtual void receive_damage(int);
+    virtual void receive_damage(int physical_damage, 
+                                int fire_damage = 0, 
+                                int poison_damage = 0, 
+                                int ice_damage = 0, 
+                                int silver_damage = 0);
     void print_info() const;
     virtual void talk();
     virtual void walk();
@@ -100,10 +122,21 @@ protected:
     int level;
     //int next_level_xp;
     //int xp;
-    int total_defense;
     bool is_stunned = false;
 
     inventory_items inventory;
+
+    int physical_weakness = 1;
+    int fire_weakness = 1;
+    int poison_weakness = 1;
+    int ice_weakness = 1;
+    int silver_weakness = 0;
+
+    int total_physical_resistance = 0;
+    int total_fire_resistance = 0;
+    int total_poison_resistance = 0;
+    int total_ice_resistance = 0;
+    int total_silver_resistance = 0;
 
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;

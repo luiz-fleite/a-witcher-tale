@@ -82,7 +82,11 @@ void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
             // Creates a temporary sword and adds it to the inventory
             Sword * new_sword = new Sword(items_atributes_buffer["name"], 
                                     items_atributes_buffer["description"], 
-                                    stoi(items_atributes_buffer["damage"]));
+                                    stoi(items_atributes_buffer["physical_damage"]),
+                                    stoi(items_atributes_buffer["fire_damage"]),
+                                    stoi(items_atributes_buffer["poison_damage"]),
+                                    stoi(items_atributes_buffer["ice_damage"]),
+                                    stoi(items_atributes_buffer["silver_damage"]));
             add_item(*new_sword);
             // Cleans buffer variables
             delete new_sword;
@@ -117,7 +121,11 @@ void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
             // Creates a temporary armor and adds it to the inventory
             Armor * new_armor = new Armor(items_atributes_buffer["name"], 
                                     items_atributes_buffer["description"], 
-                                    stoi(items_atributes_buffer["defense"]));
+                                    stoi(items_atributes_buffer["physical_defense"]), 
+                                    stoi(items_atributes_buffer["fire_defense"]),
+                                    stoi(items_atributes_buffer["poison_defense"]),
+                                    stoi(items_atributes_buffer["ice_defense"]),
+                                    stoi(items_atributes_buffer["silver_defense"]));
             add_item(*new_armor);
             // Cleans buffer variables
             delete new_armor;
@@ -146,7 +154,11 @@ void Witcher::save_inventory(string name_file_swords, string name_file_armors) {
     for (auto sword : this->inventory.swords) {
         items_atributes_buffer["name"] = sword->getName();
         items_atributes_buffer["description"] = sword->getDescription();
-        items_atributes_buffer["damage"] = to_string(sword->getDamage());
+        items_atributes_buffer["physical_damage"] = to_string(sword->getPhysical_damage());
+        items_atributes_buffer["fire_damage"] = to_string(sword->getFire_damage());
+        items_atributes_buffer["poison_damage"] = to_string(sword->getPoison_damage());
+        items_atributes_buffer["ice_damage"] = to_string(sword->getIce_damage());
+        items_atributes_buffer["silver_damage"] = to_string(sword->getSilver_damage());
         // Convert string spaces from string atributes to underscores
         // so that the file can be read again
         for (auto &x : items_atributes_buffer) {
@@ -174,7 +186,11 @@ void Witcher::save_inventory(string name_file_swords, string name_file_armors) {
     for (auto armor : this->inventory.armors) {
         items_atributes_buffer["name"] = armor->getName();
         items_atributes_buffer["description"] = armor->getDescription();
-        items_atributes_buffer["defense"] = to_string(armor->getDefense());
+        items_atributes_buffer["physical_defense"] = to_string(armor->getPhysical_defense());
+        items_atributes_buffer["fire_defense"] = to_string(armor->getFire_defense());
+        items_atributes_buffer["poison_defense"] = to_string(armor->getPoison_defense());
+        items_atributes_buffer["ice_defense"] = to_string(armor->getIce_defense());
+        items_atributes_buffer["silver_defense"] = to_string(armor->getSilver_defense());
         // Convert string spaces from string atributes to underscores
         // so that the file can be read again
         for (auto &x : items_atributes_buffer) {
@@ -264,16 +280,25 @@ void Witcher::attack(Entity &entity) {
     setStamina(getStamina() - WITCHER_ATTACK_COST);
     // Dano aleatorio entre MIN_WITCHER_DAMAGE e MAX_WITCHER_DAMAGE
     srand(static_cast<unsigned int>(time(nullptr)));
-    int damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
-    // Dano aumenta com o level
-    damage = damage + (getLevel() / 3);
-    // Dano aumenta com a espada equipada
-    if (equipped.steel_sword != 0) damage += equipped.steel_sword->getDamage();
-    // Dano diminui com a defesa da armadura do alvo
-    //damage -= entity.getDefense();
-    entity.receive_damage(damage);
+    int bonus_witcher_damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
+    // Dano total = dano base
+    int total_physical_damage = bonus_witcher_damage;
+    int total_fire_damage = 0;
+    int total_poison_damage = 0;
+    int total_ice_damage = 0;
+    int total_silver_damage = 0;
+    // Dano total += dano da espada
+    if (equipped.steel_sword != 0) {
+        total_physical_damage += equipped.steel_sword->getPhysical_damage();
+        total_fire_damage += equipped.steel_sword->getFire_damage();
+        total_poison_damage += equipped.steel_sword->getPoison_damage();
+        total_ice_damage += equipped.steel_sword->getIce_damage();
+        total_silver_damage += equipped.steel_sword->getSilver_damage();
+    }
+    
     cout << name << " attacked " << entity.getName() << ".\n";
-    cout << entity.getName() << " -" << damage << " damage.\n";
+    entity.receive_damage(total_physical_damage, total_fire_damage, total_poison_damage, total_ice_damage, total_silver_damage);
+
     return;
 }
 

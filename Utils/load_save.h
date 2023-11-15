@@ -112,7 +112,6 @@ bool load_witcher( Witcher &loaded_witcher, string name_file ) {
     loaded_witcher.setStamina(stoi(atributes_buffer["stamina"]));
     loaded_witcher.setCategory(atributes_buffer["category"]);
     loaded_witcher.setLevel(stoi(atributes_buffer["level"]));
-    loaded_witcher.setTotal_defense(stoi(atributes_buffer["total_defense"]));
     // Then load the inventory
     loaded_witcher.load_inventory();
 
@@ -133,7 +132,17 @@ bool save_witcher( Witcher &witcher, string name_file )
     atributes["stamina"] = to_string(witcher.getStamina());
     atributes["category"] = witcher.getCategory();
     atributes["level"] = to_string(witcher.getLevel());
-    atributes["total_defense"] = to_string(witcher.getTotal_defense());
+    atributes["physical_weakness"] = to_string(witcher.getPhysical_weakness());
+    atributes["fire_weakness"] = to_string(witcher.getFire_weakness());
+    atributes["poison_weakness"] = to_string(witcher.getPoison_weakness());
+    atributes["ice_weakness"] = to_string(witcher.getIce_weakness());
+    atributes["silver_weakness"] = to_string(witcher.getSilver_weakness());
+    atributes["total_physical_resistance"] = to_string(witcher.getTotal_physical_resistance());
+    atributes["total_fire_resistance"] = to_string(witcher.getTotal_fire_resistance());
+    atributes["total_poison_resistance"] = to_string(witcher.getTotal_poison_resistance());
+    atributes["total_ice_resistance"] = to_string(witcher.getTotal_ice_resistance());
+    atributes["total_silver_resistance"] = to_string(witcher.getTotal_silver_resistance());
+
     
     // Open the file for writing
     ofstream output_file(name_file, std::ios::out | std::ios::trunc);

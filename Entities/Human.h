@@ -31,9 +31,13 @@ public:
     virtual void unequip_item(int item_type);
     virtual void print_equipped_items();
     
-    virtual void update_total_defense();
+    virtual void update_all_resistances();
     virtual void attack(Entity &entity);
-    virtual void receive_damage(int damage);
+    virtual void receive_damage(int physical_damage, 
+                                int fire_damage, 
+                                int poison_damage, 
+                                int ice_damage, 
+                                int silver_damage);
 
     const Human &operator=(const Human &);
     bool operator==(const Human &other_human) const;

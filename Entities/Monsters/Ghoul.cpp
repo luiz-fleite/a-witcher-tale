@@ -46,13 +46,13 @@ Ghoul::~Ghoul() {
 
 void Ghoul::setIs_enraged(bool is_enraged) {
     this->is_enraged = is_enraged;
-    update_total_defense();
+    update_all_resistances();
     cout << name << " is enraged!\n";
 }
 
-void Ghoul::update_total_defense() {
+void Ghoul::update_all_resistances() {
     if (is_enraged) {
-        setTotal_defense(getTotal_defense() + 5);
+        setTotal_physical_resistance(getTotal_physical_resistance() + 1);
     }
 }
 
@@ -75,8 +75,8 @@ void Ghoul::attack(Entity &entity) {
     return;
 }
 
-void Ghoul::receive_damage(int damage) {
-    Entity::receive_damage(damage);
+void Ghoul::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
+    Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
     if (getHealth() < getMax_health() * 0.1) {
         if (!is_enraged) {
             setIs_enraged(true);

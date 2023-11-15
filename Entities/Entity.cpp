@@ -18,7 +18,6 @@ Entity::Entity() {
     stamina = 0;
     category = "_";
     level = 0;
-    total_defense = 0;
     is_stunned = false;
 }
 
@@ -33,8 +32,17 @@ Entity::Entity(const Entity &other_entity) {
     this->stamina = other_entity.stamina;
     this->category = other_entity.category;
     this->level = other_entity.level;
-    this->total_defense = other_entity.total_defense;
     this->is_stunned = other_entity.is_stunned;
+    this->physical_weakness = other_entity.physical_weakness;
+    this->fire_weakness = other_entity.fire_weakness;
+    this->poison_weakness = other_entity.poison_weakness;
+    this->ice_weakness = other_entity.ice_weakness;
+    this->silver_weakness = other_entity.silver_weakness;
+    this->total_physical_resistance = other_entity.total_physical_resistance;
+    this->total_fire_resistance = other_entity.total_fire_resistance;
+    this->total_poison_resistance = other_entity.total_poison_resistance;
+    this->total_ice_resistance = other_entity.total_ice_resistance;
+    this->total_silver_resistance = other_entity.total_silver_resistance;
     for (auto sword : other_entity.inventory.swords) {
         Sword * new_sword = new Sword(*sword);
         this->inventory.swords.push_back(new_sword);
@@ -205,15 +213,6 @@ void Entity::setLevel(int level) {
     this->level = level;
 }
 
-void Entity::setTotal_defense(int total_defense) {
-    if (total_defense < 0) {
-        cout << "Total defense cannot be negative.\n";
-        this->total_defense = 0;
-        return;
-    }
-    this->total_defense = total_defense;
-}
-
 void Entity::add_item(Item &item) {
     // adds to inventory acording to item type
     if (Sword * sword = dynamic_cast<Sword *>(&item)) {
@@ -332,20 +331,43 @@ void Entity::stamina_regen(int stamina_regen) {
     this->stamina += stamina_regen;
 }
 
-void Entity::receive_damage(int damage) {
-    if (damage < 0) {
+void Entity::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
+    if (physical_damage < 0 || fire_damage < 0 || poison_damage < 0 || ice_damage < 0 || silver_damage < 0) {
         cout << "Damage cannot be negative.\n";
         return;
     }
-    damage -= this->total_defense;
-    if (damage <= 0) {
+    int total_damage;
+    int total_physical_damage = physical_damage * physical_weakness - total_physical_resistance;
+    if (total_physical_damage < 0)
+        total_physical_damage = 0;
+    total_damage += total_physical_damage;
+    int total_fire_damage = fire_damage * fire_weakness - total_fire_resistance;
+    if (total_fire_damage < 0)
+        total_fire_damage = 0;
+    total_damage += total_fire_damage;
+    int total_poison_damage = poison_damage * poison_weakness - total_poison_resistance;
+    if (total_poison_damage < 0)
+        total_poison_damage = 0;
+    total_damage += total_poison_damage;
+    int total_ice_damage = ice_damage * ice_weakness - total_ice_resistance;
+    if (total_ice_damage < 0)
+        total_ice_damage = 0;
+    total_damage += total_ice_damage;
+    int total_silver_damage = silver_damage * silver_weakness - total_silver_resistance;
+    if (total_silver_damage < 0)
+        total_silver_damage = 0;
+    total_damage += total_silver_damage;
+    if (total_damage <= 0) {
         cout << this->name << " received no damage.\n";
         return;
     }
-    if (damage >= getHealth()) {
-        damage = getHealth();
+
+    if (total_damage >= getHealth()) {
+        total_damage = getHealth();
     }
-    setHealth(getHealth() - damage);
+    cout << this->name << " -" << total_damage << " damage.\n";
+
+    setHealth(getHealth() - total_damage);
     if (getHealth() == 0) {
         cout << name << " died.\n";
     }
@@ -363,7 +385,18 @@ void Entity::print_info() const{
     cout << "Coins: " << this->coins << "\n";
     cout << "Health: " << this->health << "/" << this->max_health << "\n";
     cout << "Stamina: " << this->stamina << "/" << this->max_stamina << "\n";
-    cout << "Total defense: " << this->total_defense << "\n";
+    cout << "Resistences:\n";
+    cout << "Physical: " << this->total_physical_resistance << "\n";
+    cout << "Fire: " << this->total_fire_resistance << "\n";
+    cout << "Poison: " << this->total_poison_resistance << "\n";
+    cout << "Ice: " << this->total_ice_resistance << "\n";
+    cout << "Silver: " << this->total_silver_resistance << "\n";
+    cout << "Weaknesses:\n";
+    cout << "Physical: " << this->physical_weakness << "\n";
+    cout << "Fire: " << this->fire_weakness << "\n";
+    cout << "Poison: " << this->poison_weakness << "\n";
+    cout << "Ice: " << this->ice_weakness << "\n";
+    cout << "Silver: " << this->silver_weakness << "\n";
     cout << "Temporary status:\n" << "Is stunned: " << this->is_stunned << "\n";
 }
 
@@ -378,8 +411,18 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
         this->stamina = assigned_entity.stamina;
         this->category = assigned_entity.category;
         this->level = assigned_entity.level;
-        this->total_defense = assigned_entity.total_defense;
         this->is_stunned = assigned_entity.is_stunned;
+        this->physical_weakness = assigned_entity.physical_weakness;
+        this->fire_weakness = assigned_entity.fire_weakness;
+        this->poison_weakness = assigned_entity.poison_weakness;
+        this->ice_weakness = assigned_entity.ice_weakness;
+        this->silver_weakness = assigned_entity.silver_weakness;
+        this->total_physical_resistance = assigned_entity.total_physical_resistance;
+        this->total_fire_resistance = assigned_entity.total_fire_resistance;
+        this->total_poison_resistance = assigned_entity.total_poison_resistance;
+        this->total_ice_resistance = assigned_entity.total_ice_resistance;
+        this->total_silver_resistance = assigned_entity.total_silver_resistance;
+
         // primeiro limpa o vetor para preenche-lo
         for (auto sword : this->inventory.swords) {
             delete sword;
@@ -411,7 +454,17 @@ int Entity::operator==(const Entity &other_entity) const {
     if (this->max_stamina != other_entity.max_stamina) return 0;
     if (this->category != other_entity.category) return 0;
     if (this->level != other_entity.level) return 0;
-    if (this->total_defense != other_entity.total_defense) return 0;
+    if (this->physical_weakness != other_entity.physical_weakness) return 0;
+    if (this->fire_weakness != other_entity.fire_weakness) return 0;
+    if (this->poison_weakness != other_entity.poison_weakness) return 0;
+    if (this->ice_weakness != other_entity.ice_weakness) return 0;
+    if (this->silver_weakness != other_entity.silver_weakness) return 0;
+    if (this->total_physical_resistance != other_entity.total_physical_resistance) return 0;
+    if (this->total_fire_resistance != other_entity.total_fire_resistance) return 0;
+    if (this->total_poison_resistance != other_entity.total_poison_resistance) return 0;
+    if (this->total_ice_resistance != other_entity.total_ice_resistance) return 0;
+    if (this->total_silver_resistance != other_entity.total_silver_resistance) return 0;
+    
     if (this->is_stunned != other_entity.is_stunned) return 0;
     // inventory check
     //if (this->inventory.swords.empty() != other_entity.inventory.swords.empty()) return 0;

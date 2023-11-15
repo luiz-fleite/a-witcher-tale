@@ -24,9 +24,13 @@ public:
 
     void setIs_enraged(bool is_enraged);
     
-    void update_total_defense();
+    void update_all_resistances();
     void attack(Entity &entity);
-    void receive_damage(int damage);
+    void receive_damage(int physical_damage, 
+                        int fire_damage, 
+                        int poison_damage, 
+                        int ice_damage, 
+                        int silver_damage);
     
     inline void talk() { cout << name << "grawrawrawrawr\n"; }
     inline void walk() { cout << name << "is crawling.\n"; }
@@ -37,6 +41,9 @@ public:
     bool operator!() const;
 private:
     bool is_enraged = false;
+
+    int silver_weakness = 1;
+
     const static int GHOUL_ATTACK_COST = 10;
     const static int MAX_GHOUL_DAMAGE = 7;
     const static int MIN_GHOUL_DAMAGE = 3;
