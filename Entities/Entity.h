@@ -7,8 +7,8 @@
 #include <map>
 #include <algorithm>
 
-#include "../Items/Sword.h"
-#include "../Items/Armor.h"
+#include "../Items/Weapons/Sword.h"
+#include "../Items/Armors/Armor.h"
 #include "../Utils/Date.h"
 
 using std::cout;
@@ -101,6 +101,9 @@ public:
                                 int poison_damage = 0, 
                                 int ice_damage = 0, 
                                 int silver_damage = 0);
+
+    void print_resistances() const;
+    void print_weaknesses() const;
     void print_info() const;
     virtual void talk();
     virtual void walk();

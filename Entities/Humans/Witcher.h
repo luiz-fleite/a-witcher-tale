@@ -18,8 +18,6 @@ using std::istringstream;
 
 #include "Human.h"
 
-using std::string;
-
 class Witcher: public Human {
     friend ostream &operator<< (ostream &out, const Witcher &witcher);
 public:

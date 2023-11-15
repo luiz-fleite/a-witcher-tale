@@ -27,7 +27,13 @@ Human::Human() {
     update_all_resistances();
 }
 
-Human::Human(string name, int age, double coins, int max_health, int max_stamina, string category) {
+Human::Human(string name, 
+            int age, 
+            double coins, 
+            int max_health, 
+            int max_stamina, 
+            string category) {
+                
     setName(name);
     setAge(age);
     setCoins(coins);
@@ -156,6 +162,13 @@ void Human::receive_damage(int physical_damage, int fire_damage, int poison_dama
 
 ostream &operator<< (ostream &out, const Human &human){
     human.print_info();
+    out << "Equipped Items:\n";
+    out << "Steel Sword: ";
+    if (human.equipped.steel_sword == 0) out << "None\n";
+    else out << *human.equipped.steel_sword << "\n";
+    out << "Armor: ";
+    if (human.equipped.armor == 0) out << "None\n";
+    else out << *human.equipped.armor << "\n";
     return out;
 }
 

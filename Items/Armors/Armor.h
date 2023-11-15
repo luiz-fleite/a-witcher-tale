@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Item.h"
+#include "../Item.h"
 
 using std::ostream;
 using std::string;
@@ -31,6 +31,8 @@ public:
     inline void setPoison_defense(int poison_defense) { this->poison_defense = poison_defense; }
     inline void setIce_defense(int ice_defense) { this->ice_defense = ice_defense; }
     inline void setSilver_defense(int silver_defense) { this->silver_defense = silver_defense; }
+
+    virtual void use();
 
     const Armor &operator=(const Armor &);
     int operator==(const Armor &other_armor) const;

@@ -19,9 +19,11 @@ using std::istringstream;
 #include <map>
 using std::map;
 
-#include "../Entities/Witcher.h"
+#include "../Entities/Humans/Witcher.h"
 
-bool load_witcher( Witcher &loaded_witcher, string name_file ) {
+bool load_witcher( Witcher &loaded_witcher, 
+                   string name_file = "save-files/config-witcher/config_atributes.txt" ) {
+    cout << "Loading witcher...\n";
     // First creates a buffer map to store the atributes of wicther
     map<string, string> atributes_buffer;
 
@@ -113,12 +115,14 @@ bool load_witcher( Witcher &loaded_witcher, string name_file ) {
     loaded_witcher.setCategory(atributes_buffer["category"]);
     loaded_witcher.setLevel(stoi(atributes_buffer["level"]));
     // Then load the inventory
+    cout << "Loading inventory...\n";
     loaded_witcher.load_inventory();
 
     return true;
 }
 
-bool save_witcher( Witcher &witcher, string name_file )
+bool save_witcher( Witcher &witcher, 
+                   string name_file = "save-files/config-witcher/config_atributes.txt" )
 {
     // unequip all items, to they're saved in the inventory
     for (int i = 0; i < TOTAL_ITEM_TYPES; i++) {

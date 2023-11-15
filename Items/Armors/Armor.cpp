@@ -29,7 +29,8 @@ Armor::Armor(string name, string description,
 
 }
 
-Armor::Armor(const Armor &other_Armor) : Item(static_cast<Item>(other_Armor)) {
+// Item is abstract, so we can't use static_cast
+Armor::Armor(const Armor &other_Armor) : Item(other_Armor) {
     this->physical_defense = other_Armor.physical_defense;
     this->fire_defense = other_Armor.fire_defense;
     this->poison_defense = other_Armor.poison_defense;
@@ -42,6 +43,10 @@ Armor::~Armor() {
     //cout << "Destroying Armor...\n";
 }
 
+void Armor::use() {
+    cout << "Using Armor...\n";
+}
+
 ostream &operator<< (ostream &out, const Armor &Armor){
     out << Armor.name << " (+" << Armor.physical_defense << " physical defense)\n";
     if (Armor.fire_defense > 0) out << " (+" << Armor.fire_defense << " fire defense)\n";
@@ -49,7 +54,7 @@ ostream &operator<< (ostream &out, const Armor &Armor){
     if (Armor.ice_defense > 0) out << " (+" << Armor.ice_defense << " ice defense)\n";
     if (Armor.silver_defense > 0) out << " (+" << Armor.silver_defense << " silver defense)\n";
 
-    out << "\n\"" << Armor.description << "\"";
+    out << "\"" << Armor.description << "\"";
     return out;
 }
 

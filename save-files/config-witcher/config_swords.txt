@@ -1,8 +1,8 @@
-damage = 10
-description = A_common_sword._Very_Used_by_the_common_folk.
-name = Common_Sword
-next = item
-damage = 20
-description = Good_against_monsters
-name = Silver_Sword
+description = A_basic_steel_sword.
+fire_damage = 0
+ice_damage = 0
+name = Steel_Sword
+physical_damage = 10
+poison_damage = 0
+silver_damage = 0
 next = item

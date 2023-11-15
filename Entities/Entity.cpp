@@ -296,12 +296,18 @@ void Entity::print_inventory() const {
     cout << "Swords:\n";
 
     int counter = 0;
+    if (inventory.swords.empty()) {
+        cout << "None\n";
+    }
     for (auto sword : inventory.swords) {
         cout << ++counter << ". " << *sword << "\n";
     }
 
-    counter = 0;
     cout << "Armors:\n";
+    counter = 0;
+    if (inventory.armors.empty()) {
+        cout << "None\n";
+    }
     for (auto armor : inventory.armors) {
         cout << ++counter << ". " << *armor << "\n";
     }
@@ -374,6 +380,24 @@ void Entity::receive_damage(int physical_damage, int fire_damage, int poison_dam
     return;
 }
 
+void Entity::print_resistances() const {
+    cout << "Resistences:\n";
+    cout << "Physical: " << this->total_physical_resistance << "\n";
+    cout << "Fire: " << this->total_fire_resistance << "\n";
+    cout << "Poison: " << this->total_poison_resistance << "\n";
+    cout << "Ice: " << this->total_ice_resistance << "\n";
+    cout << "Silver: " << this->total_silver_resistance << "\n";
+}
+
+void Entity::print_weaknesses() const {
+    cout << "Weaknesses:\n";
+    cout << "Physical: " << this->physical_weakness << "\n";
+    cout << "Fire: " << this->fire_weakness << "\n";
+    cout << "Poison: " << this->poison_weakness << "\n";
+    cout << "Ice: " << this->ice_weakness << "\n";
+    cout << "Silver: " << this->silver_weakness << "\n";
+}
+
 void Entity::print_info() const{
     cout << "Name: " << this->name << "\n";
     cout << "Category: " << this->category << "\n";
@@ -385,19 +409,11 @@ void Entity::print_info() const{
     cout << "Coins: " << this->coins << "\n";
     cout << "Health: " << this->health << "/" << this->max_health << "\n";
     cout << "Stamina: " << this->stamina << "/" << this->max_stamina << "\n";
-    cout << "Resistences:\n";
-    cout << "Physical: " << this->total_physical_resistance << "\n";
-    cout << "Fire: " << this->total_fire_resistance << "\n";
-    cout << "Poison: " << this->total_poison_resistance << "\n";
-    cout << "Ice: " << this->total_ice_resistance << "\n";
-    cout << "Silver: " << this->total_silver_resistance << "\n";
-    cout << "Weaknesses:\n";
-    cout << "Physical: " << this->physical_weakness << "\n";
-    cout << "Fire: " << this->fire_weakness << "\n";
-    cout << "Poison: " << this->poison_weakness << "\n";
-    cout << "Ice: " << this->ice_weakness << "\n";
-    cout << "Silver: " << this->silver_weakness << "\n";
-    cout << "Temporary status:\n" << "Is stunned: " << this->is_stunned << "\n";
+    print_resistances();
+    print_weaknesses();
+    cout << "Temporary status: \n";
+    cout << "Stunned: " << this->is_stunned << "\n";
+    print_inventory();
 }
 
 const Entity &Entity::operator=(const Entity &assigned_entity) {

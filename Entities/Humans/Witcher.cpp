@@ -24,7 +24,13 @@ Witcher::Witcher() {
 
 }
 
-Witcher::Witcher(string name, int age, double coins, int max_health, int max_stamina, string category) {
+Witcher::Witcher(string name, 
+                int age, 
+                double coins, 
+                int max_health, 
+                int max_stamina, 
+                string category) {
+
     setName(name);
     setAge(age);
     setCoins(coins);
@@ -39,6 +45,10 @@ Witcher::Witcher(string name, int age, double coins, int max_health, int max_sta
     is_close_to_chest = false;
 
     date_of_birth = Date(1, 1, 1000 - age);
+
+    equipped.steel_sword = new Sword("Steel Sword", "A basic steel sword.", 10);
+    equipped.armor = new Armor("Armor", "A basic armor.", 10);
+    update_all_resistances();
 }
 
 Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_witcher)) {
@@ -87,9 +97,9 @@ void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
                                     stoi(items_atributes_buffer["poison_damage"]),
                                     stoi(items_atributes_buffer["ice_damage"]),
                                     stoi(items_atributes_buffer["silver_damage"]));
+            // add_item already cleans "new_sword" buffer
             add_item(*new_sword);
-            // Cleans buffer variables
-            delete new_sword;
+            // Cleans buffer variable
             items_atributes_buffer.clear();
         }
         // Stores values in buffer iteratively
@@ -126,9 +136,9 @@ void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
                                     stoi(items_atributes_buffer["poison_defense"]),
                                     stoi(items_atributes_buffer["ice_defense"]),
                                     stoi(items_atributes_buffer["silver_defense"]));
+            // add_item already cleans "new_armor" buffer
             add_item(*new_armor);
-            // Cleans buffer variables
-            delete new_armor;
+            // Cleans buffer variable
             items_atributes_buffer.clear();
         }
         // Stores values in buffer iteratively

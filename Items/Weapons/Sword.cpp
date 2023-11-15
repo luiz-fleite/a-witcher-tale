@@ -33,7 +33,8 @@ Sword::Sword(string name, string description,
 
 }
 
-Sword::Sword(const Sword &other_sword) : Item(static_cast<Item>(other_sword)){
+// Itme is abstract, so we can't use static_cast
+Sword::Sword(const Sword &other_sword) : Item(other_sword){
     this->physical_damage = other_sword.physical_damage;
     this->fire_damage = other_sword.fire_damage;
     this->poison_damage = other_sword.poison_damage;
@@ -46,6 +47,10 @@ Sword::~Sword() {
     //cout << "Destroying Sword...\n";
 }
 
+void Sword::use() {
+    cout << "Using Weapon...\n";
+}
+
 ostream &operator<< (ostream &out, const Sword &sword){
     out << sword.name << " (+" << sword.physical_damage << " physical damage)\n";
     if (sword.fire_damage > 0) out << " (+" << sword.fire_damage << " fire damage)\n";
@@ -53,12 +58,16 @@ ostream &operator<< (ostream &out, const Sword &sword){
     if (sword.ice_damage > 0) out << " (+" << sword.ice_damage << " ice damage)\n";
     if (sword.silver_damage > 0) out << " (+" << sword.silver_damage << " silver damage)\n";
 
-    out << "\n\"" << sword.description << "\"";
+    out << "\"" << sword.description << "\"";
     return out;
 }
 
 const Sword &Sword::operator=(const Sword &other_sword) {
-    static_cast<Item>(*this) = static_cast<Item>(other_sword);
+    // Item is abstract, so we can't do this:
+    //static_cast<Item>(*this) = static_cast<Item>(other_sword);
+    // So we do this:
+    Item::operator=(other_sword);
+
     this->physical_damage = other_sword.physical_damage;
     this->fire_damage = other_sword.fire_damage;
     this->poison_damage = other_sword.poison_damage;
@@ -69,7 +78,11 @@ const Sword &Sword::operator=(const Sword &other_sword) {
 }
 
 int Sword::operator==(const Sword &other_sword) const {
-    static_cast<Item>(*this) == static_cast<Item>(other_sword);
+    // Item is abstract, so we can't do this:
+    // static_cast<Item>(*this) == static_cast<Item>(other_sword);
+    // So we do this:
+    Item::operator==(other_sword);
+
     if (this->physical_damage != other_sword.physical_damage) return 0;
     if (this->fire_damage != other_sword.fire_damage) return 0;
     if (this->poison_damage != other_sword.poison_damage) return 0;

@@ -1,8 +1,8 @@
-defense = 3
-description = A_common_armor._Very_used_and_not_very_protective.
-name = Common_Armor
-next = item
-defense = 10
-description = Good_against_monsters
-name = Witcher_Armor
+description = A_basic_armor.
+fire_defense = 0
+ice_defense = 0
+name = Armor
+physical_defense = 10
+poison_defense = 0
+silver_defense = 0
 next = item

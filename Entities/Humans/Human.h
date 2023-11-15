@@ -4,10 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include "Entity.h"
+#include "../Entity.h"
 
 using std::ostream;
-using std::string;
 
 struct equipped_items {
     Sword* steel_sword; 
