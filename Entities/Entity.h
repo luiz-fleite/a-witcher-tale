@@ -20,7 +20,8 @@ using std::for_each;
 
 enum item_type {
     SWORD = 0,
-    ARMOR = 1
+    ARMOR = 1,
+    TOTAL_ITEM_TYPES = 2
 };
 
 struct inventory_items {

@@ -120,9 +120,14 @@ bool load_witcher( Witcher &loaded_witcher, string name_file ) {
 
 bool save_witcher( Witcher &witcher, string name_file )
 {
+    // unequip all items, to they're saved in the inventory
+    for (int i = 0; i < TOTAL_ITEM_TYPES; i++) {
+        witcher.unequip_item(i);
+    }
+    // creates a buffer map to store the atributes of wicther
     map<string, string> atributes;
-    // First save the witcher atributes
-    // First update the atributes map
+    // save the witcher atributes
+    // update the atributes map
     atributes["name"] = witcher.getName();
     atributes["age"] = to_string(witcher.getAge());
     atributes["coins"] = to_string(witcher.getCoins());
