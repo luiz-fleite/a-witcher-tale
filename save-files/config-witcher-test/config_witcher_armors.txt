@@ -1,7 +1,0 @@
-name = Common_armor
-defense = 3
-description = "Not_very_protective"
-next = item
-name = Witcher_armor
-defense = 5
-description = "Protects_against_monsters"

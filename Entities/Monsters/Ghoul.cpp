@@ -16,25 +16,34 @@ Ghoul::Ghoul() {
     name = "Ghoul";
     age = 100;
     coins = 15;
-    max_health = 50;
-    health = max_health;
-    max_stamina = 50;
-    stamina = max_stamina;
+
     category = CATEGORIES[0];
-    level = 1;
+    level = 0;
+    xp = 0;
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
     bool is_stunned = false;
 }
 
-Ghoul::Ghoul(string name, int age, double coins, int max_health, int max_stamina, string category) {
+Ghoul::Ghoul(string name, 
+             int age, 
+             double coins, 
+             int level,
+             string category) {
+
     setName(name);
     setAge(age);
     setCoins(coins);
-    setMax_health(max_health);
-    life_regen(max_health);
-    setMax_stamina(max_stamina);
-    stamina_regen(max_stamina);
+
     setCategory(category);
-    setLevel(1);
+    setLevel(level);
+    setXp(0);
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
     is_stunned = false;
 }
 
@@ -48,6 +57,22 @@ void Ghoul::setIs_enraged(bool is_enraged) {
     this->is_enraged = is_enraged;
     update_all_resistances();
     cout << name << " is enraged!\n";
+}
+
+void Ghoul::level_up() {
+    level++;
+    
+    update_atributes();
+
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+}
+
+void Ghoul::update_atributes() {
+    next_level_xp = NEXT_LEVEL_XP_LINEAR_COEF + NEXT_LEVEL_XP_ANGULAR_COEF * level;
+    max_health = HEALTH_LINEAR_COEF + HEALTH_ANGULAR_COEF * level;
+    max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
 }
 
 void Ghoul::update_all_resistances() {

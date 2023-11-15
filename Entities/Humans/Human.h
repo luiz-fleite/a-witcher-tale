@@ -20,8 +20,7 @@ public:
     Human(string name,
         int age=30, 
         double coins=100, 
-        int max_health=50, 
-        int max_stamina=50,
+        int level = 10,
         string category="E");
     Human(const Human &other_human);
     ~Human();
@@ -29,20 +28,28 @@ public:
     virtual void equip_item(int item_type, int item_index);
     virtual void unequip_item(int item_type);
     virtual void print_equipped_items();
-    
+
+    virtual void level_up();
+    virtual void update_atributes();
     virtual void update_all_resistances();
     virtual void attack(Entity &entity);
     virtual void receive_damage(int physical_damage, 
-                                int fire_damage, 
-                                int poison_damage, 
-                                int ice_damage, 
-                                int silver_damage);
+                                int fire_damage = 0, 
+                                int poison_damage = 0, 
+                                int ice_damage = 0, 
+                                int silver_damage = 0);
 
     const Human &operator=(const Human &);
     bool operator==(const Human &other_human) const;
     bool operator!=(const Human &other_human) const;
 protected:
     equipped_items equipped;
+private:
+    const static int HEALTH_LINEAR_COEF = 5;
+    const static int HEALTH_ANGULAR_COEF = 3;
+
+    const static int STAMINA_LINEAR_COEF = 5;
+    const static int STAMINA_ANGULAR_COEF = 3;
 };
 
 inline void Human::attack(Entity &entity) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }

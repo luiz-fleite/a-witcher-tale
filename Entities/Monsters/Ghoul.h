@@ -14,8 +14,7 @@ public:
     Ghoul(string name, 
         int age=200, 
         double coins=30, 
-        int max_health=75, 
-        int max_stamina=75, 
+        int level = 10,
         string category="E");
     Ghoul(const Ghoul &other_ghoul): Entity(other_ghoul) { };
     ~Ghoul();
@@ -24,7 +23,10 @@ public:
 
     void setIs_enraged(bool is_enraged);
     
+    void level_up();
+    void update_atributes();
     void update_all_resistances();
+
     void attack(Entity &entity);
     void receive_damage(int physical_damage, 
                         int fire_damage, 
@@ -40,6 +42,12 @@ public:
     int operator!=(const Ghoul &) const;
     bool operator!() const;
 private:
+    const static int HEALTH_LINEAR_COEF = 5;
+    const static int HEALTH_ANGULAR_COEF = 2;
+
+    const static int STAMINA_LINEAR_COEF = 5;
+    const static int STAMINA_ANGULAR_COEF = 2;
+
     bool is_enraged = false;
 
     int silver_weakness = 1;

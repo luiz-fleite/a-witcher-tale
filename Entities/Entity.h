@@ -44,6 +44,8 @@ public:
     inline int getStamina() const { return stamina; }
     inline string getCategory() const { return category; }
     inline int getLevel() const { return level; }
+    inline int getNext_level_xp() const { return next_level_xp; }
+    inline int getXp() const { return xp; }
     inline bool getIs_stunned() const { return is_stunned; }
     inline int getPhysical_weakness() const { return physical_weakness; }
     inline int getFire_weakness() const { return fire_weakness; }
@@ -65,6 +67,8 @@ public:
     void setStamina(int stamina);
     void setCategory(string category);
     void setLevel(int level);
+    inline void setNext_level_xp(int next_level_xp) { if (next_level_xp >= 0) this->next_level_xp = next_level_xp; }
+    inline void setXp(int xp) { if (xp >= 0) this->xp = xp; }
     inline void setIs_stunned(bool is_stunned) { this->is_stunned = is_stunned; }
     //void setDate_of_birth(Date &date_of_birth);
     inline void setPhysical_weakness(int physical_weakness) {if (physical_weakness >= 0) this->physical_weakness = physical_weakness;}
@@ -92,9 +96,12 @@ public:
 
     virtual void life_regen(int);
     virtual void stamina_regen(int);
-    //virtual void level_up() = 0;
-    //virtual void update_atributes() = 0;
+    virtual void gain_xp(int);
+
+    virtual void level_up() = 0;
+    virtual void update_atributes() = 0;
     virtual void update_all_resistances() = 0;
+    
     virtual void attack(Entity &) = 0;
     virtual void receive_damage(int physical_damage, 
                                 int fire_damage = 0, 
@@ -124,8 +131,8 @@ protected:
     int stamina;
     string category;
     int level;
-    //int next_level_xp;
-    //int xp;
+    int next_level_xp;
+    int xp;
     bool is_stunned = false;
 
     inventory_items inventory;
@@ -145,6 +152,9 @@ protected:
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;
     Date date_of_birth;
+
+    const static int NEXT_LEVEL_XP_LINEAR_COEF = 10;
+    const static int NEXT_LEVEL_XP_ANGULAR_COEF = 10;
 private:
     //static int global_danger;
 };

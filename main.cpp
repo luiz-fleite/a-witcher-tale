@@ -24,23 +24,22 @@ using std::istringstream;
 
 int main(void) {
 
-    Witcher * w1 = new Witcher("Geralt");
-    cout << *w1;
+    Witcher * w1 = new Witcher("Max Neuralink");
+    w1->receive_damage(13);
+    w1->setStamina(27);
+    cout << *w1 << "\n";
 
-    if (!save_witcher(*w1)) {
-        cerr << "Error saving witcher.\n";
-        return 1;
-    }
+    if (!save_witcher(*w1))
+        cerr << "Erro ao salvar o witcher!\n";
+    
+    delete w1;
 
     Witcher * w2 = new Witcher();
-
-    if (!load_witcher(*w2)) {
-        cerr << "Error loading witcher.\n";
-        return 1;
-    }
+    if (!load_witcher(*w2))
+        cerr << "Erro ao carregar o witcher!\n";
     
-    cout << "==========After loading:==========\n";
-    cout << *w2;
+    cout << *w2 << "\n";
+
 
     return 0;
 }

@@ -18,6 +18,8 @@ Entity::Entity() {
     stamina = 0;
     category = "_";
     level = 0;
+    next_level_xp = 10;
+    xp = 0;
     is_stunned = false;
 }
 
@@ -26,23 +28,31 @@ Entity::Entity(const Entity &other_entity) {
     this->name = other_entity.name;
     this->age = other_entity.age;
     this->coins = other_entity.coins;
+
     this->max_health = other_entity.max_health;
     this->health = other_entity.health;
     this->max_stamina = other_entity.max_stamina;
     this->stamina = other_entity.stamina;
+
     this->category = other_entity.category;
     this->level = other_entity.level;
+    this->next_level_xp = other_entity.next_level_xp;
+    this->xp = other_entity.xp;
+
     this->is_stunned = other_entity.is_stunned;
+
     this->physical_weakness = other_entity.physical_weakness;
     this->fire_weakness = other_entity.fire_weakness;
     this->poison_weakness = other_entity.poison_weakness;
     this->ice_weakness = other_entity.ice_weakness;
     this->silver_weakness = other_entity.silver_weakness;
+
     this->total_physical_resistance = other_entity.total_physical_resistance;
     this->total_fire_resistance = other_entity.total_fire_resistance;
     this->total_poison_resistance = other_entity.total_poison_resistance;
     this->total_ice_resistance = other_entity.total_ice_resistance;
     this->total_silver_resistance = other_entity.total_silver_resistance;
+
     for (auto sword : other_entity.inventory.swords) {
         Sword * new_sword = new Sword(*sword);
         this->inventory.swords.push_back(new_sword);
@@ -337,32 +347,60 @@ void Entity::stamina_regen(int stamina_regen) {
     this->stamina += stamina_regen;
 }
 
+void Entity::gain_xp(int xp_gained) {
+    // xp are never negative
+    if (xp_gained < 0) {
+        cout << "XP cannot be negative.\n";
+        return;
+    }
+    // adds xp gained to the current xp
+    this->xp += xp_gained;
+    // checks if it has reached the next level
+    if (this->xp >= next_level_xp) {
+        // spends just the necessary amount of xp
+        // to level up
+        this->xp -= next_level_xp;
+        level_up();
+        // by calling gain_xp again inside this conditional, 
+        // it will keep checking if it has reached the next level,
+        // and leveling up until its not necessary anymore
+        gain_xp(0);
+    }
+}
+
 void Entity::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
     if (physical_damage < 0 || fire_damage < 0 || poison_damage < 0 || ice_damage < 0 || silver_damage < 0) {
         cout << "Damage cannot be negative.\n";
         return;
     }
+    
     int total_damage;
+
     int total_physical_damage = physical_damage * physical_weakness - total_physical_resistance;
     if (total_physical_damage < 0)
         total_physical_damage = 0;
     total_damage += total_physical_damage;
+
     int total_fire_damage = fire_damage * fire_weakness - total_fire_resistance;
     if (total_fire_damage < 0)
         total_fire_damage = 0;
     total_damage += total_fire_damage;
+
     int total_poison_damage = poison_damage * poison_weakness - total_poison_resistance;
     if (total_poison_damage < 0)
         total_poison_damage = 0;
     total_damage += total_poison_damage;
+
     int total_ice_damage = ice_damage * ice_weakness - total_ice_resistance;
     if (total_ice_damage < 0)
         total_ice_damage = 0;
     total_damage += total_ice_damage;
+
     int total_silver_damage = silver_damage * silver_weakness - total_silver_resistance;
     if (total_silver_damage < 0)
         total_silver_damage = 0;
     total_damage += total_silver_damage;
+
     if (total_damage <= 0) {
         cout << this->name << " received no damage.\n";
         return;
@@ -371,12 +409,15 @@ void Entity::receive_damage(int physical_damage, int fire_damage, int poison_dam
     if (total_damage >= getHealth()) {
         total_damage = getHealth();
     }
+
     cout << this->name << " -" << total_damage << " damage.\n";
 
     setHealth(getHealth() - total_damage);
+
     if (getHealth() == 0) {
         cout << name << " died.\n";
     }
+
     return;
 }
 
@@ -421,18 +462,25 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
         this->name = assigned_entity.name;
         this->age = assigned_entity.age;
         this->coins = assigned_entity.coins;
+
         this->max_health = assigned_entity.max_health;
         this->health = assigned_entity.health;
         this->max_stamina = assigned_entity.max_stamina;
         this->stamina = assigned_entity.stamina;
+
         this->category = assigned_entity.category;
         this->level = assigned_entity.level;
+        this->next_level_xp = assigned_entity.next_level_xp;
+        this->xp = assigned_entity.xp;
+
         this->is_stunned = assigned_entity.is_stunned;
+
         this->physical_weakness = assigned_entity.physical_weakness;
         this->fire_weakness = assigned_entity.fire_weakness;
         this->poison_weakness = assigned_entity.poison_weakness;
         this->ice_weakness = assigned_entity.ice_weakness;
         this->silver_weakness = assigned_entity.silver_weakness;
+
         this->total_physical_resistance = assigned_entity.total_physical_resistance;
         this->total_fire_resistance = assigned_entity.total_fire_resistance;
         this->total_poison_resistance = assigned_entity.total_poison_resistance;
@@ -466,15 +514,23 @@ int Entity::operator==(const Entity &other_entity) const {
     if (this->name != other_entity.name) return 0;
     if (this->age != other_entity.age) return 0;
     if (this->coins != other_entity.coins) return 0;
+
     if (this->max_health != other_entity.max_health) return 0;
+    if (this->health != other_entity.health) return 0;
     if (this->max_stamina != other_entity.max_stamina) return 0;
+    if (this->stamina != other_entity.stamina) return 0;
+
     if (this->category != other_entity.category) return 0;
     if (this->level != other_entity.level) return 0;
+    if (this->next_level_xp != other_entity.next_level_xp) return 0;
+    if (this->xp != other_entity.xp) return 0;
+
     if (this->physical_weakness != other_entity.physical_weakness) return 0;
     if (this->fire_weakness != other_entity.fire_weakness) return 0;
     if (this->poison_weakness != other_entity.poison_weakness) return 0;
     if (this->ice_weakness != other_entity.ice_weakness) return 0;
     if (this->silver_weakness != other_entity.silver_weakness) return 0;
+
     if (this->total_physical_resistance != other_entity.total_physical_resistance) return 0;
     if (this->total_fire_resistance != other_entity.total_fire_resistance) return 0;
     if (this->total_poison_resistance != other_entity.total_poison_resistance) return 0;
@@ -482,10 +538,12 @@ int Entity::operator==(const Entity &other_entity) const {
     if (this->total_silver_resistance != other_entity.total_silver_resistance) return 0;
     
     if (this->is_stunned != other_entity.is_stunned) return 0;
+
     // inventory check
     //if (this->inventory.swords.empty() != other_entity.inventory.swords.empty()) return 0;
     if (this->inventory.swords.size() != other_entity.inventory.swords.size()) return 0;
     if (this->inventory.armors.size() != other_entity.inventory.armors.size()) return 0;
+    
     for (auto sword : inventory.swords) {
         for (auto other_sword : other_entity.inventory.swords) {
             if (*sword != *other_sword) {

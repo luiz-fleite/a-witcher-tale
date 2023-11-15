@@ -10,12 +10,14 @@ Witcher::Witcher() {
     name = "Witcher";
     age = 200;
     coins = 150;
-    max_health = 100;
-    health = max_health;
-    max_stamina = 100;
-    stamina = max_stamina;
+
     category = CATEGORIES[0];
-    level = 1;
+    level = 0;
+    xp = 0;
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+    
     is_stunned = false;
 
     is_close_to_chest = false;
@@ -25,21 +27,22 @@ Witcher::Witcher() {
 }
 
 Witcher::Witcher(string name, 
-                int age, 
-                double coins, 
-                int max_health, 
-                int max_stamina, 
-                string category) {
-
+                 int age, 
+                 double coins, 
+                 int level,
+                 string category) {
+                
     setName(name);
     setAge(age);
     setCoins(coins);
-    setMax_health(max_health);
-    life_regen(max_health);
-    setMax_stamina(max_stamina);
-    stamina_regen(max_stamina);
+
     setCategory(category);
-    setLevel(1);
+    setLevel(level);
+    setXp(0);
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
     is_stunned = false;
 
     is_close_to_chest = false;
@@ -280,6 +283,11 @@ void Witcher::print_personal_chest() const {
         x.second->print_info(); // string's value 
         cout << "\n";
     }
+}
+
+void Witcher::update_atributes() {
+    max_health = HEALTH_LINEAR_COEF + HEALTH_ANGULAR_COEF * level;
+    max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
 }
 
 void Witcher::attack(Entity &entity) {

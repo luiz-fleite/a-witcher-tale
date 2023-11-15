@@ -10,12 +10,13 @@ Human::Human() {
     name = "Peasant";
     age = 30;
     coins = 50.00;
-    max_health = 25;
-    health = max_health;
-    max_stamina = 25;
-    stamina = max_stamina;
+
     category = CATEGORIES[0];
-    level = 1;
+    level = 0;
+    xp = 0;
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
 
     equipped.steel_sword = 0;
     equipped.armor = 0;
@@ -30,19 +31,20 @@ Human::Human() {
 Human::Human(string name, 
             int age, 
             double coins, 
-            int max_health, 
-            int max_stamina, 
+            int level,
             string category) {
                 
     setName(name);
     setAge(age);
     setCoins(coins);
-    setMax_health(max_health);
-    life_regen(max_health);
-    setMax_stamina(max_stamina);
-    stamina_regen(max_stamina);
+
     setCategory(category);
-    setLevel(1);
+    setLevel(level);
+    setXp(0);
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
 
     equipped.steel_sword = new Sword();
     equipped.armor = new Armor();
@@ -158,6 +160,22 @@ void Human::update_all_resistances() {
 
 void Human::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
     Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
+}
+
+void Human::level_up() {
+    level++;
+    
+    update_atributes();
+
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+}
+
+void Human::update_atributes() {
+    next_level_xp = NEXT_LEVEL_XP_LINEAR_COEF + NEXT_LEVEL_XP_ANGULAR_COEF * level;
+    max_health = HEALTH_LINEAR_COEF + HEALTH_ANGULAR_COEF * level;
+    max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
 }
 
 ostream &operator<< (ostream &out, const Human &human){
