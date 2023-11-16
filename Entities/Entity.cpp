@@ -20,6 +20,19 @@ Entity::Entity() {
     level = 0;
     next_level_xp = 10;
     xp = 0;
+
+    physical_weakness = 1;
+    fire_weakness = 1;
+    poison_weakness = 1;
+    ice_weakness = 1;
+    silver_weakness = 1;
+
+    total_physical_resistance = 0;
+    total_fire_resistance = 0;
+    total_poison_resistance = 0;
+    total_ice_resistance = 0;
+    total_silver_resistance = 0;
+
     is_stunned = false;
 }
 

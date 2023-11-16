@@ -20,9 +20,13 @@ Ghoul::Ghoul() {
     category = CATEGORIES[0];
     level = 0;
     xp = 0;
+
     update_atributes();
     life_regen(max_health);
     stamina_regen(max_stamina);
+
+    update_all_resistances();
+    update_all_weaknesses();
 
     bool is_stunned = false;
 }
@@ -40,9 +44,13 @@ Ghoul::Ghoul(string name,
     setCategory(category);
     setLevel(level);
     setXp(0);
+
     update_atributes();
     life_regen(max_health);
     stamina_regen(max_stamina);
+
+    update_all_resistances();
+    update_all_weaknesses();
 
     is_stunned = false;
 }
@@ -76,12 +84,26 @@ void Ghoul::update_atributes() {
 }
 
 void Ghoul::update_all_resistances() {
+    total_physical_resistance = 0;
+    total_fire_resistance = 0;
+    total_poison_resistance = 0;
+    total_ice_resistance = 0;
+    total_silver_resistance = 0;
+
     if (is_enraged) {
         setTotal_physical_resistance(getTotal_physical_resistance() + 1);
     }
 }
 
-void Ghoul::attack(Entity &entity, int item_type) {
+void Ghoul::update_all_weaknesses() {
+    physical_weakness = 1;
+    fire_weakness = 1;
+    poison_weakness = 1;
+    ice_weakness = 1;
+    silver_weakness = 1;
+}
+
+void Ghoul::attack(Entity &entity, int weapon_type) {
     if (getStamina() < GHOUL_ATTACK_COST) {
         cout << name << " has no stamina left to attack.\n";
         return;

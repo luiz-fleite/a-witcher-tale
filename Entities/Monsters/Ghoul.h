@@ -26,8 +26,9 @@ public:
     void level_up();
     void update_atributes();
     void update_all_resistances();
+    void update_all_weaknesses();
 
-    void attack(Entity &entity, int item_type = -1);
+    void attack(Entity &entity, int weapon_type = UNARMED);
     void receive_damage(int physical_damage, 
                         int fire_damage, 
                         int poison_damage, 

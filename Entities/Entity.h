@@ -109,6 +109,7 @@ public:
     virtual void level_up() = 0;
     virtual void update_atributes() = 0;
     virtual void update_all_resistances() = 0;
+    virtual void update_all_weaknesses() = 0;
     
     virtual void attack(Entity &, int) = 0;
     virtual void receive_damage(int physical_damage, 
@@ -146,17 +147,17 @@ protected:
 
     inventory_items inventory;
 
-    int physical_weakness = 1;
-    int fire_weakness = 1;
-    int poison_weakness = 1;
-    int ice_weakness = 1;
-    int silver_weakness = 0;
+    int physical_weakness;
+    int fire_weakness;
+    int poison_weakness;
+    int ice_weakness;
+    int silver_weakness;
 
-    int total_physical_resistance = 0;
-    int total_fire_resistance = 0;
-    int total_poison_resistance = 0;
-    int total_ice_resistance = 0;
-    int total_silver_resistance = 0;
+    int total_physical_resistance;
+    int total_fire_resistance;
+    int total_poison_resistance;
+    int total_ice_resistance;
+    int total_silver_resistance;
 
     const static string CATEGORIES[7];
     const static int MAX_NAME_SIZE = 20;

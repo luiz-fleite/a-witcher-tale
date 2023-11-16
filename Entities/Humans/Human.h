@@ -32,7 +32,9 @@ public:
     virtual void level_up();
     virtual void update_atributes();
     virtual void update_all_resistances();
-    virtual void attack(Entity &entity, int weapon_type = 0);
+    virtual void update_all_weaknesses();
+    
+    virtual void attack(Entity &entity, int weapon_type = UNARMED);
     virtual void receive_damage(int physical_damage, 
                                 int fire_damage = 0, 
                                 int poison_damage = 0, 

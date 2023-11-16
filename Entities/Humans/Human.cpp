@@ -14,6 +14,7 @@ Human::Human() {
     category = CATEGORIES[0];
     level = 0;
     xp = 0;
+
     update_atributes();
     life_regen(max_health);
     stamina_regen(max_stamina);
@@ -26,6 +27,7 @@ Human::Human() {
     date_of_birth = Date(1, 1, 1000 - age);
 
     update_all_resistances();
+    update_all_weaknesses();
 }
 
 Human::Human(string name, 
@@ -54,6 +56,7 @@ Human::Human(string name,
     date_of_birth = Date(1, 1, 1000 - age);
 
     update_all_resistances();
+    update_all_weaknesses();
 }
 
 Human::Human(const Human &other_human) : Entity(other_human) {
@@ -156,6 +159,14 @@ void Human::update_all_resistances() {
         setTotal_ice_resistance(0);
         setTotal_silver_resistance(0);
     }
+}
+
+void Human::update_all_weaknesses() {
+    physical_weakness = 1;
+    fire_weakness = 1;
+    poison_weakness = 1;
+    ice_weakness = 1;
+    silver_weakness = 0;
 }
 
 void Human::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
