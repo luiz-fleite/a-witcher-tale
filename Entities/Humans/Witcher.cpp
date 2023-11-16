@@ -290,7 +290,7 @@ void Witcher::update_atributes() {
     max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
 }
 
-void Witcher::attack(Entity &entity, int item_type) {
+void Witcher::attack(Entity &entity, int weapon_type) {
 
     // testing stunned inside attack, must be removed later
     if (is_stunned) {
@@ -314,23 +314,36 @@ void Witcher::attack(Entity &entity, int item_type) {
     int bonus_witcher_damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
     // cout << "bonus_witcher_damage: " << bonus_witcher_damage << "\n";
 
-    // chooses what to use to attack
-    // just for taking the repective values of damage
-    if ((item_type == NONE) || (item_type == 0 && equipped.steel_sword == 0)) { // NONE = -1
+    // First checks if the witcher is unarmed
+    switch (weapon_type)
+    {
+    case STEEL_SWORD:
+        if (equipped.steel_sword == 0) {
+            weapon_type = UNARMED;
+        }
+        break;
+    default:
+        // If weapon_type is invalid, witcher is unarmed
+        weapon_type = UNARMED;
+        break;
+    }
+
+    // Then puts each damage type to damage buffer variables
+    // according to the respective weapon choosed
+    switch (weapon_type)
+    {
+    case UNARMED:
+        // Always check stamina first
         if (!spend_stamina(WITCHER_ATTACK_COST)) {
             return;
         }
 
         cout << name << " is attacking " << entity.getName() << " with his fists.\n";
 
-
         total_physical_damage += bonus_witcher_damage;
 
-    }
-    
-    // total damage is the sum of the base damage plus the item damage
-    else if (equipped.steel_sword != 0) {
-
+        break;
+    case STEEL_SWORD:
         // Always check stamina first
         if (!spend_stamina(WITCHER_ATTACK_COST)) {
             return;
@@ -354,8 +367,12 @@ void Witcher::attack(Entity &entity, int item_type) {
 
         total_silver_damage += equipped.steel_sword->getSilver_damage();
         // cout << "total_silver_damage: " << total_silver_damage << "\n";
+
+        break;
     }
-    
+
+    // After calculating all damage especifically
+    // sends it to attacked entity
     cout << name << " attacked " << entity.getName() << ".\n";
 
     entity.receive_damage(total_physical_damage, total_fire_damage, total_poison_damage, total_ice_damage, total_silver_damage);

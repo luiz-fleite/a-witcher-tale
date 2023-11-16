@@ -19,10 +19,17 @@ using std::pair;
 using std::for_each;
 
 enum item_type {
-    NONE = -1,
+    // NONE = -1,
     SWORD = 0,
     ARMOR = 1,
     TOTAL_ITEM_TYPES = 2
+};
+
+enum weapon_type {
+    UNARMED = 0,
+    STEEL_SWORD = 1,
+    // SILVER_SWORD = 2,
+    // TOTAL_WEAPON_TYPES = 3
 };
 
 struct inventory_items {

@@ -45,7 +45,7 @@ public:
 
     void update_atributes();
 
-    virtual void attack(Entity &entity, int item_type = 0);
+    virtual void attack(Entity &entity, int weapon_type = 0);
 
     const Witcher &operator=(const Witcher &);
     bool operator==(const Witcher &other_witcher) const;

@@ -30,7 +30,7 @@ int main(void) {
 
     cout << "===============================\n";
     cout << "=========During battle=========\n";
-    w1->attack(*g1);
+    w1->attack(*g1, STEEL_SWORD);
     cout << *g1;
 
     return 0;
