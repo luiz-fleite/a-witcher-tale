@@ -11,35 +11,27 @@
 #include "./Items/Weapons/Sword.cpp"
 #include "./Items/Armors/Armor.cpp"
 #include "./Utils/Date.cpp"
+
 #include "./Utils/load_save.h"
 
-// carregamento de arquivo
-using std::cerr;
-using std::getline;
-#include <fstream>
-using std::fstream;
-using std::ifstream;
-#include <sstream>
-using std::istringstream;
 
 int main(void) {
 
-    Witcher * w1 = new Witcher("Max Neuralink");
-    w1->receive_damage(13);
-    w1->setStamina(27);
-    cout << *w1 << "\n";
+    // criar batalha para testar os itens
+    // criar mais itens
+    cout << "=========Before battle==========\n";
+    Witcher * w1 = new Witcher("Geralt");
+    cout << *w1;
 
-    if (!save_witcher(*w1))
-        cerr << "Erro ao salvar o witcher!\n";
-    
-    delete w1;
+    cout << "===============================\n";
 
-    Witcher * w2 = new Witcher();
-    if (!load_witcher(*w2))
-        cerr << "Erro ao carregar o witcher!\n";
-    
-    cout << *w2 << "\n";
+    Ghoul * g1 = new Ghoul("Ghoul 1");
+    cout << *g1;
 
+    cout << "===============================\n";
+    cout << "=========During battle=========\n";
+    w1->attack(*g1);
+    cout << *g1;
 
     return 0;
 }

@@ -32,7 +32,7 @@ public:
     virtual void level_up();
     virtual void update_atributes();
     virtual void update_all_resistances();
-    virtual void attack(Entity &entity);
+    virtual void attack(Entity &entity, int item_type = 0);
     virtual void receive_damage(int physical_damage, 
                                 int fire_damage = 0, 
                                 int poison_damage = 0, 
@@ -52,6 +52,6 @@ private:
     const static int STAMINA_ANGULAR_COEF = 3;
 };
 
-inline void Human::attack(Entity &entity) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }
+inline void Human::attack(Entity &entity, int item_type) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }
 
 #endif // HUMAN_H

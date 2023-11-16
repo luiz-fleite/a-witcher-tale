@@ -19,6 +19,7 @@ using std::pair;
 using std::for_each;
 
 enum item_type {
+    NONE = -1,
     SWORD = 0,
     ARMOR = 1,
     TOTAL_ITEM_TYPES = 2
@@ -102,12 +103,13 @@ public:
     virtual void update_atributes() = 0;
     virtual void update_all_resistances() = 0;
     
-    virtual void attack(Entity &) = 0;
+    virtual void attack(Entity &, int) = 0;
     virtual void receive_damage(int physical_damage, 
                                 int fire_damage = 0, 
                                 int poison_damage = 0, 
                                 int ice_damage = 0, 
                                 int silver_damage = 0);
+    bool spend_stamina(int stamina_spent);
 
     void print_resistances() const;
     void print_weaknesses() const;

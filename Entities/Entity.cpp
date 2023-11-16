@@ -374,7 +374,9 @@ void Entity::receive_damage(int physical_damage, int fire_damage, int poison_dam
         return;
     }
     
-    int total_damage;
+    // cout << "Receiving damage...\n";
+
+    int total_damage = 0;
 
     int total_physical_damage = physical_damage * physical_weakness - total_physical_resistance;
     if (total_physical_damage < 0)
@@ -419,6 +421,20 @@ void Entity::receive_damage(int physical_damage, int fire_damage, int poison_dam
     }
 
     return;
+}
+
+bool Entity::spend_stamina(int stamina_spent) {
+    if (stamina_spent < 0) {
+        cout << "Stamina spent cannot be negative.\n";
+        return false;
+    }
+    if (stamina_spent > getStamina()) {
+        cout << "Not enough stamina.\n";
+        return false;
+    }
+    setStamina(getStamina() - stamina_spent);
+    
+    return true;
 }
 
 void Entity::print_resistances() const {

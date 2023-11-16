@@ -1,2 +1,0 @@
-broken_sword = 3
-sharpened_sword = 12

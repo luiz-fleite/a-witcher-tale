@@ -81,7 +81,7 @@ void Ghoul::update_all_resistances() {
     }
 }
 
-void Ghoul::attack(Entity &entity) {
+void Ghoul::attack(Entity &entity, int item_type) {
     if (getStamina() < GHOUL_ATTACK_COST) {
         cout << name << " has no stamina left to attack.\n";
         return;

@@ -290,31 +290,74 @@ void Witcher::update_atributes() {
     max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
 }
 
-void Witcher::attack(Entity &entity) {
-    if (getStamina() < WITCHER_ATTACK_COST) {
-        cout << name << " has no stamina left to attack.\n";
+void Witcher::attack(Entity &entity, int item_type) {
+
+    // testing stunned inside attack, must be removed later
+    if (is_stunned) {
+        cout << name << " is stunned and can't attack.\n";
+        is_stunned = false;
         return;
     }
-    setStamina(getStamina() - WITCHER_ATTACK_COST);
-    // Dano aleatorio entre MIN_WITCHER_DAMAGE e MAX_WITCHER_DAMAGE
-    srand(static_cast<unsigned int>(time(nullptr)));
-    int bonus_witcher_damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
-    // Dano total = dano base
-    int total_physical_damage = bonus_witcher_damage;
+
+    // prepare damage buffer variables to update each damage type
+    // and stamina spent acording to what is choosed to attack
+    int total_physical_damage = 0;
     int total_fire_damage = 0;
     int total_poison_damage = 0;
     int total_ice_damage = 0;
     int total_silver_damage = 0;
-    // Dano total += dano da espada
-    if (equipped.steel_sword != 0) {
+
+    int stamina_spent = 0;
+
+    // Random unarmed base damage MIN_WITCHER_DAMAGE and MAX_WITCHER_DAMAGE
+    srand(static_cast<unsigned int>(time(nullptr)));
+    int bonus_witcher_damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
+    // cout << "bonus_witcher_damage: " << bonus_witcher_damage << "\n";
+
+    // chooses what to use to attack
+    // just for taking the repective values of damage
+    if ((item_type == NONE) || (item_type == 0 && equipped.steel_sword == 0)) { // NONE = -1
+        if (!spend_stamina(WITCHER_ATTACK_COST)) {
+            return;
+        }
+
+        cout << name << " is attacking " << entity.getName() << " with his fists.\n";
+
+
+        total_physical_damage += bonus_witcher_damage;
+
+    }
+    
+    // total damage is the sum of the base damage plus the item damage
+    else if (equipped.steel_sword != 0) {
+
+        // Always check stamina first
+        if (!spend_stamina(WITCHER_ATTACK_COST)) {
+            return;
+        }
+        
+        // base damage
+        total_physical_damage += bonus_witcher_damage;
+
+        // item damage
         total_physical_damage += equipped.steel_sword->getPhysical_damage();
+        // cout << "total_physical_damage: " << total_physical_damage << "\n";
+
         total_fire_damage += equipped.steel_sword->getFire_damage();
+        // cout << "total_fire_damage: " << total_fire_damage << "\n";
+
         total_poison_damage += equipped.steel_sword->getPoison_damage();
+        // cout << "total_poison_damage: " << total_poison_damage << "\n";
+
         total_ice_damage += equipped.steel_sword->getIce_damage();
+        // cout << "total_ice_damage: " << total_ice_damage << "\n";
+
         total_silver_damage += equipped.steel_sword->getSilver_damage();
+        // cout << "total_silver_damage: " << total_silver_damage << "\n";
     }
     
     cout << name << " attacked " << entity.getName() << ".\n";
+
     entity.receive_damage(total_physical_damage, total_fire_damage, total_poison_damage, total_ice_damage, total_silver_damage);
 
     return;

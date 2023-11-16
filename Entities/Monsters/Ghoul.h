@@ -27,7 +27,7 @@ public:
     void update_atributes();
     void update_all_resistances();
 
-    void attack(Entity &entity);
+    void attack(Entity &entity, int item_type = -1);
     void receive_damage(int physical_damage, 
                         int fire_damage, 
                         int poison_damage, 
