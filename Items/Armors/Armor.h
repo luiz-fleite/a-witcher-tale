@@ -32,7 +32,7 @@ public:
     inline void setIce_defense(int ice_defense) { this->ice_defense = ice_defense; }
     inline void setSilver_defense(int silver_defense) { this->silver_defense = silver_defense; }
 
-    virtual void use();
+    virtual map<string, int> use(int technique = 0);
 
     const Armor &operator=(const Armor &);
     int operator==(const Armor &other_armor) const;

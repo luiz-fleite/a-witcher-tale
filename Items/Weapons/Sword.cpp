@@ -33,13 +33,8 @@ Sword::Sword(string name, string description,
 
 }
 
-// Itme is abstract, so we can't use static_cast
-Sword::Sword(const Sword &other_sword) : Item(other_sword){
-    this->physical_damage = other_sword.physical_damage;
-    this->fire_damage = other_sword.fire_damage;
-    this->poison_damage = other_sword.poison_damage;
-    this->ice_damage = other_sword.ice_damage;
-    this->silver_damage = other_sword.silver_damage;
+// Weapon is abstract, so we can't use static_cast
+Sword::Sword(const Sword &other_sword) : Weapon(other_sword){
 
 }
 
@@ -47,8 +42,42 @@ Sword::~Sword() {
     //cout << "Destroying Sword...\n";
 }
 
-void Sword::use() {
-    cout << "Using Weapon...\n";
+map<string, int> Sword::use(int technique) {
+    // cout << "Using Sword...\n";
+    // cout << "Technique: " << technique << "\n";
+
+    map<string, int> info_buffer;
+    info_buffer["physical_damage"] = physical_damage;
+    info_buffer["fire_damage"] = fire_damage;
+    info_buffer["poison_damage"] = poison_damage;
+    info_buffer["ice_damage"] = ice_damage;
+    info_buffer["silver_damage"] = silver_damage;
+    info_buffer["stamina_cost"] = 0;
+    info_buffer["area"] = 1;
+
+    switch (technique) {
+        case FAST_ATTACK:
+            cout << "Fast attack\n";
+            info_buffer["stamina_cost"] += 4;
+            info_buffer["physical_damage"] -= 1;
+            break;
+        case STRONG_ATTACK:
+            cout << "Strong attack\n";
+            info_buffer["stamina_cost"] += 8;
+            info_buffer["physical_damage"] += 2;
+            break;
+        case GROUP_ATTACK:
+            cout << "Group attack\n";
+            info_buffer["stamina_cost"] += 12;
+            info_buffer["physical_damage"] -= 2;
+            info_buffer["area"] = 3;
+            break;
+        default:
+            cout << "Invalid attack\n";
+            break;
+    }
+
+    return info_buffer;
 }
 
 ostream &operator<< (ostream &out, const Sword &sword){
@@ -63,31 +92,19 @@ ostream &operator<< (ostream &out, const Sword &sword){
 }
 
 const Sword &Sword::operator=(const Sword &other_sword) {
-    // Item is abstract, so we can't do this:
-    //static_cast<Item>(*this) = static_cast<Item>(other_sword);
+    // Weapon is abstract, so we can't do this:
+    //static_cast<Weapon>(*this) = static_cast<Weapon>(other_sword);
     // So we do this:
-    Item::operator=(other_sword);
-
-    this->physical_damage = other_sword.physical_damage;
-    this->fire_damage = other_sword.fire_damage;
-    this->poison_damage = other_sword.poison_damage;
-    this->ice_damage = other_sword.ice_damage;
-    this->silver_damage = other_sword.silver_damage;
+    Weapon::operator=(other_sword);
 
     return *this;
 }
 
 int Sword::operator==(const Sword &other_sword) const {
-    // Item is abstract, so we can't do this:
-    // static_cast<Item>(*this) == static_cast<Item>(other_sword);
+    // Weapon is abstract, so we can't do this:
+    // static_cast<Weapon>(*this) == static_cast<Weapon>(other_sword);
     // So we do this:
-    Item::operator==(other_sword);
-
-    if (this->physical_damage != other_sword.physical_damage) return 0;
-    if (this->fire_damage != other_sword.fire_damage) return 0;
-    if (this->poison_damage != other_sword.poison_damage) return 0;
-    if (this->ice_damage != other_sword.ice_damage) return 0;
-    if (this->silver_damage != other_sword.silver_damage) return 0;
+    Weapon::operator==(other_sword);
 
     return 1;
 }

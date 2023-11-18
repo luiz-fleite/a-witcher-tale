@@ -2,9 +2,13 @@
 #define ITEM_H
 
 #include <string>
+#include <map>
 
 using std::ostream;
 using std::string;
+using std::cout;
+using std::map;
+using std::pair;
 
 class Item {
 public:
@@ -21,7 +25,7 @@ public:
 
     virtual void print_info() const;
 
-    virtual void use() = 0;
+    virtual map<string, int> use(int technique) = 0;
     
     const Item &operator=(const Item &);
     int operator==(const Item &other_Item) const;

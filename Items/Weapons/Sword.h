@@ -1,14 +1,17 @@
 #ifndef SWORD_H
 #define SWORD_H
 
-#include <string>
-
-#include "../Item.h"
+#include "Weapon.h"
 
 using std::ostream;
-using std::string;
 
-class Sword : public Item {
+enum technique {
+    FAST_ATTACK = 1,
+    STRONG_ATTACK = 2,
+    GROUP_ATTACK = 3
+};
+
+class Sword : public Weapon {
     friend ostream &operator<< (ostream &out, const Sword &sword);
 public:
     Sword();
@@ -19,30 +22,12 @@ public:
                                            int silver_damage = 0);
     Sword(const Sword &other_sword);
     ~Sword();
-    
-    inline int getPhysical_damage() const { return physical_damage; }
-    inline int getFire_damage() const { return fire_damage; }
-    inline int getPoison_damage() const { return poison_damage; }
-    inline int getIce_damage() const { return ice_damage; }
-    inline int getSilver_damage() const { return silver_damage; }
-
-    inline void setPhysical_damage(int physical_damage) { this->physical_damage = physical_damage; }
-    inline void setFire_damage(int fire_damage) { this->fire_damage = fire_damage; }
-    inline void setPoison_damage(int poison_damage) { this->poison_damage = poison_damage; }
-    inline void setIce_damage(int ice_damage) { this->ice_damage = ice_damage; }
-    inline void setSilver_damage(int silver_damage) { this->silver_damage = silver_damage; }
-
-    virtual void use();
+ 
+    virtual map<string, int> use(int technique = FAST_ATTACK);
 
     const Sword &operator=(const Sword &);
     int operator==(const Sword &other_sword) const;
     int operator!=(const Sword &other_sword) const;
-private:
-    int physical_damage;
-    int fire_damage;
-    int poison_damage;
-    int ice_damage;
-    int silver_damage;
 };
 
 #endif // SWORD_H

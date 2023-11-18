@@ -1,4 +1,4 @@
-#ifndef BATTLE_H
+#ifndef BATTLE_H // QUEBRADO TEMPORARIAMENTE
 #define BATTLE_H
 
 #include <string>

@@ -43,8 +43,11 @@ Armor::~Armor() {
     //cout << "Destroying Armor...\n";
 }
 
-void Armor::use() {
-    cout << "Using Armor...\n";
+map<string, int> Armor::use(int technique) {
+    // cout << "Using Armor...\n";
+    // cout << "Technique: " << technique << "\n";
+    map<string, int> defenses;
+    return defenses;
 }
 
 ostream &operator<< (ostream &out, const Armor &Armor){

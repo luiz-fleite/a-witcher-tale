@@ -3,13 +3,19 @@
 #include <unistd.h>  
 
 #include "./Entities/Entity.cpp"
+
 #include "./Entities/Humans/Human.cpp"
-#include "./Entities/Monsters/Ghoul.cpp"
-#include "./Events/Battle.cpp"
 #include "./Entities/Humans/Witcher.cpp"
+
+#include "./Entities/Monsters/Ghoul.cpp"
+
+#include "./Events/Battle.cpp"
+
 #include "./Items/Item.cpp"
+#include "./Items/Weapons/Weapon.cpp"
 #include "./Items/Weapons/Sword.cpp"
 #include "./Items/Armors/Armor.cpp"
+
 #include "./Utils/Date.cpp"
 
 #include "./Utils/load_save.h"

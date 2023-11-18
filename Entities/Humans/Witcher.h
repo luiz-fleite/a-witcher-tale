@@ -45,7 +45,15 @@ public:
 
     void update_atributes();
 
-    virtual void attack(Entity &entity, int weapon_type = UNARMED);
+    // simply attack one entity
+    void attack(Entity &entity, int weapon_type = UNARMED);
+    // attacks one or more entities
+    /*
+    void attack(vector<Entity*> &entities, 
+                int entity_index = 0, 
+                int weapon_type = UNARMED, 
+                int attack_type = 0);
+    */
 
     const Witcher &operator=(const Witcher &);
     bool operator==(const Witcher &other_witcher) const;

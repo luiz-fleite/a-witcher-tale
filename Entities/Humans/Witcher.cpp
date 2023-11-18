@@ -292,6 +292,8 @@ void Witcher::update_atributes() {
 
 void Witcher::attack(Entity &entity, int weapon_type) {
 
+    cout << name << " attacked " << entity.getName() << ".\n";
+
     // testing stunned inside attack, must be removed later
     if (is_stunned) {
         cout << name << " is stunned and can't attack.\n";
@@ -344,8 +346,11 @@ void Witcher::attack(Entity &entity, int weapon_type) {
 
         break;
     case STEEL_SWORD:
+        // uses sword to calculate stamina and damage
+        map<string, int> sword_info_buffer = equipped.steel_sword->use();
+        
         // Always check stamina first
-        if (!spend_stamina(WITCHER_ATTACK_COST)) {
+        if (!spend_stamina(sword_info_buffer["stamina_cost"])) {
             return;
         }
         
@@ -353,27 +358,26 @@ void Witcher::attack(Entity &entity, int weapon_type) {
         total_physical_damage += bonus_witcher_damage;
 
         // item damage
-        total_physical_damage += equipped.steel_sword->getPhysical_damage();
-        // cout << "total_physical_damage: " << total_physical_damage << "\n";
+        total_physical_damage += sword_info_buffer["physical_damage"];
+        // cout << "total_physical_damage: " << sword_info_buffer["physical_damage"] << "\n";
 
-        total_fire_damage += equipped.steel_sword->getFire_damage();
-        // cout << "total_fire_damage: " << total_fire_damage << "\n";
+        total_fire_damage += sword_info_buffer["fire_damage"];
+        // cout << "total_fire_damage: " << sword_info_buffer["fire_damage"] << "\n";
 
-        total_poison_damage += equipped.steel_sword->getPoison_damage();
-        // cout << "total_poison_damage: " << total_poison_damage << "\n";
+        total_poison_damage += sword_info_buffer["poison_damage"];
+        // cout << "total_poison_damage: " << sword_info_buffer["poison_damage"] << "\n";
 
-        total_ice_damage += equipped.steel_sword->getIce_damage();
-        // cout << "total_ice_damage: " << total_ice_damage << "\n";
+        total_ice_damage += sword_info_buffer["ice_damage"];
+        // cout << "total_ice_damage: " << sword_info_buffer["ice_damage"] << "\n";
 
-        total_silver_damage += equipped.steel_sword->getSilver_damage();
-        // cout << "total_silver_damage: " << total_silver_damage << "\n";
+        total_silver_damage += sword_info_buffer["silver_damage"];
+        // cout << "total_silver_damage: " << sword_info_buffer["silver_damage"] << "\n";
 
         break;
     }
 
     // After calculating all damage especifically
     // sends it to attacked entity
-    cout << name << " attacked " << entity.getName() << ".\n";
 
     entity.receive_damage(total_physical_damage, total_fire_damage, total_poison_damage, total_ice_damage, total_silver_damage);
 
