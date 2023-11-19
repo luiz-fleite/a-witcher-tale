@@ -17,6 +17,12 @@ Witcher::Witcher() {
     update_atributes();
     life_regen(max_health);
     stamina_regen(max_stamina);
+
+    equipped.steel_sword = 0;
+    equipped.armor = 0;
+
+    signs.igni = new Igni();
+    signs.igni->setIs_unlocked(true);
     
     is_stunned = false;
 
@@ -43,14 +49,17 @@ Witcher::Witcher(string name,
     life_regen(max_health);
     stamina_regen(max_stamina);
 
+    signs.igni = new Igni();
+    signs.igni->setIs_unlocked(true);
+
     is_stunned = false;
 
     is_close_to_chest = false;
 
     date_of_birth = Date(1, 1, 1000 - age);
 
-    equipped.steel_sword = new Sword("Steel Sword", "A basic steel sword.", 10);
-    equipped.armor = new Armor("Armor", "A basic armor.", 10);
+    equipped.steel_sword = new Sword();
+    equipped.armor = new Armor();
     update_all_resistances();
 }
 
@@ -311,6 +320,9 @@ void Witcher::attack(Entity &entity, int weapon_type) {
 
     int stamina_spent = 0;
 
+    map<string, int> sword_info_buffer;
+    map<string, int> sign_info_buffer;
+
     // Random unarmed base damage MIN_WITCHER_DAMAGE and MAX_WITCHER_DAMAGE
     srand(static_cast<unsigned int>(time(nullptr)));
     int bonus_witcher_damage = MIN_WITCHER_DAMAGE + rand() % (MAX_WITCHER_DAMAGE - MIN_WITCHER_DAMAGE + 1);
@@ -321,6 +333,14 @@ void Witcher::attack(Entity &entity, int weapon_type) {
     {
     case STEEL_SWORD:
         if (equipped.steel_sword == 0) {
+            weapon_type = UNARMED;
+        }
+        break;
+    case IGNI:
+        if (signs.igni == 0) {
+            weapon_type = UNARMED;
+        }
+        if (signs.igni->getIs_unlocked() == false) {
             weapon_type = UNARMED;
         }
         break;
@@ -347,7 +367,7 @@ void Witcher::attack(Entity &entity, int weapon_type) {
         break;
     case STEEL_SWORD:
         // uses sword to calculate stamina and damage
-        map<string, int> sword_info_buffer = equipped.steel_sword->use();
+        sword_info_buffer = equipped.steel_sword->use();
         
         // Always check stamina first
         if (!spend_stamina(sword_info_buffer["stamina_cost"])) {
@@ -374,7 +394,29 @@ void Witcher::attack(Entity &entity, int weapon_type) {
         // cout << "total_silver_damage: " << sword_info_buffer["silver_damage"] << "\n";
 
         break;
+    case IGNI:
+        cout << "Witcher is casting igni.\n";
+        
+        // uses igni to calculate stamina and damage
+        sign_info_buffer = signs.igni->cast();
+        
+        // Always check stamina first
+        if (!spend_stamina(sign_info_buffer["stamina_cost"])) {
+            return;
+        }
+        
+        // sign damage
+        total_fire_damage += sign_info_buffer["fire_damage"];
+        // cout << "total_fire_damage: " << igni_info_buffer["fire_damage"] << "\n";
+        
+        break;
+    
+    
+    
     }
+    
+
+
 
     // After calculating all damage especifically
     // sends it to attacked entity
@@ -384,22 +426,33 @@ void Witcher::attack(Entity &entity, int weapon_type) {
     return;
 }
 
-ostream &operator<< (ostream &out, const Witcher &witcher){
+ostream &operator<< (ostream &out, const Witcher &witcher) {
     out << static_cast<Human>(witcher);
+    cout << "Witcher signs:\n";
+    cout << *witcher.signs.igni << "\n";
+
     return out;
 }
 
 const Witcher &Witcher::operator=(const Witcher &other_witcher) {
     if (this != &other_witcher) {
         *static_cast< Human * >( this ) = static_cast< Human >( other_witcher );
+        delete this->signs.igni;
+        this->signs.igni = other_witcher.signs.igni;
+        this->is_close_to_chest = other_witcher.is_close_to_chest;
     }
     return *this;
 }
 
 bool Witcher::operator==(const Witcher &other_witcher) const {
-    return static_cast< Human >( *this ) == static_cast< Human >( other_witcher );
+    static_cast< Human >( *this ) == static_cast< Human >( other_witcher );
+
+    if (signs.igni != other_witcher.signs.igni) return false;
+    if (is_close_to_chest != other_witcher.is_close_to_chest) return false;
+
+    return true;
 }
 
 bool Witcher::operator!=(const Witcher &other_witcher) const {
-    return static_cast< Human >( *this ) != static_cast< Human >( other_witcher );
+    return !(*this == other_witcher);
 }

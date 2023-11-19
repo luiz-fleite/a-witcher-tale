@@ -28,6 +28,7 @@ enum item_type {
 enum weapon_type {
     UNARMED = 0,
     STEEL_SWORD = 1,
+    IGNI = 2,
     // SILVER_SWORD = 2,
     // TOTAL_WEAPON_TYPES = 3
 };
@@ -96,7 +97,7 @@ public:
     void remove_item(int item_type, int item_index);
 
     // add an item from a source and deletes it
-    void grab_item(vector<Item*> &source_items, int item_index);
+    void grab_item(vector<Item*> &source_items, int item_index = 0);
     // remove an item and put it somewhere
     void drop_item(vector<Item*> &destiny_items, int item_type, int item_index);
 

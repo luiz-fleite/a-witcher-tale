@@ -14,6 +14,7 @@ Sword::Sword() {
     poison_damage = 0;
     ice_damage = 0;
     silver_damage = 0;
+    made_of_silver = false;
 
 }
 
@@ -22,7 +23,8 @@ Sword::Sword(string name, string description,
                           int fire_damage, 
                           int poison_damage, 
                           int ice_damage, 
-                          int silver_damage) {
+                          int silver_damage,
+                          bool made_of_silver) {
     setName(name);
     setDescription(description);
     setPhysical_damage(physical_damage);
@@ -30,11 +32,13 @@ Sword::Sword(string name, string description,
     setPoison_damage(poison_damage);
     setIce_damage(ice_damage);
     setSilver_damage(silver_damage);
-
+    setMade_of_silver(made_of_silver);
 }
 
 // Weapon is abstract, so we can't use static_cast
 Sword::Sword(const Sword &other_sword) : Weapon(other_sword){
+    //cout << "Copying Sword...\n";
+    made_of_silver = other_sword.made_of_silver;
 
 }
 
@@ -96,6 +100,7 @@ const Sword &Sword::operator=(const Sword &other_sword) {
     //static_cast<Weapon>(*this) = static_cast<Weapon>(other_sword);
     // So we do this:
     Weapon::operator=(other_sword);
+    made_of_silver = other_sword.made_of_silver;
 
     return *this;
 }
@@ -105,6 +110,7 @@ int Sword::operator==(const Sword &other_sword) const {
     // static_cast<Weapon>(*this) == static_cast<Weapon>(other_sword);
     // So we do this:
     Weapon::operator==(other_sword);
+    if (this->made_of_silver != other_sword.made_of_silver) return 0;
 
     return 1;
 }

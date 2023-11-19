@@ -70,6 +70,17 @@ map<string, int> Igni::cast(int technique) {
     return sign_info;
 }
 
+ostream &operator<<(ostream &out, const Igni &igni) {
+    out << igni.name << "\n";
+    out << igni.description << "\n";
+    out << igni.is_unlocked << "\n";
+    out << igni.stamina_cost << "\n";
+    out << igni.fire_damage << "\n";
+    out << igni.area << "\n";
+
+    return out;
+}
+
 const Igni &Igni::operator=(const Igni &other_igni) {
     if (this != &other_igni) {
         Sign::operator=(other_igni);

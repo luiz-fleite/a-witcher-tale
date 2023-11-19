@@ -3,8 +3,11 @@
 
 #include "Sign.h"
 
+using std::ostream;
+
 
 class Igni : public Sign{
+    friend ostream &operator<<(ostream &out, const Igni &igni);
 public:
     Igni();
     Igni(string name, 
@@ -24,7 +27,7 @@ public:
 
     void print_info() const;
 
-    virtual map<string, int> cast(int technique);
+    virtual map<string, int> cast(int technique = 0);
 
     const Igni &operator=(const Igni &);
     int operator==(const Igni &other_Igni) const;
@@ -33,6 +36,5 @@ private:
     int fire_damage;
     int area;
 };
-
 
 #endif // IGNI_H

@@ -17,6 +17,11 @@ using std::istringstream;
 
 
 #include "Human.h"
+#include "../../Spells/Signs/Igni.h"
+
+struct Signs {
+    Igni * igni;
+};
 
 class Witcher: public Human {
     friend ostream &operator<< (ostream &out, const Witcher &witcher);
@@ -64,6 +69,8 @@ private:
     
     const static int STAMINA_LINEAR_COEF = 10;
     const static int STAMINA_ANGULAR_COEF = 5;
+
+    Signs signs;
 
     bool is_close_to_chest;
     map<string, Item*> personal_chest;

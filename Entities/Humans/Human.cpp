@@ -208,16 +208,39 @@ const Human &Human::operator=(const Human &other_human) {
         // forma sugerida pela IA
         Entity::operator=(other_human);
         if (other_human.equipped.steel_sword == 0) equipped.steel_sword = 0;
-        else equipped.steel_sword = new Sword(*other_human.equipped.steel_sword);
+        else {
+            delete equipped.steel_sword;
+            equipped.steel_sword = new Sword(*other_human.equipped.steel_sword);
+        }
 
         if (other_human.equipped.armor == 0) equipped.armor = 0;
-        else equipped.armor = new Armor(*other_human.equipped.armor);
+        else {
+            delete equipped.armor;
+            equipped.armor = new Armor(*other_human.equipped.armor);
+        }
     }
     return *this;
 }
 
 bool Human::operator==(const Human &other_human) const {
-    if (!Entity::operator==(other_human)) return false;
+    Entity::operator==(other_human);
+
+    // First checks if its empty
+    if (equipped.steel_sword == 0 && other_human.equipped.steel_sword != 0) return false;
+    if (equipped.steel_sword != 0 && other_human.equipped.steel_sword == 0) return false;
+    // Then checks if its equal
+    if (equipped.steel_sword != 0 && other_human.equipped.steel_sword != 0) {
+        if (*equipped.steel_sword != *other_human.equipped.steel_sword) return false;
+    }
+
+    // First checks if its empty
+    if (equipped.armor == 0 && other_human.equipped.armor != 0) return false;
+    if (equipped.armor != 0 && other_human.equipped.armor == 0) return false;
+    // Then checks if its equal
+    if (equipped.armor != 0 && other_human.equipped.armor != 0) {
+        if (*equipped.armor != *other_human.equipped.armor) return false;
+    }
+
     return true;
 }
 

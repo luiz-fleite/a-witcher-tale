@@ -45,8 +45,14 @@ Armor::~Armor() {
 
 map<string, int> Armor::use(int technique) {
     // cout << "Using Armor...\n";
-    // cout << "Technique: " << technique << "\n";
     map<string, int> defenses;
+
+    defenses["physical_defense"] = physical_defense;
+    defenses["fire_defense"] = fire_defense;
+    defenses["poison_defense"] = poison_defense;
+    defenses["ice_defense"] = ice_defense;
+    defenses["silver_defense"] = silver_defense;
+    
     return defenses;
 }
 
@@ -62,7 +68,9 @@ ostream &operator<< (ostream &out, const Armor &Armor){
 }
 
 const Armor &Armor::operator=(const Armor &other_Armor) {
-    static_cast<Item &>(*this) = static_cast<const Item &>(other_Armor);
+    // forma não permitida pela classe abstrata Item
+    //static_cast<Item &>(*this) = static_cast<const Item &>(other_Armor);
+    Item::operator=(other_Armor);
     this->physical_defense = other_Armor.physical_defense;
     this->fire_defense = other_Armor.fire_defense;
     this->poison_defense = other_Armor.poison_defense;
@@ -73,7 +81,9 @@ const Armor &Armor::operator=(const Armor &other_Armor) {
 }
 
 int Armor::operator==(const Armor &other_Armor) const {
-    static_cast<const Item &>(*this) == static_cast<const Item &>(other_Armor);
+    // forma não permitida pela classe abstrata Item
+    //static_cast<const Item &>(*this) == static_cast<const Item &>(other_Armor);
+    Item::operator==(other_Armor);
     if (this->physical_defense != other_Armor.physical_defense) return 0;
     if (this->fire_defense != other_Armor.fire_defense) return 0;
     if (this->poison_defense != other_Armor.poison_defense) return 0;

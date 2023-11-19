@@ -21,9 +21,11 @@ public:
     
     inline string getName() const { return name; }
     inline string getDescription() const { return description; }
+    inline bool getIs_unlocked() const { return is_unlocked; }
     
     void setName(string name);
     void setDescription(string description);
+    inline void setIs_unlocked(bool is_unlocked) { this->is_unlocked = is_unlocked; }
 
     virtual void print_info() const;
 
@@ -35,6 +37,7 @@ public:
 protected:
     string name;
     string description;
+    bool is_unlocked;
 private:
     const static int MAX_NAME_SIZE = 20;
     const static int MAX_DESCRIPTION_SIZE = 100;

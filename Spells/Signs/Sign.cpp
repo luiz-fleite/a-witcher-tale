@@ -45,7 +45,6 @@ const Sign &Sign::operator=(const Sign &other_sign) {
 int Sign::operator==(const Sign &other_sign) const {
     Spell::operator==(other_sign);
 
-    if (this->is_unlocked != other_sign.is_unlocked) return 0;
     if (this->stamina_cost == other_sign.stamina_cost) return 0;
 
     return 1;

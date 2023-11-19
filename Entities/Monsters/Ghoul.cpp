@@ -8,7 +8,6 @@
 using std::cout;
 using std::srand;
 using std::rand;
-using std::time;
 
 
 Ghoul::Ghoul() {
@@ -104,21 +103,18 @@ void Ghoul::update_all_weaknesses() {
 }
 
 void Ghoul::attack(Entity &entity, int weapon_type) {
-    if (getStamina() < GHOUL_ATTACK_COST) {
-        cout << name << " has no stamina left to attack.\n";
+    if (!spend_stamina(GHOUL_ATTACK_COST)) {
         return;
     }
-    setStamina(getStamina() - GHOUL_ATTACK_COST);
+    cout << name << " attacked " << entity.getName() << ".\n";
     // Dano aleatorio entre MIN_GHOUL_DAMAGE e MAX_GHOUL_DAMAGE
     srand(static_cast<unsigned int>(time(nullptr)));
     int damage = MIN_GHOUL_DAMAGE + rand() % (MAX_GHOUL_DAMAGE - MIN_GHOUL_DAMAGE + 1);
     // depois de gerar o dano aleatorio adiciona o level do Ghoul
-    // para nivelar o jogo ao nivel desejado
-    // o valor é propositalmente arredondado para baixo
-    damage = damage + (getLevel() / 3);
+
+    damage = damage + getLevel();
     entity.receive_damage(damage);
-    cout << name << " attacked " << entity.getName() << ".\n";
-    cout << entity.getName() << " -" << damage << " damage.\n";
+
     return;
 }
 
@@ -134,6 +130,8 @@ void Ghoul::receive_damage(int physical_damage, int fire_damage, int poison_dama
 
 ostream &operator<<(ostream &out, const Ghoul &ghoul) {
     ghoul.print_info();
+    out << "Enraged: " << ghoul.is_enraged << "\n";
+    
     return out;
 }
 
@@ -142,11 +140,15 @@ const Ghoul &Ghoul::operator=(const Ghoul &other_ghoul) {
         return *this;
     }
     Entity::operator=(other_ghoul);
+    this->is_enraged = other_ghoul.is_enraged;
+    
     return *this;
 }
 
 int Ghoul::operator==(const Ghoul &other_ghoul) const {
-    return Entity::operator==(other_ghoul);
+    Entity::operator==(other_ghoul);
+    if (this->is_enraged != other_ghoul.is_enraged) { return 0; }
+    return 1;
 }
 
 int Ghoul::operator!=(const Ghoul &other_ghoul) const {
