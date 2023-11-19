@@ -6,11 +6,13 @@ Spell::Spell() {
     //cout << "Creating a new Spell...\n";
     name = "Spell";
     description = "A generic Spell.";
+    is_unlocked = false;
 }
 
 Spell::Spell(const Spell &other_spell) {
     this->name = other_spell.name;
     this->description = other_spell.description;
+    this->is_unlocked = other_spell.is_unlocked;
 }
 
 Spell::~Spell() {

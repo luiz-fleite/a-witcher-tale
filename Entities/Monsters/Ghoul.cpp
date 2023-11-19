@@ -54,6 +54,13 @@ Ghoul::Ghoul(string name,
     is_stunned = false;
 }
 
+Ghoul::Ghoul(const Ghoul &other_ghoul) : Entity(other_ghoul) {
+    //cout << "Copying Ghoul...\n";
+
+    this->is_enraged = other_ghoul.is_enraged;
+    
+}
+
 Ghoul::~Ghoul() {
     //cout << "Destroying Ghoul...\n";
     for_each(inventory.swords.begin(), inventory.swords.end(), [](Sword *s) { delete s; });

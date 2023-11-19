@@ -65,6 +65,8 @@ Witcher::Witcher(string name,
 
 Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_witcher)) {
     //cout << "Copying Witcher...\n";
+    is_close_to_chest = other_witcher.is_close_to_chest;
+    signs.igni = other_witcher.signs.igni;
 }
 
 Witcher::~Witcher() {

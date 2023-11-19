@@ -1928,63 +1928,491 @@ int Igni::operator!=(const Igni &other_igni) const {
  ////Mostrar uso de reaproveitamento de código da base na derivada
 
     //// Base 1 - constructores
+    // Entity
         ////Constructor 1
+        // a classe é abstrata portanto o construtor não instancia nada
+    Entity::Entity() {
+    //cout << "Creating a new Entity...\n";
+    name = "Entity";
+    age = 0;
+    coins = 0;
+    max_health = 0;
+    health = 0;
+    max_stamina = 0;
+    stamina = 0;
+    category = "_";
+    level = 0;
+    next_level_xp = 10;
+    xp = 0;
 
+    physical_weakness = 1;
+    fire_weakness = 1;
+    poison_weakness = 1;
+    ice_weakness = 1;
+    silver_weakness = 1;
+
+    total_physical_resistance = 0;
+    total_fire_resistance = 0;
+    total_poison_resistance = 0;
+    total_ice_resistance = 0;
+    total_silver_resistance = 0;
+
+    is_stunned = false;
+}
         ////Constructor de cópia
+    Entity::Entity(const Entity &other_entity) {
+    //cout << "Copying Entity...\n";
+    this->name = other_entity.name;
+    this->age = other_entity.age;
+    this->coins = other_entity.coins;
+
+    this->max_health = other_entity.max_health;
+    this->health = other_entity.health;
+    this->max_stamina = other_entity.max_stamina;
+    this->stamina = other_entity.stamina;
+
+    this->category = other_entity.category;
+    this->level = other_entity.level;
+    this->next_level_xp = other_entity.next_level_xp;
+    this->xp = other_entity.xp;
+
+    this->is_stunned = other_entity.is_stunned;
+
+    this->physical_weakness = other_entity.physical_weakness;
+    this->fire_weakness = other_entity.fire_weakness;
+    this->poison_weakness = other_entity.poison_weakness;
+    this->ice_weakness = other_entity.ice_weakness;
+    this->silver_weakness = other_entity.silver_weakness;
+
+    this->total_physical_resistance = other_entity.total_physical_resistance;
+    this->total_fire_resistance = other_entity.total_fire_resistance;
+    this->total_poison_resistance = other_entity.total_poison_resistance;
+    this->total_ice_resistance = other_entity.total_ice_resistance;
+    this->total_silver_resistance = other_entity.total_silver_resistance;
+
+    for (auto sword : other_entity.inventory.swords) {
+        Sword * new_sword = new Sword(*sword);
+        this->inventory.swords.push_back(new_sword);
+    }
+    for (auto armor : other_entity.inventory.armors) {
+        Armor * new_armor = new Armor(*armor);
+        this->inventory.armors.push_back(new_armor);
+    }
+
+}
 
     //// Base 2 - constructores
+    // Item
         ////Constructor 1
-
+        // a classe é abstrata portanto o construtor não instancia nada
+    Item::Item() {
+    //cout << "Creating a new Item...\n";
+    name = "Item";
+    description = "A generic item.";
+}
         ////Constructor de cópia
+    Item::Item(const Item &other_Item) {
+    this->name = other_Item.name;
+    this->description = other_Item.description;
+}
 
     //// Base 3 - constructores
+    // Spell
         ////Constructor 1
-
+        // a classe é abstrata portanto o construtor não instancia nada
+    Spell::Spell() {
+    //cout << "Creating a new Spell...\n";
+    name = "Spell";
+    description = "A generic Spell.";
+    is_unlocked = false;
+}
         ////Constructor de cópia 
+    Spell::Spell(const Spell &other_spell) {
+    this->name = other_spell.name;
+    this->description = other_spell.description;
+    this->is_unlocked = other_spell.is_unlocked;
+}
 
     ////Derivadas - constructores
 
         //// Hierarquia 1
+        // Entity
 
              ////Classe 1
+             // Ghoul
                  ////Constructor 1
+                 // como é filho de uma classe abstrata não pode usar
+                 // static cast e como deve possuir valores padrão caracteristicos dele
+                 // chamando funções q são puramente virtuais na abstrata Entity,
+                 // a saber, level_up(), update_atributes(), update_all_resistances() e
+                 // update_all_weaknesses(), sendo que algumas seguem uma equação da reta 
+                 // com coeficientes declarados no escopo da classe derivada,
+                 //  ele não poderia reaproveitar nada
+    Ghoul::Ghoul() {
+    //cout << "Creating a new Ghoul...\n";
+    name = "Ghoul";
+    age = 100;
+    coins = 15;
 
+    category = CATEGORIES[0];
+    level = 0;
+    xp = 0;
+
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+    update_all_resistances();
+    update_all_weaknesses();
+
+    bool is_stunned = false;
+}
+
+Ghoul::Ghoul(string name, 
+             int age, 
+             double coins, 
+             int level,
+             string category) {
+
+    setName(name);
+    setAge(age);
+    setCoins(coins);
+
+    setCategory(category);
+    setLevel(level);
+    setXp(0);
+
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+    update_all_resistances();
+    update_all_weaknesses();
+
+    is_stunned = false;
+}
                  ////Constructor de cópia
+                 // reaproveita a esmagadora maioria dos atributos e a copia do inventario
+    Ghoul::Ghoul(const Ghoul &other_ghoul) : Entity(other_ghoul) {
+    //cout << "Copying Ghoul...\n";
 
+    this->is_enraged = other_ghoul.is_enraged;
+    
+}
              ////Classe 2
+             // Human
                  ////Constructor 1
+            // não pode reaproveitar o construtor pelo mesmo motivo da classe Ghoul acima
+            Human::Human() {
+    //cout << "Creating a new Human...\n";
+    name = "Peasant";
+    age = 30;
+    coins = 50.00;
 
+    category = CATEGORIES[0];
+    level = 0;
+    xp = 0;
+
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+    equipped.steel_sword = 0;
+    equipped.armor = 0;
+
+    is_stunned = false;
+
+    date_of_birth = Date(1, 1, 1000 - age);
+
+    update_all_resistances();
+    update_all_weaknesses();
+}
+
+Human::Human(string name, 
+            int age, 
+            double coins, 
+            int level,
+            string category) {
+                
+    setName(name);
+    setAge(age);
+    setCoins(coins);
+
+    setCategory(category);
+    setLevel(level);
+    setXp(0);
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+
+    equipped.steel_sword = new Sword();
+    equipped.armor = new Armor();
+
+    is_stunned = false;
+
+    date_of_birth = Date(1, 1, 1000 - age);
+
+    update_all_resistances();
+    update_all_weaknesses();
+}
                  ////Constructor de cópia
-             
+            // reaproveita a esmagadora maioria dos atributos e a copia do inventario
+    Human::Human(const Human &other_human) : Entity(other_human) {
+    //cout << "Copying Human...\n";
+
+    if (other_human.equipped.steel_sword == 0) equipped.steel_sword = 0;
+    else equipped.steel_sword = new Sword(*other_human.equipped.steel_sword);
+
+    if (other_human.equipped.armor == 0) equipped.armor = 0;
+    else equipped.armor = new Armor(*other_human.equipped.armor);
+
+}
+             ////Classe 3
+            // Witcher
+            ////Constructor 1
+            // não pode reaproveitar o codigo de Human porq os seus valores devem ser incializados
+            // de acordo com uma função da reta diferente da de Human
+            Witcher::Witcher() {
+    //cout << "Creating a new Witcher...\n";
+    name = "Witcher";
+    age = 200;
+    coins = 150;
+
+    category = CATEGORIES[0];
+    level = 0;
+    xp = 0;
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+    equipped.steel_sword = 0;
+    equipped.armor = 0;
+
+    signs.igni = new Igni();
+    signs.igni->setIs_unlocked(true);
+    
+    is_stunned = false;
+
+    is_close_to_chest = false;
+
+    date_of_birth = Date(1, 1, 1000 - age);
+
+}
+
+Witcher::Witcher(string name, 
+                 int age, 
+                 double coins, 
+                 int level,
+                 string category) {
+                
+    setName(name);
+    setAge(age);
+    setCoins(coins);
+
+    setCategory(category);
+    setLevel(level);
+    setXp(0);
+    update_atributes();
+    life_regen(max_health);
+    stamina_regen(max_stamina);
+
+    signs.igni = new Igni();
+    signs.igni->setIs_unlocked(true);
+
+    is_stunned = false;
+
+    is_close_to_chest = false;
+
+    date_of_birth = Date(1, 1, 1000 - age);
+
+    equipped.steel_sword = new Sword();
+    equipped.armor = new Armor();
+    update_all_resistances();
+}
+            ////Constructor de cópia
+            // reaproveita a esmagadora maioria dos atributos e a copia dos itens equipados
+            // utilizando static_cast
+    Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_witcher)) {
+    //cout << "Copying Witcher...\n";
+    is_close_to_chest = other_witcher.is_close_to_chest;
+    signs.igni = other_witcher.signs.igni;
+}
              ///E assim por diante
 
 
         //// Hierarquia 2
+        // Item
 
              ////Classe 1
+             // Armor
                  ////Constructor 1
+                 // não usa static cast porq a classe base é abstrata e seus atributos padrão
+                 // são diferentes
+                 Armor::Armor() {
+    //cout << "Creating a new Armor...\n";
+    name = "Common Armor";
+    description = "A common armor. Very used and not very protective.";
+    physical_defense = 1;
+    fire_defense = 0;
+    poison_defense = 0;
+    ice_defense = 0;
+    silver_defense = 0;
+}
+
+Armor::Armor(string name, string description, 
+                          int physical_defense, 
+                          int fire_defense, 
+                          int poison_defense, 
+                          int ice_defense, 
+                          int silver_defense) {
+    setName(name);
+    setDescription(description);
+    setPhysical_defense(physical_defense);
+    setFire_defense(fire_defense);
+    setPoison_defense(poison_defense);
+    setIce_defense(ice_defense);
+    setSilver_defense(silver_defense);
+
+}
 
                  ////Constructor de cópia
+                 // reaproveita atributos
+    Armor::Armor(const Armor &other_Armor) : Item(other_Armor) {
+    this->physical_defense = other_Armor.physical_defense;
+    this->fire_defense = other_Armor.fire_defense;
+    this->poison_defense = other_Armor.poison_defense;
+    this->ice_defense = other_Armor.ice_defense;
+    this->silver_defense = other_Armor.silver_defense;
+
+}
 
              ////Classe 2
+                // Weapon
                  ////Constructor 1
+            // não usa static cast porq a classe base é abstrata e sendo a propria derivada
+            // abstrata tambem, seu construtor não instancia nada
+    Weapon::Weapon() {
+    //cout << "Creating a new weapon...\n";
+    name = "A generic weapon";
+    description = "A generic weapon. Very Used by the common folk.";
+    physical_damage = 0;
+    fire_damage = 0;
+    poison_damage = 0;
+    ice_damage = 0;
+    silver_damage = 0;
+}
 
                  ////Constructor de cópia
+                // reaproveita atributos
+    Weapon::Weapon(const Weapon &other_weapon) : Item(other_weapon){
+    this->physical_damage = other_weapon.physical_damage;
+    this->fire_damage = other_weapon.fire_damage;
+    this->poison_damage = other_weapon.poison_damage;
+    this->ice_damage = other_weapon.ice_damage;
+    this->silver_damage = other_weapon.silver_damage;
 
+}
+
+                ////Classe 3
+                    // Sword
+                    ////Constructor 1
+            // não usa static cast porq a classe base é abstrata e seus valores
+            // padrão tambem são diferentes
+    Sword::Sword() {
+    //cout << "Creating a new Sword...\n";
+    name = "Common Sword";
+    description = "A common sword. Very Used by the common folk.";
+    physical_damage = 2;
+    fire_damage = 0;
+    poison_damage = 0;
+    ice_damage = 0;
+    silver_damage = 0;
+    made_of_silver = false;
+
+}
+
+Sword::Sword(string name, string description, 
+                          int physical_damage, 
+                          int fire_damage, 
+                          int poison_damage, 
+                          int ice_damage, 
+                          int silver_damage,
+                          bool made_of_silver) {
+    setName(name);
+    setDescription(description);
+    setPhysical_damage(physical_damage);
+    setFire_damage(fire_damage);
+    setPoison_damage(poison_damage);
+    setIce_damage(ice_damage);
+    setSilver_damage(silver_damage);
+    setMade_of_silver(made_of_silver);
+}
+                
+            ////Constructor de cópia
+            // reaproveita a maioria dos atributos
+    Sword::Sword(const Sword &other_sword) : Weapon(other_sword){
+    //cout << "Copying Sword...\n";
+    made_of_silver = other_sword.made_of_silver;
+
+}
              ///E assim por diante
 
 
-      //// Hierarquia 2
+      //// Hierarquia 3
+      // Spell
 
              ////Classe 1
+            // Sign
                  ////Constructor 1
-
+    // não usa static cast porq a classe base é abstrata e sendo a propria derivada
+    // abstrata tambem, seu construtor não instancia nada
+    Sign::Sign() {
+    this->name = "Sign";
+    this->description = "A sign spell.";
+    this->is_unlocked = false;
+    this->stamina_cost = 0;
+    }
                  ////Constructor de cópia
+    // reaproveita atributos
+    Sign::Sign(const Sign &other_sign) : Spell(other_sign) {
+    this->stamina_cost = other_sign.stamina_cost;
+}
 
              ////Classe 2
+            // Igni
                  ////Constructor 1
+    // não usa static cast porq a classe base é abstrata e seus valores
+    // padrão tambem são diferentes
+    Igni::Igni() {
+    this->name = "Igni";
+    this->description = "A fire spell that deals damage to 3 enemies at a time.";
+    this->is_unlocked = false;
+    this->stamina_cost = 6;
+    this->fire_damage = 8;
+    this->area = 3;
+}
+
+Igni::Igni(string name, 
+           string description, 
+           bool is_unlocked, 
+           int stamina_cost, 
+           int fire_damage, 
+           int area) {
+    this->name = name;
+    this->description = description;
+    this->is_unlocked = is_unlocked;
+    this->stamina_cost = stamina_cost;
+    this->fire_damage = fire_damage;
+    this->area = area;
+}
 
                  ////Constructor de cópia
+            // reaproveita atributos
+    Igni::Igni(const Igni &other_igni) : Sign(other_igni) {
+    this->fire_damage = other_igni.fire_damage;
+    this->area = other_igni.area;
+}
 
              ///E assim por diante
 

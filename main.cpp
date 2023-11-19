@@ -27,8 +27,7 @@
 
 int main(void) {
 
-    // criar batalha para testar os itens
-    // criar mais itens
+
     cout << "=========Before battle==========\n";
     Witcher * w1 = new Witcher("Geralt");
     cout << *w1;

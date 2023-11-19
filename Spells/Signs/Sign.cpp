@@ -10,7 +10,6 @@ Sign::Sign() {
 }
 
 Sign::Sign(const Sign &other_sign) : Spell(other_sign) {
-    this->is_unlocked = other_sign.is_unlocked;
     this->stamina_cost = other_sign.stamina_cost;
 }
 

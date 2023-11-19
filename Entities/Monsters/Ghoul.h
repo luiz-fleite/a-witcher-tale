@@ -16,7 +16,7 @@ public:
         double coins=30, 
         int level = 10,
         string category="E");
-    Ghoul(const Ghoul &other_ghoul): Entity(other_ghoul) { };
+    Ghoul(const Ghoul &other_ghoul);
     ~Ghoul();
 
     inline bool getIs_enraged() const { return is_enraged; }

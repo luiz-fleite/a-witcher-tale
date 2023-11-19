@@ -10,7 +10,10 @@ Armor::Armor() {
     name = "Common Armor";
     description = "A common armor. Very used and not very protective.";
     physical_defense = 1;
-
+    fire_defense = 0;
+    poison_defense = 0;
+    ice_defense = 0;
+    silver_defense = 0;
 }
 
 Armor::Armor(string name, string description, 
