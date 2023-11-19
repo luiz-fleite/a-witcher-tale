@@ -1,7 +1,7 @@
 @@startuml
 
 abstract class Entity {
-
+    # inventory : inventory_items
 }
 
 class Human {
@@ -16,11 +16,11 @@ class Ghoul {
 
 }
 
-class Item {
+abstract class Item {
 
 }
 
-class Weapon {
+abstract class Weapon {
 
 }
 
@@ -32,11 +32,11 @@ class Armor {
 
 }
 
-class Spell {
+abstract class Spell {
 
 }
 
-class Signs {
+abstract class Signs {
 
 }
 

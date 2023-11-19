@@ -2423,8 +2423,8 @@ Igni::Igni(string name,
       Sem o diagrama UML, a saída do programa e o vídeo, o trabalho não será avaliado.*/
 
     //Link arquivo de configuração no repositório
-    //https://github.com/luiz-fleite/a-witcher-tale/tree/main/save-files/config-witcher
+    // path para a pasta com os 3 arquivos de configuração:a-witcher-tale/save-files
+    // Link : https://github.com/luiz-fleite/a-witcher-tale/tree/main/save-files/config-witcher
 
     //Link vídeo mostrando a execução do código usando o arquivo de configuração
-    // 
-*/
+    // Link : https://drive.google.com/drive/folders/19zTKEHwtlts1WFDu0uHt2Zwy0f5eKu12?usp=sharing

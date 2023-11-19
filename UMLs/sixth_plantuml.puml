@@ -170,7 +170,7 @@ class Ghoul {
     + operator!=(const Ghoul &) : bool
 }
 
-class Item {
+abstract class Item {
     # MAX_NAME_SIZE const static : int
     # MAX_DESCRIPTION_SIZE const static : int
 
@@ -190,7 +190,7 @@ class Item {
 
 }
 
-class Weapon {
+abstract class Weapon {
     # physical_damage : int
     # fire_damage : int
     # poison_damage : int
@@ -241,7 +241,7 @@ class Armor {
     + operator!=(const Armor &) : bool
 }
 
-class Spell {
+abstract class Spell {
     - MAX_NAME_SIZE const static : int
     - MAX_DESCRIPTION_SIZE const static : int 
 
@@ -262,7 +262,7 @@ class Spell {
 
 }
 
-class Signs {
+abstract class Signs {
     # stamina_cost : int
 
     + Signs()
