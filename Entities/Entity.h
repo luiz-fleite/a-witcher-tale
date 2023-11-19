@@ -136,14 +136,17 @@ protected:
     string name;
     int age;
     double coins;
+
     int max_health;
     int health;
     int max_stamina;
     int stamina;
+
     string category;
     int level;
     int next_level_xp;
     int xp;
+    
     bool is_stunned = false;
 
     inventory_items inventory;

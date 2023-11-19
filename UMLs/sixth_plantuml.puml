@@ -1,0 +1,341 @@
+@@startuml
+
+abstract class Entity {
+    # name : string
+    # age : int
+    # coins : double
+
+    # max_health : int
+    # health : int
+    # max_stamina : int
+    # stamina : int
+
+    # category : string
+    # level : int
+    # next_level_xp : int
+    # xp : int
+
+    # is_stunned : bool
+
+    # inventory : inventory_items
+
+    # physical_weakness : int
+    # fire_weakness : int
+    # poison_weakness : int
+    # ice_weakness : int
+    # silver_weakness : int
+
+    # total_physical_resistance : int
+    # total_fire_resistance : int
+    # total_poison_resistance : int
+    # total_ice_resistance : int
+    # total_silver_resistance : int
+
+    # date_of_birth : Date
+
+    # CATEGORIES const static: string[]
+    # MAX_NAME_SIZE const : int
+    # NEXT_LEVEL_XP_LINEAR_COEF const static : int
+    # NEXT_LEVEL_XP_ANGULAR_COEF const static : int
+
+    + Entity()
+    + Entity(const Entity &)
+
+    + add_item(Item&) : void
+    + remove_item(int item_type, int item_index) : void
+    + grab_item(Item*[] & source_items, int item_index)
+    + drop_item(Item*[] & destiny_items, int item_type, int item_index) : void
+
+    + print_inventory() const : void
+
+    + virtual life_regen(int) : void
+    + virtual stamina_regen(int) : void
+    + virtual gain_xp(int) : void
+
+    + {abstract} level_up() : void
+    + {abstract} update_atributes() : void
+    + {abstract} update_all_resistances() : void
+    + {abstract} update_all_weaknesses() : void
+
+    + {abstract} attack(Entity &) : void
+    + virtual receive_damage(int) : void
+
+    + spend_stamina(int) : bool
+
+    + print_info() const : void
+    + print_resistances() const : void
+    + print_weaknesses() const : void
+
+    + virtual talk() : void
+    + virtual walk() : void
+
+    + operator=(const Entity &) : Entity &
+    + operator==(const Entity &) : bool
+    + operator!=(const Entity &) : bool
+}
+
+class Human {
+    - HEALTH_LINEAR_COEF const static : int
+    - HEALTH_ANGULAR_COEF const static : int 
+
+    - STAMINA_LINEAR_COEF const static : int 
+    - STAMINA_ANGULAR_COEF const static : int 
+
+    # equipped : equipped_items
+
+    + Human()
+    + Human(const Human &)
+
+    + equip_item(int item_type, int item_index) : void
+    + unequip_item(int item_type) : void
+    + print_equipped_items() const : void
+
+    + virtual level_up() : void
+    + virtual update_atributes() : void
+    + virtual update_all_resistances() : void
+    + virtual update_all_weaknesses() : void
+
+    + virtual attack(Entity &) : void
+    + virtual receive_damage(int) : void
+    
+    + display_human() const : void
+    + operator=(const Human &) : Human &
+    + operator==(const Human &) : bool
+    + operator!=(const Human &) : bool
+}
+
+class Witcher {
+    - WITCHER_ATTACK_COST const : int
+    - MAX_WITCHER_DAMAGE const : int
+    - MIN_WITCHER_DAMAGE const : int
+
+    - HEALTH_LINEAR_COEF const static : int 
+    - HEALTH_ANGULAR_COEF const static : int 
+    
+    - STAMINA_LINEAR_COEF const static : int 
+    - STAMINA_ANGULAR_COEF const static : int 
+
+    - signs : signs 
+
+    - is_close_to_chest : bool
+    - map<string, Item*> personal_chest;
+
+    + Witcher()
+    + Witcher(const Witcher &)
+
+    + store_item(int item_type, int item_index) : void
+    + unstore_item(string item_name) : void
+    + print_personal_chest() const : void
+
+    + update_atributes() : void
+
+    + attack(Entity &) : void
+
+    + display_witcher() const : void
+    + operator=(const Witcher &) : Witcher &
+    + operator==(const Witcher &) : bool
+    + operator!=(const Witcher &) : bool
+}
+
+class Ghoul {
+    - GHOUL_ATTACK_COST const static : int
+    - MAX_GHOUL_DAMAGE const static : int
+    - MIN_GHOUL_DAMAGE const static : int
+
+    - HEALTH_LINEAR_COEF const static : int
+    - HEALTH_ANGULAR_COEF const static : int
+
+    - STAMINA_LINEAR_COEF const static : int
+    - STAMINA_ANGULAR_COEF const static : int
+
+    - is_enraged : bool
+
+    + Ghoul()
+    + Ghoul(const Ghoul &)
+
+    + level_up() : void
+    + update_atributes() : void
+    + update_all_resistances() : void
+    + update_all_weaknesses() : void
+
+    + attack(Entity &) : void
+    + receive_damage(int) : void
+
+    + talk() : void
+    + walk() : void
+
+    + display_ghoul() const : void
+    + operator=(const Ghoul &) : Ghoul &
+    + operator==(const Ghoul &) : bool
+    + operator!=(const Ghoul &) : bool
+}
+
+class Item {
+    # MAX_NAME_SIZE const static : int
+    # MAX_DESCRIPTION_SIZE const static : int
+
+    # name : string
+    # description : string
+
+    + Item()
+    + Item(const Item &)
+
+    + print_info() const : void
+
+    + {abstract} use(int technique) : map<string, int>
+
+    + operator=(const Item &) : Item &
+    + operator==(const Item &) : bool
+    + operator!=(const Item &) : bool
+
+}
+
+class Weapon {
+    # physical_damage : int
+    # fire_damage : int
+    # poison_damage : int
+    # ice_damage : int
+    # silver_damage : int
+
+    + Weapon()
+    + Weapon(const Weapon &)
+
+    + print_info() const : void
+
+    + {abstract} use(int technique) : map<string, int>
+
+    + operator=(const Weapon &) : Weapon &
+    + operator==(const Weapon &) : bool
+    + operator!=(const Weapon &) : bool
+}
+
+class Sword {
+    - made_of_silver : bool
+
+    + Sword()
+    + Sword(const Sword &)
+
+    + use(int technique) : map<string, int>
+
+    + display_sword const : void
+    + operator=(const Sword &) : Sword &
+    + operator==(const Sword &) : bool
+    + operator!=(const Sword &) : bool
+}
+
+class Armor {
+    - physical_defense : int
+    - fire_defense : int
+    - poison_defense : int
+    - ice_defense : int 
+    - silver_defense : int
+
+    + Armor()
+    + Armor(const Armor &)
+
+    + use(int technique) : map<string, int>
+
+    + display_armor() const : void
+    + operator=(const Armor &) : Armor &
+    + operator==(const Armor &) : bool
+    + operator!=(const Armor &) : bool
+}
+
+class Spell {
+    - MAX_NAME_SIZE const static : int
+    - MAX_DESCRIPTION_SIZE const static : int 
+
+    # name : string
+    # description : string
+    # is_unlocked : bool
+
+    + Spell()
+    + Spell(const Spell &)
+
+    + print_info() const : void
+
+    + {abstract} use(int technique) : map<string, int>
+
+    + operator=(const Spell &) : Spell &
+    + operator==(const Spell &) : bool
+    + operator!=(const Spell &) : bool
+
+}
+
+class Signs {
+    # stamina_cost : int
+
+    + Signs()
+    + Signs(const Signs &)
+
+    + print_info() const : void
+
+    + {abstract} use(int technique) : map<string, int>
+
+    + operator=(const Signs &) : Signs &
+    + operator==(const Signs &) : bool
+    + operator!=(const Signs &) : bool
+}
+
+class Igni {
+    - fire_damage : int
+    - area : int
+
+    + Igni()
+    + Igni(const Igni &)
+
+    + use(int technique) : map<string, int>
+
+    + display_igni() const : void
+    + operator=(const Igni &) : Igni &
+    + operator==(const Igni &) : bool
+    + operator!=(const Igni &) : bool
+}
+
+struct inventory_items {
+    swords[] : Sword*
+    armors[] : Armor*
+}
+
+struct equipped_items {
+    sword : Sword*
+    armor : Armor*
+}
+
+struct signs {
+    igni : Igni*
+}
+
+class Date {
+    - day : int
+    - month : int
+    - year : int
+    + Date(int, int, int)
+    + print_date() const : void
+}
+
+Entity <|-- Human
+Entity <|-- Ghoul
+Human <|-- Witcher
+
+Item <|-- Weapon
+Item <|-- Armor
+Weapon <|-- Sword
+
+Spell <|-- Signs
+Signs <|-- Igni
+
+Entity *-- Date
+Entity *-- inventory_items
+
+Human *-- equipped_items
+
+Witcher *-- signs
+
+signs o-- Igni
+
+inventory_items o-- Sword
+inventory_items o-- Armor
+
+
+@@enduml
