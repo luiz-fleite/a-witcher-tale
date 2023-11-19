@@ -1,0 +1,89 @@
+@@startuml
+
+abstract class Entity {
+
+}
+
+class Human {
+    # equipped : equipped_items
+}
+
+class Witcher {
+    - signs : signs 
+}
+
+class Ghoul {
+
+}
+
+class Item {
+
+}
+
+class Weapon {
+
+}
+
+class Sword {
+
+}
+
+class Armor {
+
+}
+
+class Spell {
+
+}
+
+class Signs {
+
+}
+
+class Igni {
+
+}
+
+struct inventory_items {
+    swords[] : Sword*
+    armors[] : Armor*
+}
+
+struct equipped_items {
+    sword : Sword*
+    armor : Armor*
+}
+
+struct signs {
+    igni : Igni*
+}
+
+class Date {
+
+}
+
+Entity <|-- Human
+Entity <|-- Ghoul
+Human <|-- Witcher
+
+Item <|-- Weapon
+Item <|-- Armor
+Weapon <|-- Sword
+
+Spell <|-- Signs
+Signs <|-- Igni
+
+Entity *-- Date
+Entity *-- inventory_items
+
+Human *-- equipped_items
+
+Witcher *-- signs
+
+signs o-- Igni
+
+inventory_items o-- Sword
+inventory_items o-- Armor
+
+
+@@enduml
