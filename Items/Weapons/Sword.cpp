@@ -31,8 +31,13 @@ Sword::Sword(string name, string description,
     setFire_damage(fire_damage);
     setPoison_damage(poison_damage);
     setIce_damage(ice_damage);
-    setSilver_damage(silver_damage);
+
     setMade_of_silver(made_of_silver);
+    if (made_of_silver)
+        setSilver_damage(silver_damage);
+    else
+        setSilver_damage(0);
+
 }
 
 // Weapon is abstract, so we can't use static_cast

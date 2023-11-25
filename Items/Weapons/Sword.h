@@ -8,9 +8,9 @@ using std::ostream;
 
 
 enum sword_techniques {
-    FAST_ATTACK = 0,
-    STRONG_ATTACK = 1,
-    GROUP_ATTACK = 2
+    FAST_ATTACK = 1,
+    STRONG_ATTACK = 2,
+    GROUP_ATTACK = 3,
 };
 
 

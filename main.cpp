@@ -61,28 +61,6 @@ int main(void) {
     w1->grab_item(floor_items);
 
     cout << *w1;
-    cout << "===============================\n";
-    cout << "Agora o witcher esta cansado de jogar e salva o jogo para voltar uma outra hora.\n";
-    if (save_witcher(*w1)) {
-        cout << "Jogo salvo com sucesso.\n";
-    } else {
-        cout << "Erro ao salvar o jogo.\n";
-    }
-    delete w1;
-
-    cout << "===============================\n";
-    cout << "Depois de um tempo o witcher volta pra continuar seu progresso.\n";
-    cout << "Ele carrega o jogo salvo anteriormente.\n";
-    Witcher * w2 = new Witcher();
-    if (load_witcher(*w2)) {
-        cout << "Jogo carregado com sucesso.\n";
-    } else {
-        cout << "Erro ao carregar o jogo.\n";
-    }
-    cout << *w2;
-    cout << "===============================\n";
-    cout << "Após isso é possível perceber que todos os seus atributos foram salvos.\n";
-    cout << "A vida e a estamina estão decrementada, e todos os seus itens estão no inventario.\n";
-
+    
     return 0;
 }

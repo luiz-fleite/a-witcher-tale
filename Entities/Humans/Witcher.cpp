@@ -71,9 +71,12 @@ Witcher::Witcher(const Witcher &other_witcher) : Human(static_cast<Human>(other_
 
 Witcher::~Witcher() {
     //cout << "Destroying Witcher...\n";
+    // deleting personal chest
     for_each(personal_chest.begin(), personal_chest.end(), [](pair<string, Item*> pair) {
         delete pair.second;
     });
+    // deleting signs
+    delete signs.igni;
 }
 
 void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
