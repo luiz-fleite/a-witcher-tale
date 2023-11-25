@@ -19,6 +19,8 @@ using std::istringstream;
 #include "Human.h"
 #include "../../Spells/Signs/Igni.h"
 
+
+
 struct Signs {
     Igni * igni;
 };
@@ -51,7 +53,7 @@ public:
     void update_atributes();
 
     // simply attack one entity
-    void attack(Entity &entity, int weapon_type = UNARMED);
+    void attack(Entity &entity, int weapon_type = UNARMED, int technique = 0);
     // attacks one or more entities
     /*
     void attack(vector<Entity*> &entities, 

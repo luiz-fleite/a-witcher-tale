@@ -52,12 +52,6 @@ void Igni::setArea(int area) {
     this->area = area;
 }
 
-void Igni::print_info() const {
-    Sign::print_info();
-    cout << "Fire damage: " << fire_damage << "\n";
-    cout << "Area: " << area << "\n";
-}
-
 map<string, int> Igni::cast(int technique) {
 
     map<string, int> sign_info;
@@ -71,12 +65,9 @@ map<string, int> Igni::cast(int technique) {
 }
 
 ostream &operator<<(ostream &out, const Igni &igni) {
-    out << igni.name << "\n";
-    out << igni.description << "\n";
-    out << igni.is_unlocked << "\n";
-    out << igni.stamina_cost << "\n";
-    out << igni.fire_damage << "\n";
-    out << igni.area << "\n";
+    igni.print_info();
+    out << "Fire damage: " << igni.fire_damage << "\n";
+    out << "Area: " << igni.area << "\n";
 
     return out;
 }

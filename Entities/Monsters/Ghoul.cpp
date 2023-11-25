@@ -109,7 +109,7 @@ void Ghoul::update_all_weaknesses() {
     silver_weakness = 1;
 }
 
-void Ghoul::attack(Entity &entity, int weapon_type) {
+void Ghoul::attack(Entity &entity, int weapon_type, int technique) {
     if (!spend_stamina(GHOUL_ATTACK_COST)) {
         return;
     }

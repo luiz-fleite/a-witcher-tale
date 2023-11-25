@@ -28,7 +28,7 @@ public:
     void update_all_resistances();
     void update_all_weaknesses();
 
-    void attack(Entity &entity, int weapon_type = UNARMED);
+    void attack(Entity &entity, int weapon_type = UNARMED, int technique = 0);
     void receive_damage(int physical_damage, 
                         int fire_damage, 
                         int poison_damage, 

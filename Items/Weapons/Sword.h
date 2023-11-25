@@ -3,13 +3,16 @@
 
 #include "Weapon.h"
 
+
 using std::ostream;
 
-enum technique {
-    FAST_ATTACK = 1,
-    STRONG_ATTACK = 2,
-    GROUP_ATTACK = 3
+
+enum sword_techniques {
+    FAST_ATTACK = 0,
+    STRONG_ATTACK = 1,
+    GROUP_ATTACK = 2
 };
+
 
 class Sword : public Weapon {
     friend ostream &operator<< (ostream &out, const Sword &sword);

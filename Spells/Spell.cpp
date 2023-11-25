@@ -52,8 +52,8 @@ void Spell::setDescription(string description) {
 }
 
 void Spell::print_info() const {
-    cout << "Name: " << name << '\n';
-    cout << "Description: " << description << '\n';
+    cout << "==========" << name << "==========\n";
+    cout << "\"" << description << "\"\n";
 }
 
 const Spell &Spell::operator=(const Spell &other_spell) {

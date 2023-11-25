@@ -301,7 +301,7 @@ void Witcher::update_atributes() {
     max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
 }
 
-void Witcher::attack(Entity &entity, int weapon_type) {
+void Witcher::attack(Entity &entity, int weapon_type, int technique) {
 
     cout << name << " attacked " << entity.getName() << ".\n";
 
@@ -413,25 +413,25 @@ void Witcher::attack(Entity &entity, int weapon_type) {
         
         break;
     
-    
-    
     }
     
-
-
 
     // After calculating all damage especifically
     // sends it to attacked entity
 
-    entity.receive_damage(total_physical_damage, total_fire_damage, total_poison_damage, total_ice_damage, total_silver_damage);
+    entity.receive_damage(total_physical_damage, 
+                          total_fire_damage, 
+                          total_poison_damage, 
+                          total_ice_damage, 
+                          total_silver_damage);
 
     return;
 }
 
 ostream &operator<< (ostream &out, const Witcher &witcher) {
     out << static_cast<Human>(witcher);
-    cout << "Witcher signs:\n";
-    cout << *witcher.signs.igni << "\n";
+    out << "==========Witcher Signs==========\n";
+    out << *witcher.signs.igni << "\n";
 
     return out;
 }

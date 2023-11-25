@@ -28,8 +28,13 @@ void Sign::setStamina_cost(int stamina_cost) {
 
 void Sign::print_info() const {
     Spell::print_info();
-    cout << "Is unlocked: " << is_unlocked << "\n";
+
+    string buffer = (is_unlocked) ? "true" : "false";
+
+    cout << "Is unlocked: " << buffer << "\n";
+
     cout << "Stamina cost: " << stamina_cost << "\n";
+    
 }
 
 const Sign &Sign::operator=(const Sign &other_sign) {

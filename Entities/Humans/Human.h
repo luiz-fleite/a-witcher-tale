@@ -8,6 +8,18 @@
 
 using std::ostream;
 
+
+enum attack_options {
+    UNARMED = 0,
+    // Weapons
+    STEEL_SWORD = 1,
+    SILVER_SWORD = 2,
+    CROSSBOW = 3,
+    // Signs
+    IGNI = 4
+};
+
+
 struct equipped_items {
     Sword* steel_sword; 
     Armor* armor;
@@ -34,7 +46,7 @@ public:
     virtual void update_all_resistances();
     virtual void update_all_weaknesses();
     
-    virtual void attack(Entity &entity, int weapon_type = UNARMED);
+    virtual void attack(Entity &entity, int weapon_type = UNARMED, int technique = 0);
     virtual void receive_damage(int physical_damage, 
                                 int fire_damage = 0, 
                                 int poison_damage = 0, 
@@ -54,6 +66,6 @@ private:
     const static int STAMINA_ANGULAR_COEF = 3;
 };
 
-inline void Human::attack(Entity &entity, int weapon_type) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }
+inline void Human::attack(Entity &entity, int weapon_type, int technique) { cout << "Human is too weak and afraid to attack " << entity.getName() << ".\n"; }
 
 #endif // HUMAN_H

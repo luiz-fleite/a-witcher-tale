@@ -18,6 +18,7 @@ using std::map;
 using std::pair;
 using std::for_each;
 
+
 enum item_type {
     // NONE = -1,
     SWORD = 0,
@@ -25,18 +26,12 @@ enum item_type {
     TOTAL_ITEM_TYPES = 2
 };
 
-enum weapon_type {
-    UNARMED = 0,
-    STEEL_SWORD = 1,
-    IGNI = 2,
-    // SILVER_SWORD = 2,
-    // TOTAL_WEAPON_TYPES = 3
-};
 
 struct inventory_items {
     vector<Sword*> swords;
     vector<Armor*> armors;
 };
+
 
 class Entity {
 public:
@@ -112,7 +107,7 @@ public:
     virtual void update_all_resistances() = 0;
     virtual void update_all_weaknesses() = 0;
     
-    virtual void attack(Entity &, int) = 0;
+    virtual void attack(Entity &, int, int) = 0;
     virtual void receive_damage(int physical_damage, 
                                 int fire_damage = 0, 
                                 int poison_damage = 0, 

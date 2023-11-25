@@ -6,6 +6,12 @@
 using std::ostream;
 
 
+enum igni_techniques {
+    FIRE_BALL = 0,
+    BURST_FIRE = 1,
+};
+
+
 class Igni : public Sign{
     friend ostream &operator<<(ostream &out, const Igni &igni);
 public:
@@ -25,9 +31,7 @@ public:
     void setFire_damage(int fire_damage);
     void setArea(int area);
 
-    void print_info() const;
-
-    virtual map<string, int> cast(int technique = 0);
+    virtual map<string, int> cast(int technique = FIRE_BALL);
 
     const Igni &operator=(const Igni &);
     int operator==(const Igni &other_Igni) const;

@@ -315,8 +315,9 @@ void Entity::drop_item(vector<Item *> &destiny_items, int item_type, int item_in
 }
 
 void Entity::print_inventory() const {
-    cout << "Inventory of " << this->name << ":\n";
-    cout << "Swords:\n";
+    cout << "==========Inventory of " << this->name << "==========\n";
+    cout << "Coins: " << this->coins << "\n";
+    cout << "==========Swords==========\n";
 
     int counter = 0;
     if (inventory.swords.empty()) {
@@ -326,7 +327,8 @@ void Entity::print_inventory() const {
         cout << ++counter << ". " << *sword << "\n";
     }
 
-    cout << "Armors:\n";
+    cout << "==========Armors==========\n";
+
     counter = 0;
     if (inventory.armors.empty()) {
         cout << "None\n";
@@ -451,38 +453,46 @@ bool Entity::spend_stamina(int stamina_spent) {
 }
 
 void Entity::print_resistances() const {
-    cout << "Resistences:\n";
-    cout << "Physical: " << this->total_physical_resistance << "\n";
-    cout << "Fire: " << this->total_fire_resistance << "\n";
-    cout << "Poison: " << this->total_poison_resistance << "\n";
-    cout << "Ice: " << this->total_ice_resistance << "\n";
-    cout << "Silver: " << this->total_silver_resistance << "\n";
+    cout << "==========Resistences==========\n";
+    if (this->total_physical_resistance != 0)
+        cout << "Physical: +" << this->total_physical_resistance << "\n";
+    if (this->total_fire_resistance != 0)
+        cout << "Fire: +" << this->total_fire_resistance << "\n";
+    if (this->total_poison_resistance != 0)
+        cout << "Poison: +" << this->total_poison_resistance << "\n";
+    if (this->total_ice_resistance != 0)
+        cout << "Ice: +" << this->total_ice_resistance << "\n";
+    if (this->total_silver_resistance != 0)
+        cout << "Silver: +" << this->total_silver_resistance << "\n";
 }
 
 void Entity::print_weaknesses() const {
-    cout << "Weaknesses:\n";
-    cout << "Physical: " << this->physical_weakness << "\n";
-    cout << "Fire: " << this->fire_weakness << "\n";
-    cout << "Poison: " << this->poison_weakness << "\n";
-    cout << "Ice: " << this->ice_weakness << "\n";
-    cout << "Silver: " << this->silver_weakness << "\n";
+    cout << "==========Weaknesses==========\n";
+    cout << "Physical: " << this->physical_weakness << "x\n";
+    cout << "Fire: " << this->fire_weakness << "x\n";
+    cout << "Poison: " << this->poison_weakness << "x\n";
+    cout << "Ice: " << this->ice_weakness << "x\n";
+    cout << "Silver: " << this->silver_weakness << "x\n";
 }
 
 void Entity::print_info() const{
+    cout << "==========Identity==========\n";
     cout << "Name: " << this->name << "\n";
-    cout << "Category: " << this->category << "\n";
-    cout << "Level: " << this->level << "\n";
     cout << "Age: " << this->age << "\n";
     cout << "Date of birth: ";
     this->date_of_birth.print();
     cout << "\n";
-    cout << "Coins: " << this->coins << "\n";
+    cout << "==========Atributes==========\n";
+    cout << "Category: " << this->category << "\n";
+    cout << "Level: " << this->level << "\n";
+    cout << "XP: " << this->xp << "/" << this->next_level_xp << "\n";
     cout << "Health: " << this->health << "/" << this->max_health << "\n";
     cout << "Stamina: " << this->stamina << "/" << this->max_stamina << "\n";
     print_resistances();
     print_weaknesses();
-    cout << "Temporary status: \n";
-    cout << "Stunned: " << this->is_stunned << "\n";
+    cout << "==========Temporary status==========\n";
+    string buffer = (this->is_stunned) ? "true" : "false";
+    cout << "Stunned: " << buffer << "\n";
     print_inventory();
 }
 

@@ -135,22 +135,32 @@ void Human::unequip_item(int item_type) {
 }
 
 void Human::print_equipped_items() {
-    cout << "Equipped Items:\n";
-    cout << "Steel Sword: ";
-    if (equipped.steel_sword == 0) cout << "None\n";
-    else cout << *equipped.steel_sword << "\n";
-    cout << "Armor: ";
-    if (equipped.armor == 0) cout << "None\n";
-    else cout << *equipped.armor << "\n";
+    cout << "==========Equipped Items==========\n";
+    bool check_if_empty = true;
+
+    if (equipped.steel_sword != 0) {
+        cout << "==========Steel Sword==========\n";
+        cout << *equipped.steel_sword << "\n";
+        check_if_empty = false;
+    }
+    
+    cout << "==========Armor==========\n";
+    if (equipped.armor != 0) {
+        cout << *equipped.armor << "\n";
+        check_if_empty = false;
+    }
+
+    if (check_if_empty) cout << "None\n";
 }
 
 void Human::update_all_resistances() {
     if (equipped.armor != 0) {
-        setTotal_physical_resistance(equipped.armor->getPhysical_defense());
-        setTotal_fire_resistance(equipped.armor->getFire_defense());
-        setTotal_poison_resistance(equipped.armor->getPoison_defense());
-        setTotal_ice_resistance(equipped.armor->getIce_defense());
-        setTotal_silver_resistance(equipped.armor->getSilver_defense());
+        map<string, int> defenses_buffer = equipped.armor->use();
+        setTotal_physical_resistance(defenses_buffer["physical_defense"]);
+        setTotal_fire_resistance(defenses_buffer["fire_defense"]);
+        setTotal_poison_resistance(defenses_buffer["poison_defense"]);
+        setTotal_ice_resistance(defenses_buffer["ice_defense"]);
+        setTotal_silver_resistance(defenses_buffer["silver_defense"]);
     }
     else {
         setTotal_physical_resistance(0);
@@ -191,13 +201,25 @@ void Human::update_atributes() {
 
 ostream &operator<< (ostream &out, const Human &human){
     human.print_info();
-    out << "Equipped Items:\n";
-    out << "Steel Sword: ";
-    if (human.equipped.steel_sword == 0) out << "None\n";
-    else out << *human.equipped.steel_sword << "\n";
-    out << "Armor: ";
-    if (human.equipped.armor == 0) out << "None\n";
-    else out << *human.equipped.armor << "\n";
+
+    out << "==========Equipped Items==========\n";
+
+    bool check_if_empty = true;
+
+    if (human.equipped.steel_sword != 0) {
+        out << "==========Steel Sword==========\n";
+        out << *human.equipped.steel_sword << "\n";
+        check_if_empty = false;
+    }
+    
+    out << "==========Armor==========\n";
+    if (human.equipped.armor != 0) {
+        out << *human.equipped.armor << "\n";
+        check_if_empty = false;
+    }
+
+    if (check_if_empty) out << "None\n";
+
     return out;
 }
 
