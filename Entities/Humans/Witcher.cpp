@@ -300,11 +300,13 @@ void Witcher::print_personal_chest() const {
 }
 
 void Witcher::update_atributes() {
+    next_level_xp = NEXT_LEVEL_XP_LINEAR_COEF + NEXT_LEVEL_XP_ANGULAR_COEF * level;
     max_health = HEALTH_LINEAR_COEF + HEALTH_ANGULAR_COEF * level;
     max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
+    xp_reward = NEXT_LEVEL_XP_ANGULAR_COEF * level / 2;
 }
 
-void Witcher::attack(Entity &entity, int weapon_type, int technique) {
+void Witcher::attack(Entity &entity, int attack_option, int technique) {
 
     cout << name << " attacked " << entity.getName() << ".\n";
 
@@ -334,30 +336,30 @@ void Witcher::attack(Entity &entity, int weapon_type, int technique) {
     // cout << "bonus_witcher_damage: " << bonus_witcher_damage << "\n";
 
     // First checks if the witcher is unarmed
-    switch (weapon_type)
+    switch (attack_option)
     {
     case STEEL_SWORD:
         if (equipped.steel_sword == 0) {
-            weapon_type = UNARMED;
+            attack_option = UNARMED;
         }
         break;
     case IGNI:
         if (signs.igni == 0) {
-            weapon_type = UNARMED;
+            attack_option = UNARMED;
         }
         if (signs.igni->getIs_unlocked() == false) {
-            weapon_type = UNARMED;
+            attack_option = UNARMED;
         }
         break;
     default:
-        // If weapon_type is invalid, witcher is unarmed
-        weapon_type = UNARMED;
+        // If attack_option is invalid, witcher is unarmed
+        attack_option = UNARMED;
         break;
     }
 
     // Then puts each damage type to damage buffer variables
-    // according to the respective weapon choosed
-    switch (weapon_type)
+    // according to the respective attack option choosed
+    switch (attack_option)
     {
     case UNARMED:
         // Always check stamina first
@@ -460,4 +462,8 @@ bool Witcher::operator==(const Witcher &other_witcher) const {
 
 bool Witcher::operator!=(const Witcher &other_witcher) const {
     return !(*this == other_witcher);
+}
+
+bool Witcher::operator!() const {
+    return Entity::operator!();
 }

@@ -12,14 +12,18 @@ Entity::Entity() {
     name = "Entity";
     age = 0;
     coins = 0;
+
+    is_dead = false;
     max_health = 0;
     health = 0;
     max_stamina = 0;
     stamina = 0;
+
     category = "_";
     level = 0;
     next_level_xp = 10;
     xp = 0;
+    xp_reward = 0;
 
     physical_weakness = 1;
     fire_weakness = 1;
@@ -42,6 +46,7 @@ Entity::Entity(const Entity &other_entity) {
     this->age = other_entity.age;
     this->coins = other_entity.coins;
 
+    this->is_dead = other_entity.is_dead;
     this->max_health = other_entity.max_health;
     this->health = other_entity.health;
     this->max_stamina = other_entity.max_stamina;
@@ -51,6 +56,7 @@ Entity::Entity(const Entity &other_entity) {
     this->level = other_entity.level;
     this->next_level_xp = other_entity.next_level_xp;
     this->xp = other_entity.xp;
+    this->xp_reward = other_entity.xp_reward;
 
     this->is_stunned = other_entity.is_stunned;
 
@@ -237,6 +243,11 @@ void Entity::setLevel(int level) {
 }
 
 void Entity::add_item(Item &item) {
+    // First checks if Entity is dead:
+    if (!*this) {
+        cout << this->name << " is dead. Cannot add item.\n";
+        return;
+    }
     // adds to inventory acording to item type
     if (Sword * sword = dynamic_cast<Sword *>(&item)) {
         Sword * new_sword = new Sword(*sword);
@@ -276,6 +287,11 @@ void Entity::remove_item(int item_type, int item_index) {
 }
 
 void Entity::grab_item(vector<Item *> &source_items, int item_index) {
+    // First checks if Entity is dead:
+    if (!*this) {
+        cout << this->name << " is dead. Cannot grab item.\n";
+        return;
+    }
     if (item_index < 0 || item_index >= source_items.size()) {
         cout << "Invalid item index.\n";
         return;
@@ -314,6 +330,23 @@ void Entity::drop_item(vector<Item *> &destiny_items, int item_type, int item_in
     remove_item(item_type, item_index);
 }
 
+void Entity::drop_all_items(vector<Item *> &floor_items) {
+    // dropping by accessing the inventory directly
+    // (may be changed latter to use the drop_item function)
+
+    // drops all items with safe memory deallocation
+    for (auto sword : inventory.swords) {
+        drop_item(floor_items, SWORD, 0);
+    }
+    for (auto armor : inventory.armors) {
+        drop_item(floor_items, ARMOR, 0);
+    }
+
+    // clears inventory
+    inventory.swords.clear();
+    inventory.armors.clear();
+}
+
 void Entity::print_inventory() const {
     cout << "==========Inventory of " << this->name << "==========\n";
     cout << "Coins: " << this->coins << "\n";
@@ -339,6 +372,12 @@ void Entity::print_inventory() const {
 }
 
 void Entity::life_regen(int life_regen) {
+    // checks if Entity is dead:
+    if (!*this) {
+        cout << this->name << " is dead. Cannot regen life.\n";
+        return;
+    }
+    
     if (life_regen < 0) {
         cout << "Life regen cannot be negative.\n";
         return;
@@ -351,6 +390,12 @@ void Entity::life_regen(int life_regen) {
 }
 
 void Entity::stamina_regen(int stamina_regen) {
+    // checks if Entity is dead:
+    if (!*this) {
+        cout << this->name << " is dead. Cannot regen stamina.\n";
+        return;
+    }
+
     if (stamina_regen < 0) {
         cout << "Stamina regen cannot be negative.\n";
         return;
@@ -363,6 +408,12 @@ void Entity::stamina_regen(int stamina_regen) {
 }
 
 void Entity::gain_xp(int xp_gained) {
+    // checks if Entity is dead:
+    if (!*this) {
+        cout << this->name << " is dead. Cannot gain xp.\n";
+        return;
+    }
+
     // xp are never negative
     if (xp_gained < 0) {
         cout << "XP cannot be negative.\n";
@@ -384,6 +435,13 @@ void Entity::gain_xp(int xp_gained) {
 }
 
 void Entity::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
+    // Checks if Entity is already dead:
+    if (!*this) {
+        cout << this->name << " is already dead.\n";
+        return;
+    }
+
+    // Checks if damage is negative:
     if (physical_damage < 0 || fire_damage < 0 || poison_damage < 0 || ice_damage < 0 || silver_damage < 0) {
         cout << "Damage cannot be negative.\n";
         return;
@@ -433,6 +491,7 @@ void Entity::receive_damage(int physical_damage, int fire_damage, int poison_dam
 
     if (getHealth() == 0) {
         cout << name << " died.\n";
+        setIs_dead(true);
     }
 
     return;
@@ -475,6 +534,12 @@ void Entity::print_weaknesses() const {
     cout << "Silver: " << this->silver_weakness << "x\n";
 }
 
+void Entity::print_temporary_status() const {
+    cout << "==========Temporary status==========\n";
+    string buffer = (this->is_stunned) ? "true" : "false";
+    cout << "Stunned: " << buffer << "\n";
+}
+
 void Entity::print_info() const{
     cout << "==========Identity==========\n";
     cout << "Name: " << this->name << "\n";
@@ -486,13 +551,17 @@ void Entity::print_info() const{
     cout << "Category: " << this->category << "\n";
     cout << "Level: " << this->level << "\n";
     cout << "XP: " << this->xp << "/" << this->next_level_xp << "\n";
-    cout << "Health: " << this->health << "/" << this->max_health << "\n";
+
+    if (this->xp_reward != 0)
+        cout << "XP reward: " << this->xp_reward << "\n";
+
+    string buffer = (this->is_dead) ? " (DEAD) " : "";
+    cout << "Health: " << this->health << "/" << this->max_health << buffer << "\n";
+
     cout << "Stamina: " << this->stamina << "/" << this->max_stamina << "\n";
     print_resistances();
     print_weaknesses();
-    cout << "==========Temporary status==========\n";
-    string buffer = (this->is_stunned) ? "true" : "false";
-    cout << "Stunned: " << buffer << "\n";
+    print_temporary_status();
     print_inventory();
 }
 
@@ -502,6 +571,7 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
         this->age = assigned_entity.age;
         this->coins = assigned_entity.coins;
 
+        this->is_dead = assigned_entity.is_dead;
         this->max_health = assigned_entity.max_health;
         this->health = assigned_entity.health;
         this->max_stamina = assigned_entity.max_stamina;
@@ -511,6 +581,7 @@ const Entity &Entity::operator=(const Entity &assigned_entity) {
         this->level = assigned_entity.level;
         this->next_level_xp = assigned_entity.next_level_xp;
         this->xp = assigned_entity.xp;
+        this->xp_reward = assigned_entity.xp_reward;
 
         this->is_stunned = assigned_entity.is_stunned;
 
@@ -554,6 +625,7 @@ int Entity::operator==(const Entity &other_entity) const {
     if (this->age != other_entity.age) return 0;
     if (this->coins != other_entity.coins) return 0;
 
+    if (this->is_dead != other_entity.is_dead) return 0;
     if (this->max_health != other_entity.max_health) return 0;
     if (this->health != other_entity.health) return 0;
     if (this->max_stamina != other_entity.max_stamina) return 0;
@@ -563,6 +635,7 @@ int Entity::operator==(const Entity &other_entity) const {
     if (this->level != other_entity.level) return 0;
     if (this->next_level_xp != other_entity.next_level_xp) return 0;
     if (this->xp != other_entity.xp) return 0;
+    if (this->xp_reward != other_entity.xp_reward) return 0;
 
     if (this->physical_weakness != other_entity.physical_weakness) return 0;
     if (this->fire_weakness != other_entity.fire_weakness) return 0;
@@ -605,5 +678,5 @@ int Entity::operator!=(const Entity &other_entity) const {
 }
 
 bool Entity::operator!() const {
-    return (this->health >= 0);
+    return (is_dead);
 }

@@ -53,18 +53,19 @@ public:
     void update_atributes();
 
     // simply attack one entity
-    void attack(Entity &entity, int weapon_type = UNARMED, int technique = 0);
+    void attack(Entity &entity, int attack_option = UNARMED, int technique = 0);
     // attacks one or more entities
     /*
     void attack(vector<Entity*> &entities, 
                 int entity_index = 0, 
-                int weapon_type = UNARMED, 
+                int attack_option = UNARMED, 
                 int attack_type = 0);
     */
 
     const Witcher &operator=(const Witcher &);
     bool operator==(const Witcher &other_witcher) const;
     bool operator!=(const Witcher &other_witcher) const;
+    bool operator!() const;
 private:
     const static int HEALTH_LINEAR_COEF = 10;
     const static int HEALTH_ANGULAR_COEF = 5;

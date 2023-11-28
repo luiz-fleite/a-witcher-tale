@@ -34,6 +34,8 @@ public:
                         int poison_damage, 
                         int ice_damage, 
                         int silver_damage);
+
+    void print_temporary_status() const;
     
     inline void talk() { cout << name << "grawrawrawrawr\n"; }
     inline void walk() { cout << name << "is crawling.\n"; }

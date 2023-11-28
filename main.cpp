@@ -45,9 +45,20 @@ int main(void) {
     g1->attack(*w1);
     cout << "O witcher ataca o ghoul com sua espada de aço. Dando dano físico.\n";
     w1->attack(*g1, STEEL_SWORD);
+    cout << "O combate continua.\n";
+    g1->attack(*w1);
+    //g1->life_regen(10);
+    w1->attack(*g1, STEEL_SWORD);
     cout << "===============================\n";
     cout << "=========After battle==========\n";
     cout << *w1 << *g1;
+
+
+
+    cout << "Is ghoul dead? " << !*g1 << "\n";
+    cout << "Is witcher dead? " << !*w1 << "\n";
+
+/*
     cout << "===============================\n";
     cout << "Após isso uma espada e uma armadura de aço caem no chão como recompensa para o witcher.\n";
     cout << "E ele as pega.\n";
@@ -61,6 +72,6 @@ int main(void) {
     w1->grab_item(floor_items);
 
     cout << *w1;
-    
+*/
     return 0;
 }

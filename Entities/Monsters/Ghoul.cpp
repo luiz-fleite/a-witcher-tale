@@ -87,6 +87,7 @@ void Ghoul::update_atributes() {
     next_level_xp = NEXT_LEVEL_XP_LINEAR_COEF + NEXT_LEVEL_XP_ANGULAR_COEF * level;
     max_health = HEALTH_LINEAR_COEF + HEALTH_ANGULAR_COEF * level;
     max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
+    xp_reward = level * NEXT_LEVEL_XP_ANGULAR_COEF / 2;
 }
 
 void Ghoul::update_all_resistances() {
@@ -135,9 +136,15 @@ void Ghoul::receive_damage(int physical_damage, int fire_damage, int poison_dama
     return;
 }
 
+void Ghoul::print_temporary_status() const {
+    Entity::print_temporary_status();
+    string buffer = (this->is_enraged) ? "true" : "false";
+    cout << "Enraged: " << buffer << "\n";
+}
+
 ostream &operator<<(ostream &out, const Ghoul &ghoul) {
     ghoul.print_info();
-    out << "Enraged: " << ghoul.is_enraged << "\n";
+    // out << "Enraged: " << ghoul.is_enraged << "\n";
     
     return out;
 }
@@ -163,5 +170,5 @@ int Ghoul::operator!=(const Ghoul &other_ghoul) const {
 }
 
 bool Ghoul::operator!() const {
-    return (this->getHealth() <= 0);
+    return Entity::operator!();
 }

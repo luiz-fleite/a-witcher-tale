@@ -53,9 +53,12 @@ public:
                                 int ice_damage = 0, 
                                 int silver_damage = 0);
 
+    virtual void drop_loot(vector<Item*> &floor_items);
+
     const Human &operator=(const Human &);
     bool operator==(const Human &other_human) const;
     bool operator!=(const Human &other_human) const;
+    bool operator!() const;
 protected:
     equipped_items equipped;
 private:

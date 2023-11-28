@@ -179,10 +179,6 @@ void Human::update_all_weaknesses() {
     silver_weakness = 0;
 }
 
-void Human::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
-    Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
-}
-
 void Human::level_up() {
     level++;
     
@@ -197,6 +193,25 @@ void Human::update_atributes() {
     next_level_xp = NEXT_LEVEL_XP_LINEAR_COEF + NEXT_LEVEL_XP_ANGULAR_COEF * level;
     max_health = HEALTH_LINEAR_COEF + HEALTH_ANGULAR_COEF * level;
     max_stamina = STAMINA_LINEAR_COEF + STAMINA_ANGULAR_COEF * level;
+    xp_reward = level * NEXT_LEVEL_XP_ANGULAR_COEF / 2;
+}
+
+void Human::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
+    Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
+}
+
+void Human::drop_loot(vector<Item*> &floor_items) {
+    // First unequips all items and
+    // tests if items are equipped 2 times for not printing
+    // the "not equipped" message when dying
+    if (equipped.steel_sword != 0) {
+        unequip_item(SWORD);
+    }
+    if (equipped.armor != 0) {
+        unequip_item(ARMOR);
+    }
+    // Calls the Entity drop_loot function
+    Entity::drop_loot(floor_items);
 }
 
 ostream &operator<< (ostream &out, const Human &human){
@@ -268,4 +283,8 @@ bool Human::operator==(const Human &other_human) const {
 
 bool Human::operator!=(const Human &other_human) const {
     return !(*this == other_human);
+}
+
+bool Human::operator!() const {
+    return Entity::operator!();
 }
