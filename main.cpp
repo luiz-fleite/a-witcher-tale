@@ -35,7 +35,15 @@ int main(void) {
     cout << "===============================\n";
 
     Ghoul * g1 = new Ghoul("Ghoul 1");
+    Sword * s1 = new Sword("Sharpened sword", "Well sharpened steel sword", 10, 10, 10);
+    Armor * a1 = new Armor("Steel armor", "Well crafted steel armor", 10, 10, 10);
+    g1->add_item(*s1);
+    g1->add_item(*a1);
     cout << *g1;
+
+    cout << "===============================\n";
+    vector <Item *> floor_items;
+    cout << "Floor items: " << floor_items.size() << "\n";
 
     cout << "===============================\n";
     cout << "=========During battle=========\n";
@@ -51,27 +59,13 @@ int main(void) {
     w1->attack(*g1, STEEL_SWORD);
     cout << "===============================\n";
     cout << "=========After battle==========\n";
+    g1->drop_all_items(floor_items);
     cout << *w1 << *g1;
 
-
-
-    cout << "Is ghoul dead? " << !*g1 << "\n";
-    cout << "Is witcher dead? " << !*w1 << "\n";
-
-/*
     cout << "===============================\n";
-    cout << "Após isso uma espada e uma armadura de aço caem no chão como recompensa para o witcher.\n";
-    cout << "E ele as pega.\n";
-    Sword * s1 = new Sword("Espada de aço", "Uma espada de aço afiada", 10, 10, 10);
-    Armor * a1 = new Armor("Armadura de aço", "Uma armadura de aço resistente", 10, 10, 10);
-    vector <Item*> floor_items;
-    floor_items.push_back(s1);
-    floor_items.push_back(a1);
 
-    w1->grab_item(floor_items);
-    w1->grab_item(floor_items);
+    cout << "Floor items: " << floor_items.size() << "\n";
 
-    cout << *w1;
-*/
+
     return 0;
 }

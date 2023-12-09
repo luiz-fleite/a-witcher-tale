@@ -200,7 +200,7 @@ void Human::receive_damage(int physical_damage, int fire_damage, int poison_dama
     Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
 }
 
-void Human::drop_loot(vector<Item*> &floor_items) {
+void Human::drop_all_items(vector<Item*> &floor_items) {
     // First unequips all items and
     // tests if items are equipped 2 times for not printing
     // the "not equipped" message when dying
@@ -211,7 +211,7 @@ void Human::drop_loot(vector<Item*> &floor_items) {
         unequip_item(ARMOR);
     }
     // Calls the Entity drop_loot function
-    Entity::drop_loot(floor_items);
+    Entity::drop_all_items(floor_items);
 }
 
 ostream &operator<< (ostream &out, const Human &human){
