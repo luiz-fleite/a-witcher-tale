@@ -47,19 +47,11 @@ int main(void) {
 
     cout << "===============================\n";
     cout << "=========During battle=========\n";
-    cout << "O witcher começa atacando o ghoul com seu sinal igni. Dando dano de fogo.\n";
-    w1->attack(*g1, IGNI);
-    cout << "O ghoul ataca o witcher com suas garras. Dando dano físico.\n";
-    g1->attack(*w1);
-    cout << "O witcher ataca o ghoul com sua espada de aço. Dando dano físico.\n";
-    w1->attack(*g1, STEEL_SWORD);
-    cout << "O combate continua.\n";
-    g1->attack(*w1);
-    //g1->life_regen(10);
-    w1->attack(*g1, STEEL_SWORD);
+    Battle * b1 = new Battle(*w1, *g1);
+    b1->begin();
+    b1->get_floor_items(floor_items);
     cout << "===============================\n";
     cout << "=========After battle==========\n";
-    g1->drop_all_items(floor_items);
     cout << *w1 << *g1;
 
     cout << "===============================\n";

@@ -1,4 +1,3 @@
-/* QUEBRADO TEMPORARIAMENTE
 #include <iostream>
 #include <string>
 #include <unistd.h>
@@ -8,22 +7,19 @@
 using std::cout;
 
 Battle::Battle(Entity &ally, Entity &enemy) {
-    allies[0] = &ally;
-    enemies[0] = &enemy;
-    for (int i = 1; i < MAX_ALLIES; i++) {
-        allies[i] = 0;
-    }
-    for (int i = 1; i < MAX_ENEMIES; i++) {
-        enemies[i] = 0;
-    }
+    allies.push_back(&ally);
+    enemies.push_back(&enemy);
 }
 
-Battle::Battle(const Battle &battle) {
-    for (int i = 0; i < MAX_ALLIES; i++) {
-        allies[i] = battle.allies[i];
+Battle::Battle(const Battle &other_battle) {
+    for (auto ally : other_battle.allies) {
+        allies.push_back(ally);
     }
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        enemies[i] = battle.enemies[i];
+    for (auto enemy : other_battle.enemies) {
+        enemies.push_back(enemy);
+    }
+    for (auto dead : other_battle.deads) {
+        deads.push_back(dead);
     }
 }
 
@@ -32,144 +28,107 @@ Battle::~Battle() {
 }
 
 void Battle::print_allies() {
-    string names;
-    for (int i = 0; i < MAX_ALLIES; i++) {
-        if (allies[i] == 0) {
-            cout << "Allie " << i + 1 << ": NULL\n";
-            continue;
-        }
-        cout << "Allie " << i + 1 << ": " << allies[i]->getName() << "\n";
+    if (allies.size() == 0) {
+        cout << "There is no allies.\n";
+        return;
+    }
+    for (int i = 0; i < allies.size(); i++) {
+        cout << "Allie " << i << ": " << allies[i]->getName() << "\n";
     }
     return;
 }
 
 void Battle::print_enemies() {
-    string names;
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        if (enemies[i] == 0) {
-            cout << "Enemie " << i + 1 << ": NULL\n";
-            continue;
-        }
-        cout << "Enemie " << i + 1 << ": " << enemies[i]->getName() << "\n";
+    if (enemies.size() == 0) {
+        cout << "There is no enemies.\n";
+        return;
+    }
+    for (int i = 0; i < enemies.size(); i++) {
+        cout << "Enemy " << i << ": " << enemies[i]->getName() << "\n";
     }
     return;
 }
 
 void Battle::add_ally(Entity &ally) {
-    for (int i = 0; i < MAX_ALLIES; i++) {
-        if (allies[i] == 0) {
-            allies[i] = &ally;
-            return;
-        }
-    }
-    cout << "Allies is full!\n";
+    allies.push_back(&ally);
     return;
 }
 
 void Battle::add_enemy(Entity &enemy) {
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        if (enemies[i] == 0) {
-            enemies[i] = &enemy;
-            return;
-        }
-    }
-    cout << "Enemies is full!\n";
+    enemies.push_back(&enemy);
     return;
 }
 
-bool Battle::check_allies() {
-    for (int i = 0; i < MAX_ALLIES; i++) {
-        if (allies[i] != 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool Battle::check_enemies() {
-    for (int i = 0; i < MAX_ENEMIES; i++) {
-        if (enemies[i] != 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void Battle::beginBattle() {
-    while (check_allies() && check_enemies()) {
+void Battle::begin() {
+    while (allies.size() != 0 && enemies.size() != 0) {
         // os turnos dos aliados vem primeiro
-        for (int i = 0; i < MAX_ALLIES; i++) {
-            // pula o turno de quem morreu ou fugiu ou não existe
-            if (allies[i] == 0) {
-                continue;
-            }
+        for (int i = 0; i < allies.size(); i++) {
             // pula o turno de quem sofreu o efeito is_stunned
             if (allies[i]->getIs_stunned()) {
                 allies[i]->setIs_stunned(false);
                 continue;
             }
-            // cada aliado escolhe uma vitima aleatoria entre 0 e MAX_ENEMIES
-            // obs: abaixo não é utilizado "do while" porque allie_id não pode
-            // ser inicializado dentro do escopo do while
+            // cada aliado escolhe uma vitima aleatoria entre 0 e enemies.size()
             srand(static_cast<unsigned int>(time(nullptr)));
-            int enemy_id = rand() % (MAX_ENEMIES);
+            int enemy_id = rand() % (enemies.size());
             //cout << "enemy id: " << enemy_id << "\n";
-            while(enemies[enemy_id] == 0 && check_enemies()) {
-                srand(static_cast<unsigned int>(time(nullptr)));
-                enemy_id = rand() % (MAX_ENEMIES);
-                //cout << "enemy: " << enemies[enemy_id] << "\n";
-                //cout << "enemy id: " << enemy_id << "\n";
-            }
-            allies[i]->attack(*enemies[enemy_id]);
+            allies[i]->attack(*enemies[enemy_id], 0, 0);
             sleep(1);
-            allies[i]->setStamina(enemies[i]->getStamina() + 5);
             // apos atacar a vitima, verifica se ela morreu
-            if (enemies[enemy_id]->getHealth() <= 0) {
-                cout << enemies[enemy_id]->getName() << " is dead!\n";
-                enemies[enemy_id] = 0;
+            if (!*enemies[enemy_id]) {
+                deads.push_back(enemies[enemy_id]);
+                enemies.erase(enemies.begin() + enemy_id);
                 // verifica se o aliado morto era o ultimo e
                 // a batalha deve acabar entre os turnos dos inimigos
-                if (!check_enemies()) {
+                if (!enemies.size()) {
                     break;
                 }
             }
         }
         // depois começa o turno dos atacantes, nesse caso os monstros
-        for (int i = 0; i < MAX_ENEMIES; i++) {
-            // pula o turno de quem morreu ou fugiu ou não existe
-            if (enemies[i] == 0) {
-                continue;
-            }
+        for (int i = 0; i < enemies.size(); i++) {
             // pula o turno de quem sofreu o efeito is_stunned
             if (enemies[i]->getIs_stunned()) {
                 enemies[i]->setIs_stunned(false);
                 continue;
             }
-            // cada monstro escolhe uma vitima aleatoria entre 0 e MAX_ALLIES
+            // cada monstro escolhe uma vitima aleatoria entre 0 e allies.size()
             srand(static_cast<unsigned int>(time(nullptr)));
-            int ally_id = rand() % (MAX_ALLIES);
+            int ally_id = rand() % (allies.size());
             //cout << "ally id: " << ally_id << "\n";
-            while(allies[ally_id] == 0 && check_allies()) {
-                srand(static_cast<unsigned int>(time(nullptr)));
-                ally_id = rand() % (MAX_ALLIES);
-                //cout << "ally: " << allies[ally_id] << "\n";
-                //cout << "ally id: " << ally_id << "\n";
-            }
-            enemies[i]->attack(*allies[ally_id]);
+            enemies[i]->attack(*allies[ally_id], 0, 0);
             sleep(1);
-            enemies[i]->setStamina(enemies[i]->getStamina() + 5);
             // apos atacar a vitima, verifica se ela morreu
-            if (allies[ally_id]->getHealth() <= 0) {
-                cout << allies[ally_id]->getName() << " is dead!\n";
-                allies[ally_id] = 0;
+            if (!*allies[ally_id]) {
+                deads.push_back(allies[ally_id]);
+                allies.erase(allies.begin() + ally_id);
                 // verifica se o aliado morto era o ultimo e
                 // a batalha deve acabar entre os turnos dos inimigos
-                if (!check_allies()) {
+                if (!allies.size()) {
                     break;
                 }
             }
         }
     }
+    if (allies.size()) {
+        cout << "Allies won!\n";
+    }
+    else if (enemies.size()) {
+        cout << "Enemies won!\n";
+    }
+    else {
+        cout << "Draw!\n";
+    }
+    // drops all items from deads
+    for (auto dead : deads) {
+        dead->drop_all_items(this->floor_items);
+    }
+    return;
 }
 
-*/
+void Battle::get_floor_items(vector<Item*> &floor_items) {
+    for (auto item : this->floor_items) {
+        floor_items.push_back(item);
+    }
+    return;
+}
