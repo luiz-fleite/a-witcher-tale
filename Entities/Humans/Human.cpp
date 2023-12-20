@@ -41,6 +41,10 @@ Human::Human(string name,
     setCoins(coins);
 
     setCategory(category);
+
+    if (level == AUTO)
+        level = Entity::getGlobal_danger();
+
     setLevel(level);
     setXp(0);
     update_atributes();
@@ -181,7 +185,8 @@ void Human::update_all_weaknesses() {
 
 void Human::level_up() {
     level++;
-    
+    Entity::update_global_danger(level);
+
     update_atributes();
 
     life_regen(max_health);

@@ -43,6 +43,10 @@ Witcher::Witcher(string name,
     setCoins(coins);
 
     setCategory(category);
+
+    if (level == AUTO)
+        level = Entity::getGlobal_danger();
+
     setLevel(level);
     setXp(0);
     update_atributes();
@@ -59,7 +63,7 @@ Witcher::Witcher(string name,
     date_of_birth = Date(1, 1, 1000 - age);
 
     equipped.steel_sword = new Sword();
-    equipped.armor = new Armor();
+    equipped.armor = new Armor("Witcher Armor", "An special armor that protects agains monsters", 7, 3, 2, 2, 2);
     update_all_resistances();
 }
 
@@ -308,6 +312,11 @@ void Witcher::update_atributes() {
 
 void Witcher::attack(Entity &entity, int attack_option, int technique) {
 
+    if (!entity) {
+        cout << entity.getName() << "is already dead.\n";
+        return;
+    }
+
     cout << name << " attacked " << entity.getName() << ".\n";
 
     // testing stunned inside attack, must be removed later
@@ -429,6 +438,9 @@ void Witcher::attack(Entity &entity, int attack_option, int technique) {
                           total_poison_damage, 
                           total_ice_damage, 
                           total_silver_damage);
+
+    if (!entity)
+        gain_xp(entity.getXp_reward());
 
     return;
 }

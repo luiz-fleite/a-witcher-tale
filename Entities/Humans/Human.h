@@ -30,10 +30,10 @@ class Human: public Entity {
 public:
     Human();
     Human(string name,
-        int age=30, 
-        double coins=100, 
-        int level = 10,
-        string category="E");
+        int age = 30, 
+        double coins = 100, 
+        int level = AUTO,
+        string category = "E");
     Human(const Human &other_human);
     ~Human();
 

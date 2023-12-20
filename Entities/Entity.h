@@ -19,6 +19,10 @@ using std::pair;
 using std::for_each;
 
 
+enum options {
+    AUTO = -1
+};
+
 enum item_type {
     // NONE = -1,
     SWORD = 0,
@@ -69,6 +73,8 @@ public:
     inline int getTotal_ice_resistance() const { return total_ice_resistance; }
     inline int getTotal_silver_resistance() const { return total_silver_resistance; }
 
+    inline static int getGlobal_danger() { return global_danger; }
+
     void setName(string name);
     void setAge(int age);
     void setCoins(double coins);
@@ -99,6 +105,8 @@ public:
     inline void setTotal_poison_resistance(int total_poison_resistance) {if (total_poison_resistance >= 0) this->total_poison_resistance = total_poison_resistance;}
     inline void setTotal_ice_resistance(int total_ice_resistance) {if (total_ice_resistance >= 0) this->total_ice_resistance = total_ice_resistance;}
     inline void setTotal_silver_resistance(int total_silver_resistance) {if (total_silver_resistance >= 0) this->total_silver_resistance = total_silver_resistance;}
+
+    inline static void setGlobal_danger(int global_danger) { if (global_danger >= 0) Entity::global_danger = global_danger; }
 
     // add an item and deletes it
     void add_item(Item &);
@@ -142,7 +150,7 @@ public:
     virtual void talk();
     virtual void walk();
 
-    //void update_global_level();
+    static void update_global_danger(int higher_level = 0);
     
     const Entity &operator=(const Entity &);
     int operator==(const Entity &) const;
@@ -188,7 +196,7 @@ protected:
     const static int NEXT_LEVEL_XP_LINEAR_COEF = 10;
     const static int NEXT_LEVEL_XP_ANGULAR_COEF = 10;
 private:
-    //static int global_danger;
+    static int global_danger;
 };
 
 inline void Entity::talk() { cout << name << " says: \"Hello!\"\n"; }

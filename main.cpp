@@ -24,6 +24,7 @@
 
 #include "./Utils/load_save.h"
 
+// #include "./Utils/ui.h"
 
 int main(void) {
 
@@ -36,28 +37,44 @@ int main(void) {
 
     Ghoul * g1 = new Ghoul("Ghoul 1");
     Sword * s1 = new Sword("Sharpened sword", "Well sharpened steel sword", 10, 10, 10);
-    Armor * a1 = new Armor("Steel armor", "Well crafted steel armor", 10, 10, 10);
     g1->add_item(*s1);
-    g1->add_item(*a1);
     cout << *g1;
 
     cout << "===============================\n";
+
+    Ghoul * g2 = new Ghoul("Ghoul 2");
+    Armor * a1 = new Armor("Steel armor", "Well crafted steel armor", 10, 10, 10);
+    g2->add_item(*a1);
+    cout << *g2;
+
+    cout << "===============================\n";
+
+    Ghoul * g3 = new Ghoul("Ghoul 3");
+    Sword * s2 = new Sword("Broken sword", "A rusty broken steel sword", 1);
+    g3->add_item(*s2);
+    cout << *g3;
+
+    cout << "===============================\n";
+
     vector <Item *> floor_items;
     cout << "Floor items: " << floor_items.size() << "\n";
 
     cout << "===============================\n";
     cout << "=========During battle=========\n";
     Battle * b1 = new Battle(*w1, *g1);
+    b1->add_enemy(*g2);
+    b1->add_enemy(*g3);
+
     b1->begin();
     b1->get_floor_items(floor_items);
+
     cout << "===============================\n";
     cout << "=========After battle==========\n";
-    cout << *w1 << *g1;
+    cout << *w1 << *g1 << *g2 << *g3;
 
     cout << "===============================\n";
 
     cout << "Floor items: " << floor_items.size() << "\n";
-
 
     return 0;
 }

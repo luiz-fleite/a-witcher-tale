@@ -14,7 +14,7 @@ public:
     Ghoul(string name, 
         int age=200, 
         double coins=30, 
-        int level = 10,
+        int level = AUTO,
         string category="E");
     Ghoul(const Ghoul &other_ghoul);
     ~Ghoul();

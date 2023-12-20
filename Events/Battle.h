@@ -24,6 +24,6 @@ private:
     vector<Entity *> enemies;
     vector<Entity *> deads;
     vector<Item *> floor_items;
-};
+}; 
 
 #endif // BATTLE_H

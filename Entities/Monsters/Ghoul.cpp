@@ -41,6 +41,10 @@ Ghoul::Ghoul(string name,
     setCoins(coins);
 
     setCategory(category);
+
+    if (level == AUTO)
+        level = Entity::getGlobal_danger();
+
     setLevel(level);
     setXp(0);
 
@@ -75,7 +79,8 @@ void Ghoul::setIs_enraged(bool is_enraged) {
 
 void Ghoul::level_up() {
     level++;
-    
+    Entity::update_global_danger(level);
+
     update_atributes();
 
     life_regen(max_health);
@@ -128,7 +133,8 @@ void Ghoul::attack(Entity &entity, int weapon_type, int technique) {
 
 void Ghoul::receive_damage(int physical_damage, int fire_damage, int poison_damage, int ice_damage, int silver_damage) {
     Entity::receive_damage(physical_damage, fire_damage, poison_damage, ice_damage, silver_damage);
-    if (getHealth() < getMax_health() * 0.1) {
+
+    if (getHealth() < getMax_health() * 0.1 && !this->is_dead) {
         if (!is_enraged) {
             setIs_enraged(true);
         }

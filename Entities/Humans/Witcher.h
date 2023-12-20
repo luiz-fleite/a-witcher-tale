@@ -32,7 +32,7 @@ public:
     Witcher(string name,
         int age=200,
         double coins=200, 
-        int level = 10,
+        int level = AUTO,
         string category="E");
     Witcher(const Witcher &other_witcher);
     ~Witcher();

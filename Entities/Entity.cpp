@@ -7,6 +7,8 @@ using std::cout;
 
 const string Entity::CATEGORIES[7] = {"F", "E", "D", "C", "B", "A", "S"};
 
+int Entity::global_danger = 10;
+
 Entity::Entity() {
     //cout << "Creating a new Entity...\n";
     name = "Entity";
@@ -503,7 +505,7 @@ bool Entity::spend_stamina(int stamina_spent) {
         return false;
     }
     if (stamina_spent > getStamina()) {
-        cout << "Not enough stamina.\n";
+        cout << this->name << " has not enough stamina.\n";
         return false;
     }
     setStamina(getStamina() - stamina_spent);
@@ -563,6 +565,12 @@ void Entity::print_info() const{
     print_weaknesses();
     print_temporary_status();
     print_inventory();
+}
+
+void Entity::update_global_danger(int higher_level) {
+    if (higher_level > global_danger) {
+        global_danger = higher_level;
+    }
 }
 
 const Entity &Entity::operator=(const Entity &assigned_entity) {

@@ -61,6 +61,7 @@ void Battle::add_enemy(Entity &enemy) {
 
 void Battle::begin() {
     while (allies.size() != 0 && enemies.size() != 0) {
+
         // os turnos dos aliados vem primeiro
         for (int i = 0; i < allies.size(); i++) {
             // pula o turno de quem sofreu o efeito is_stunned
@@ -68,12 +69,18 @@ void Battle::begin() {
                 allies[i]->setIs_stunned(false);
                 continue;
             }
+
             // cada aliado escolhe uma vitima aleatoria entre 0 e enemies.size()
             srand(static_cast<unsigned int>(time(nullptr)));
             int enemy_id = rand() % (enemies.size());
             //cout << "enemy id: " << enemy_id << "\n";
-            allies[i]->attack(*enemies[enemy_id], 0, 0);
+
+            // regeneração padrão de stamina temporario
+            allies[i]->stamina_regen(6);
+
+            allies[i]->attack(*enemies[enemy_id], 1, 0);
             sleep(1);
+
             // apos atacar a vitima, verifica se ela morreu
             if (!*enemies[enemy_id]) {
                 deads.push_back(enemies[enemy_id]);
@@ -87,17 +94,21 @@ void Battle::begin() {
         }
         // depois começa o turno dos atacantes, nesse caso os monstros
         for (int i = 0; i < enemies.size(); i++) {
+
             // pula o turno de quem sofreu o efeito is_stunned
             if (enemies[i]->getIs_stunned()) {
                 enemies[i]->setIs_stunned(false);
                 continue;
             }
+
             // cada monstro escolhe uma vitima aleatoria entre 0 e allies.size()
             srand(static_cast<unsigned int>(time(nullptr)));
             int ally_id = rand() % (allies.size());
             //cout << "ally id: " << ally_id << "\n";
+
             enemies[i]->attack(*allies[ally_id], 0, 0);
             sleep(1);
+
             // apos atacar a vitima, verifica se ela morreu
             if (!*allies[ally_id]) {
                 deads.push_back(allies[ally_id]);
