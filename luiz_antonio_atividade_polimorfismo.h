@@ -2982,7 +2982,7 @@ void Ghoul::update_all_weaknesses() {
 }
 
 //// Fazer a sobrecarga para todas as classes dos operadores =, ==, ≠ e << (friend)
-
+/*
 //Base abstract
 // const Entity &Entity::operator=(const Entity &assigned_entity) {
     if (this != &assigned_entity) {
@@ -3016,65 +3016,427 @@ void Ghoul::update_all_weaknesses() {
     }
     return *this;
 }
-
+*/
      /// Operator=
         /// Hierarquia 1
              //Base
 
-             //Derivadas da Base 1 - mostrar uso static_cast
+const Entity &Entity::operator=(const Entity &assigned_entity) {
+    if (this != &assigned_entity) {
+        this->name = assigned_entity.name;
+        this->age = assigned_entity.age;
+        this->coins = assigned_entity.coins;
+
+        this->is_dead = assigned_entity.is_dead;
+        this->max_health = assigned_entity.max_health;
+        this->health = assigned_entity.health;
+        this->max_stamina = assigned_entity.max_stamina;
+        this->stamina = assigned_entity.stamina;
+
+        this->category = assigned_entity.category;
+        this->level = assigned_entity.level;
+        this->next_level_xp = assigned_entity.next_level_xp;
+        this->xp = assigned_entity.xp;
+        this->xp_reward = assigned_entity.xp_reward;
+
+        this->is_stunned = assigned_entity.is_stunned;
+
+        this->physical_weakness = assigned_entity.physical_weakness;
+        this->fire_weakness = assigned_entity.fire_weakness;
+        this->poison_weakness = assigned_entity.poison_weakness;
+        this->ice_weakness = assigned_entity.ice_weakness;
+        this->silver_weakness = assigned_entity.silver_weakness;
+
+        this->total_physical_resistance = assigned_entity.total_physical_resistance;
+        this->total_fire_resistance = assigned_entity.total_fire_resistance;
+        this->total_poison_resistance = assigned_entity.total_poison_resistance;
+        this->total_ice_resistance = assigned_entity.total_ice_resistance;
+        this->total_silver_resistance = assigned_entity.total_silver_resistance;
+
+        // primeiro limpa o vetor para preenche-lo
+        for (auto sword : this->inventory.swords) {
+            delete sword;
+        }
+        this->inventory.swords.clear();
+        for (auto sword : assigned_entity.inventory.swords) {
+            Sword * new_sword = new Sword(*sword);
+            this->inventory.swords.push_back(new_sword);
+        }
+        for (auto armor : this->inventory.armors) {
+            delete armor;
+        }
+        this->inventory.armors.clear();
+        for (auto armor : assigned_entity.inventory.armors) {
+            Armor * new_armor = new Armor(*armor);
+            this->inventory.armors.push_back(new_armor);
+        }
+    }
+
+    return *this; // permite a forma a = b = c
+}
+             //Derivadas da Base 1 - não é permitido static_cast pela abstrata
+
+const Human &Human::operator=(const Human &other_human) {
+    if (this != &other_human) {
+        // forma não permitida pela classe abstrata
+        //*static_cast< Entity * >( this ) = static_cast< Entity >( other_human );
+        // forma sugerida pela IA
+        Entity::operator=(other_human);
+        if (other_human.equipped.steel_sword == 0) equipped.steel_sword = 0;
+        else {
+            delete equipped.steel_sword;
+            equipped.steel_sword = new Sword(*other_human.equipped.steel_sword);
+        }
+
+        if (other_human.equipped.armor == 0) equipped.armor = 0;
+        else {
+            delete equipped.armor;
+            equipped.armor = new Armor(*other_human.equipped.armor);
+        }
+    }
+    return *this;
+}
 
              //Derivadas da Derivada - mostrar uso static_cast
+
+    const Witcher &Witcher::operator=(const Witcher &other_witcher) {
+    if (this != &other_witcher) {
+        *static_cast< Human * >( this ) = static_cast< Human >( other_witcher );
+        delete this->signs.igni;
+        this->signs.igni = other_witcher.signs.igni;
+        this->is_close_to_chest = other_witcher.is_close_to_chest;
+    }
+    return *this;
+}
+
+            // Derivada da Base 1
+const Ghoul &Ghoul::operator=(const Ghoul &other_ghoul) {
+    if (this == &other_ghoul) {
+        return *this;
+    }
+    Entity::operator=(other_ghoul);
+    this->is_enraged = other_ghoul.is_enraged;
+    
+    return *this;
+}
+
 
              //e assim por diante
 
         /// Hierarquia 2
              //Base
+    const Item &Item::operator=(const Item &other_Item) {
+    this->name = other_Item.name;
+    this->description = other_Item.description;
+    return *this;
+}
+             //Derivadas da Base 2 - não é permitido static_cast pela abstrata
+const Weapon &Weapon::operator=(const Weapon &other_weapon) {
+    // Item is abstract, so we can't do this:
+    //static_cast<Item>(*this) = static_cast<Item>(other_weapon);
+    // So we do this:
+    Item::operator=(other_weapon);
 
-             //Derivadas da Base 2 - mostrar uso static_cast
+    this->physical_damage = other_weapon.physical_damage;
+    this->fire_damage = other_weapon.fire_damage;
+    this->poison_damage = other_weapon.poison_damage;
+    this->ice_damage = other_weapon.ice_damage;
+    this->silver_damage = other_weapon.silver_damage;
 
-             //Derivadas da Derivada - mostrar uso static_cast
+    return *this;
+}
+             //Derivadas da Derivada - não é permitido static_cast pela abstrata
+const Sword &Sword::operator=(const Sword &other_sword) {
+    // Weapon is abstract, so we can't do this:
+    //static_cast<Weapon>(*this) = static_cast<Weapon>(other_sword);
+    // So we do this:
+    Weapon::operator=(other_sword);
+    made_of_silver = other_sword.made_of_silver;
+
+    return *this;
+}
+
+            // Derivada da Base 2 - não é permitido static_cast pela abstrata
+const Armor &Armor::operator=(const Armor &other_Armor) {
+    // forma não permitida pela classe abstrata Item
+    //static_cast<Item &>(*this) = static_cast<const Item &>(other_Armor);
+    Item::operator=(other_Armor);
+    this->physical_defense = other_Armor.physical_defense;
+    this->fire_defense = other_Armor.fire_defense;
+    this->poison_defense = other_Armor.poison_defense;
+    this->ice_defense = other_Armor.ice_defense;
+    this->silver_defense = other_Armor.silver_defense;
+
+    return *this;
+}
 
              //e assim por diante
 
 
         /// Hierarquia 3
              //Base
+    const Spell &Spell::operator=(const Spell &other_spell) {
+    this->name = other_spell.name;
+    this->description = other_spell.description;
+    return *this;
+}
+             //Derivadas da Base 3 - não é permitido static_cast pela abstrata
+const Sign &Sign::operator=(const Sign &other_sign) {
+    if (this != &other_sign) {
+        Spell::operator=(other_sign);
+        this->is_unlocked = other_sign.is_unlocked;
+        this->stamina_cost = other_sign.stamina_cost;
+    }
+    return *this;
+}
 
-             //Derivadas da Base 3 - mostrar uso static_cast
-
-             //Derivadas da Derivada - mostrar uso static_cast
-
+             //Derivadas da Derivada - não é permitido static_cast pela abstrata
+const Igni &Igni::operator=(const Igni &other_igni) {
+    if (this != &other_igni) {
+        Sign::operator=(other_igni);
+        this->fire_damage = other_igni.fire_damage;
+        this->area = other_igni.area;
+    }
+    return *this;
+}
              //e assim por diante
-
 
 
      //// Operators== e !=
          // Hierarquia 1
              //Base
 
-             //Derivadas da Base 1 - mostrar uso static_cast
+int Entity::operator==(const Entity &other_entity) const {
+    // atributes check
+    if (this->name != other_entity.name) return 0;
+    if (this->age != other_entity.age) return 0;
+    if (this->coins != other_entity.coins) return 0;
 
+    if (this->is_dead != other_entity.is_dead) return 0;
+    if (this->max_health != other_entity.max_health) return 0;
+    if (this->health != other_entity.health) return 0;
+    if (this->max_stamina != other_entity.max_stamina) return 0;
+    if (this->stamina != other_entity.stamina) return 0;
+
+    if (this->category != other_entity.category) return 0;
+    if (this->level != other_entity.level) return 0;
+    if (this->next_level_xp != other_entity.next_level_xp) return 0;
+    if (this->xp != other_entity.xp) return 0;
+    if (this->xp_reward != other_entity.xp_reward) return 0;
+
+    if (this->physical_weakness != other_entity.physical_weakness) return 0;
+    if (this->fire_weakness != other_entity.fire_weakness) return 0;
+    if (this->poison_weakness != other_entity.poison_weakness) return 0;
+    if (this->ice_weakness != other_entity.ice_weakness) return 0;
+    if (this->silver_weakness != other_entity.silver_weakness) return 0;
+
+    if (this->total_physical_resistance != other_entity.total_physical_resistance) return 0;
+    if (this->total_fire_resistance != other_entity.total_fire_resistance) return 0;
+    if (this->total_poison_resistance != other_entity.total_poison_resistance) return 0;
+    if (this->total_ice_resistance != other_entity.total_ice_resistance) return 0;
+    if (this->total_silver_resistance != other_entity.total_silver_resistance) return 0;
+    
+    if (this->is_stunned != other_entity.is_stunned) return 0;
+
+    // inventory check
+    //if (this->inventory.swords.empty() != other_entity.inventory.swords.empty()) return 0;
+    if (this->inventory.swords.size() != other_entity.inventory.swords.size()) return 0;
+    if (this->inventory.armors.size() != other_entity.inventory.armors.size()) return 0;
+    
+    for (auto sword : inventory.swords) {
+        for (auto other_sword : other_entity.inventory.swords) {
+            if (*sword != *other_sword) {
+                return 0;
+            }
+        }
+    }
+    for (auto armor : inventory.armors) {
+        for (auto other_armor : other_entity.inventory.armors) {
+            if (*armor != *other_armor) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+int Entity::operator!=(const Entity &other_entity) const {
+    return !(*this == other_entity);
+}
+             //Derivadas da Base 1 - não é permitido static_cast pela abstrata
+
+bool Human::operator==(const Human &other_human) const {
+    Entity::operator==(other_human);
+
+    // First checks if its empty
+    if (equipped.steel_sword == 0 && other_human.equipped.steel_sword != 0) return false;
+    if (equipped.steel_sword != 0 && other_human.equipped.steel_sword == 0) return false;
+    // Then checks if its equal
+    if (equipped.steel_sword != 0 && other_human.equipped.steel_sword != 0) {
+        if (*equipped.steel_sword != *other_human.equipped.steel_sword) return false;
+    }
+
+    // First checks if its empty
+    if (equipped.armor == 0 && other_human.equipped.armor != 0) return false;
+    if (equipped.armor != 0 && other_human.equipped.armor == 0) return false;
+    // Then checks if its equal
+    if (equipped.armor != 0 && other_human.equipped.armor != 0) {
+        if (*equipped.armor != *other_human.equipped.armor) return false;
+    }
+
+    return true;
+}
+
+bool Human::operator!=(const Human &other_human) const {
+    return !(*this == other_human);
+}
              //Derivadas da Derivada - mostrar uso static_cast
+bool Witcher::operator==(const Witcher &other_witcher) const {
+    static_cast< Human >( *this ) == static_cast< Human >( other_witcher );
+
+    if (signs.igni != other_witcher.signs.igni) return false;
+    if (is_close_to_chest != other_witcher.is_close_to_chest) return false;
+
+    return true;
+}
+
+bool Witcher::operator!=(const Witcher &other_witcher) const {
+    return !(*this == other_witcher);
+}
+
+            // Derivada da Base 1
+
+int Ghoul::operator==(const Ghoul &other_ghoul) const {
+    Entity::operator==(other_ghoul);
+    if (this->is_enraged != other_ghoul.is_enraged) { return 0; }
+    return 1;
+}
+
+int Ghoul::operator!=(const Ghoul &other_ghoul) const {
+    return Entity::operator!=(other_ghoul);
+}
 
              //e assim por diante
-
+// BONUS: a hierarquia de Entity tambem possui a sobrecarga do operador unário de negação !
+// que retorna true se a entidade estiver morta e false caso contrário
+// imitando especificamente o comportamento declarado em Entity
+bool Entity::operator!() const {
+    return (is_dead);
+}
+bool Human::operator!() const {
+    return Entity::operator!();
+}
+bool Witcher::operator!() const {
+    return Entity::operator!();
+}
+bool Ghoul::operator!() const {
+    return Entity::operator!();
+}
 
          //// Hierarquia 2
              //Base
 
-             //Derivadas da Base 2 - mostrar uso static_cast
+int Item::operator==(const Item &other_Item) const {
+    if (this->name != other_Item.name) return 0;
+    if (this->description != other_Item.description) return 0;
+    return 1;
+}
 
-             //Derivadas da Derivada - mostrar uso static_cast
+int Item::operator!=(const Item &other_Item) const {
+    return !(*this == other_Item);
+}
+
+             //Derivadas da Base 2 - não é permitido static_cast pela abstrata
+int Weapon::operator==(const Weapon &other_weapon) const {
+    // Item is abstract, so we can't do this:
+    // static_cast<Item>(*this) == static_cast<Item>(other_weapon);
+    // So we do this:
+    Item::operator==(other_weapon);
+
+    if (this->physical_damage != other_weapon.physical_damage) return 0;
+    if (this->fire_damage != other_weapon.fire_damage) return 0;
+    if (this->poison_damage != other_weapon.poison_damage) return 0;
+    if (this->ice_damage != other_weapon.ice_damage) return 0;
+    if (this->silver_damage != other_weapon.silver_damage) return 0;
+
+    return 1;
+}
+
+int Weapon::operator!=(const Weapon &other_weapon) const {
+    return !(*this == other_weapon);
+}
+
+             //Derivadas da Derivada - não é permitido static_cast pela abstrata
+int Sword::operator==(const Sword &other_sword) const {
+    // Weapon is abstract, so we can't do this:
+    // static_cast<Weapon>(*this) == static_cast<Weapon>(other_sword);
+    // So we do this:
+    Weapon::operator==(other_sword);
+    if (this->made_of_silver != other_sword.made_of_silver) return 0;
+
+    return 1;
+}
+
+int Sword::operator!=(const Sword &other_sword) const {
+    return !(*this == other_sword);
+}
+
+            //Derivadas da Base 2 - não é permitido static_cast pela abstrata
+int Armor::operator==(const Armor &other_Armor) const {
+    // forma não permitida pela classe abstrata Item
+    //static_cast<const Item &>(*this) == static_cast<const Item &>(other_Armor);
+    Item::operator==(other_Armor);
+    if (this->physical_defense != other_Armor.physical_defense) return 0;
+    if (this->fire_defense != other_Armor.fire_defense) return 0;
+    if (this->poison_defense != other_Armor.poison_defense) return 0;
+    if (this->ice_defense != other_Armor.ice_defense) return 0;
+    if (this->silver_defense != other_Armor.silver_defense) return 0;
+    
+    return 1;
+}
+
+int Armor::operator!=(const Armor &other_Armor) const {
+    return !(*this == other_Armor);
+}
 
              //e assim por diante
 
-
         //// Hierarquia 3
              //Base
+int Spell::operator==(const Spell &other_spell) const {
+    if (this->name != other_spell.name) return 0;
+    if (this->description != other_spell.description) return 0;
+    return 1;
+}
 
-             //Derivadas da Base 3 - mostrar uso static_cast
+int Spell::operator!=(const Spell &other_spell) const {
+    return !(*this == other_spell);
+}
+             //Derivadas da Base 3 - não é permitido static_cast pela abstrata
+int Sign::operator==(const Sign &other_sign) const {
+    Spell::operator==(other_sign);
 
-             //Derivadas da Derivada - mostrar uso static_cast
+    if (this->stamina_cost == other_sign.stamina_cost) return 0;
+
+    return 1;
+}
+
+int Sign::operator!=(const Sign &other_sign) const {
+    return !(*this == other_sign);
+}
+             //Derivadas da Derivada - não é permitido static_cast pela abstrata
+int Igni::operator==(const Igni &other_igni) const {
+    Sign::operator==(other_igni);
+
+    if (this->fire_damage != other_igni.fire_damage) return 0;
+    if (this->area != other_igni.area) return 0;
+
+    return 1;
+}
+
+int Igni::operator!=(const Igni &other_igni) const {
+    return !(*this == other_igni);
+}
 
              //e assim por diante
 
@@ -3082,20 +3444,188 @@ void Ghoul::update_all_weaknesses() {
      //// Operator<<
         //// Hierarquia 1
              //Base
+            // Entity
+            // classe abstrata não possui cout, apenas print
 
-             //Derivadas da Base 1 - mostrar uso static_cast
+void Entity::print_info() const{
+    cout << "==========Identity==========\n";
+    cout << "Name: " << this->name << "\n";
+    cout << "Age: " << this->age << "\n";
+    cout << "Date of birth: ";
+    this->date_of_birth.print();
+    cout << "\n";
+    cout << "==========Atributes==========\n";
+    cout << "Category: " << this->category << "\n";
+    cout << "Level: " << this->level << "\n";
+    cout << "XP: " << this->xp << "/" << this->next_level_xp << "\n";
+
+    if (this->xp_reward != 0)
+        cout << "XP reward: " << this->xp_reward << "\n";
+
+    string buffer = (this->is_dead) ? " (DEAD) " : "";
+    cout << "Health: " << this->health << "/" << this->max_health << buffer << "\n";
+
+    cout << "Stamina: " << this->stamina << "/" << this->max_stamina << "\n";
+    print_resistances();
+    print_weaknesses();
+    print_temporary_status();
+    print_inventory();
+}
+
+void Entity::print_resistances() const {
+    cout << "==========Resistences==========\n";
+    if (this->total_physical_resistance != 0)
+        cout << "Physical: +" << this->total_physical_resistance << "\n";
+    if (this->total_fire_resistance != 0)
+        cout << "Fire: +" << this->total_fire_resistance << "\n";
+    if (this->total_poison_resistance != 0)
+        cout << "Poison: +" << this->total_poison_resistance << "\n";
+    if (this->total_ice_resistance != 0)
+        cout << "Ice: +" << this->total_ice_resistance << "\n";
+    if (this->total_silver_resistance != 0)
+        cout << "Silver: +" << this->total_silver_resistance << "\n";
+}
+
+void Entity::print_weaknesses() const {
+    cout << "==========Weaknesses==========\n";
+    cout << "Physical: " << this->physical_weakness << "x\n";
+    cout << "Fire: " << this->fire_weakness << "x\n";
+    cout << "Poison: " << this->poison_weakness << "x\n";
+    cout << "Ice: " << this->ice_weakness << "x\n";
+    cout << "Silver: " << this->silver_weakness << "x\n";
+}
+
+void Entity::print_temporary_status() const {
+    cout << "==========Temporary status==========\n";
+    string buffer = (this->is_stunned) ? "true" : "false";
+    cout << "Stunned: " << buffer << "\n";
+}
+
+void Entity::print_inventory() const {
+    cout << "==========Inventory of " << this->name << "==========\n";
+    cout << "Coins: " << this->coins << "\n";
+    cout << "==========Swords==========\n";
+
+    int counter = 0;
+    if (inventory.swords.empty()) {
+        cout << "None\n";
+    }
+    for (auto sword : inventory.swords) {
+        cout << ++counter << ". " << *sword << "\n";
+    }
+
+    cout << "==========Armors==========\n";
+
+    counter = 0;
+    if (inventory.armors.empty()) {
+        cout << "None\n";
+    }
+    for (auto armor : inventory.armors) {
+        cout << ++counter << ". " << *armor << "\n";
+    }
+}
+
+             //Derivadas da Base 1 - não é permitido static_cast pela abstrata
+
+ostream &operator<< (ostream &out, const Human &human){
+    // Chama o método print_info() da classe base abstrata
+    human.print_info();
+
+    // Em seguida printa seus atributos especializados
+    out << "==========Equipped Items==========\n";
+
+    bool check_if_empty = true;
+
+    if (human.equipped.steel_sword != 0) {
+        out << "==========Steel Sword==========\n";
+        out << *human.equipped.steel_sword << "\n";
+        check_if_empty = false;
+    }
+    
+    out << "==========Armor==========\n";
+    if (human.equipped.armor != 0) {
+        out << *human.equipped.armor << "\n";
+        check_if_empty = false;
+    }
+
+    if (check_if_empty) out << "None\n";
+
+    return out;
+}
 
               //Derivadas da Derivada - mostrar uso static_cast
+
+ostream &operator<< (ostream &out, const Witcher &witcher) {
+    out << static_cast<Human>(witcher);
+    out << "==========Witcher Signs==========\n";
+    out << *witcher.signs.igni << "\n";
+
+    return out;
+}
+
+            //Derivadas da Base 1 - não é permitido static_cast pela abstrata
+ostream &operator<<(ostream &out, const Ghoul &ghoul) {
+    // Chama o método print_info() da classe base abstrata
+    ghoul.print_info();
+
+    // Em seguida printa seus atributos especializados
+    out << "Enraged: " << ghoul.is_enraged << "\n";
+    
+    return out;
+}
 
              //e assim por diante
 
 
         //// Hierarquia 2
              //Base
+             // Item
+            // classe abstrata não possui cout, apenas print
+    void Item::print_info() const {
+    cout << "Name: " << name << '\n';
+    cout << "Description: " << description << '\n';
+}
 
-             //Derivadas da Base 2 - mostrar uso static_cast
+             //Derivadas da Base 2 - não é permitido static_cast pela abstrata
+            // Weapon
+            // Weapon é classe abstrata também e não possui cout, apenas print
+void Weapon::print_info() const {
+    cout << name << " (+" << physical_damage << " physical damage)\n";
+    if (fire_damage > 0) cout << " (+" << fire_damage << " fire damage)\n";
+    if (poison_damage > 0) cout << " (+" << poison_damage << " poison damage)\n";
+    if (ice_damage > 0) cout << " (+" << ice_damage << " ice damage)\n";
+    if (silver_damage > 0) cout << " (+" << silver_damage << " silver damage)\n";
 
-              //Derivadas da Derivada - mostrar uso static_cast
+    cout << "\"" << description << "\"";
+}
+
+              //Derivadas da Derivada - não é permitido static_cast pela abstrata
+            // Sword
+            // Sword usa cout com sua própria personalização
+ostream &operator<< (ostream &out, const Sword &sword){
+    out << sword.name << " (+" << sword.physical_damage << " physical damage)\n";
+    if (sword.fire_damage > 0) out << " (+" << sword.fire_damage << " fire damage)\n";
+    if (sword.poison_damage > 0) out << " (+" << sword.poison_damage << " poison damage)\n";
+    if (sword.ice_damage > 0) out << " (+" << sword.ice_damage << " ice damage)\n";
+    if (sword.silver_damage > 0) out << " (+" << sword.silver_damage << " silver damage)\n";
+
+    out << "\"" << sword.description << "\"";
+    return out;
+}
+
+            //Derivadas da Base 2 - não é permitido static_cast pela abstrata
+            // Armor
+            // Armor usa cout com sua própria personalização
+ostream &operator<< (ostream &out, const Armor &Armor){
+    out << Armor.name << " (+" << Armor.physical_defense << " physical defense)\n";
+    if (Armor.fire_defense > 0) out << " (+" << Armor.fire_defense << " fire defense)\n";
+    if (Armor.poison_defense > 0) out << " (+" << Armor.poison_defense << " poison defense)\n";
+    if (Armor.ice_defense > 0) out << " (+" << Armor.ice_defense << " ice defense)\n";
+    if (Armor.silver_defense > 0) out << " (+" << Armor.silver_defense << " silver defense)\n";
+
+    out << "\"" << Armor.description << "\"";
+    return out;
+}
 
              //e assim por diante
 
@@ -3103,10 +3633,43 @@ void Ghoul::update_all_weaknesses() {
        //// Hierarquia 3
 
              //Base
+             // Spell
+            // classe abstrata não possui cout, apenas print
+void Spell::print_info() const {
+    cout << "==========" << name << "==========\n";
+    cout << "\"" << description << "\"\n";
+}
 
-             //Derivadas da Base 3 - mostrar uso static_cast
+             //Derivadas da Base 3 - não é permitido static_cast pela abstrata
+            // Sign
+            // Sign é classe abstrata também e não possui cout, apenas print
+void Sign::print_info() const {
+    // Chama o método print_info() da classe base abstrata
+    Spell::print_info();
 
-              //Derivadas da Derivada - mostrar uso static_cast
+    // Em seguida printa seus atributos especializados
+    string buffer = (is_unlocked) ? "true" : "false";
+
+    cout << "Is unlocked: " << buffer << "\n";
+
+    cout << "Stamina cost: " << stamina_cost << "\n";
+    
+}
+
+
+              //Derivadas da Derivada - não é permitido static_cast pela abstrata
+            // Igni
+
+ostream &operator<<(ostream &out, const Igni &igni) {
+    // Chama o método print_info() da classe base abstrata
+    igni.print_info();
+
+    // Em seguida printa seus atributos especializados
+    out << "Fire damage: " << igni.fire_damage << "\n";
+    out << "Area: " << igni.area << "\n";
+
+    return out;
+}
 
              //e assim por diante
 
@@ -3121,6 +3684,7 @@ void Ghoul::update_all_weaknesses() {
 ///Sem o diagrama UML, a saída do programa e o vídeo, o trabalho não será avaliado.*/
 
     //Link arquivo de configuração no repositório
+
 
     //Link vídeo mostrando a execução do código usando o arquivo de configuração
 
