@@ -3676,15 +3676,335 @@ ostream &operator<<(ostream &out, const Igni &igni) {
             
 
 //// Carregamento e salvamento de arquivos
-    /*É necessário ter a funcionalidade: 1. 
-      leitura de arquivos para configuração das suas classes e variáveis de status, 
-      2. processamento das variáveis de status e 
-      3. salvamento dessas variáveis. 
-      
-///Sem o diagrama UML, a saída do programa e o vídeo, o trabalho não será avaliado.*/
+    // É necessário ter a funcionalidade: 
+    //1. leitura de arquivos para configuração das suas classes e variáveis de status, 
+    //2. processamento das variáveis de status e 
+      bool load_witcher( Witcher &loaded_witcher, 
+                   string name_file = "save-files/config-witcher/config_atributes.txt" ) {
+    cout << "Loading witcher...\n";
+    // First creates a buffer map to store the atributes of wicther
+    map<string, string> atributes_buffer;
+
+    // Open the file for reading
+    ifstream input_file(name_file);
+    if (!input_file.is_open()) {
+        cerr << "Error opening " << name_file << " file." << '\n';
+        return false; // Exit with an error code
+    }
+
+    string line;
+    string atribute_name;
+    char equal_sign;
+    string value;
+
+    // Check first line if a witcher was saved or not:
+    // Do all the checks to see if the file is valid
+    // First get the line
+    if (!(getline(input_file, line))) {
+        return false;
+    }
+    // Then put it in a istringstream to manipulate it
+    istringstream iss(line);
+    // Check if it has the number of specifiers I want
+    if (!(iss >> atribute_name >> equal_sign >> value)) {
+        cerr << "Error parsing line: (unexpected arguments number)" << line << '\n';
+        return false;
+    }
+    // Check if the specifiers are the ones I want
+    if (!(atribute_name == "Witcher" && equal_sign == '=')) {
+        cerr << "Error parsing line: (incorrect separators)" << line << '\n';
+        return false;
+    }
+    // Check if the value is valid on my convention
+    if (!(value == "1" || value == "0")) {
+        cerr << "Error parsing line: (expected \"0\" or \"1\")" << line << '\n';
+        return false;
+    }
+    // Finally checks if a Witcher was already saved before:
+    if (value == "0") {
+        cout << "No Witcher was saved yet.\n";
+        return false;
+    }
+    // If a Witcher was saved before, then load it:
+    while (getline(input_file, line)) 
+    {
+        // cout << "Parsing line: " << line << "\n";
+        // Do the checks above but for every line
+        // in a generic way
+        istringstream iss(line);
+        if (!(iss >> atribute_name >> equal_sign >> value)) {
+        cerr << "Error parsing line: (unexpected arguments number) " << line << '\n';
+        return false;
+        }
+        
+        if (!(equal_sign == '=')) {
+            cerr << "Error parsing line: (incorrect separator) " << line << '\n';
+            return false;
+        }
+
+        // Remove leading and trailing whitespaces from the value
+        value = value.substr(value.find_first_not_of(" \t"));
+        value = value.substr(0, value.find_last_not_of(" \t") + 1);
+        
+        // putting values inside the map
+        atributes_buffer[atribute_name] = value;
+    }
+    // Converts underscores from string atributes to spaces
+    // so that the string turns back to original form
+    for (auto &x : atributes_buffer) {
+        replace(x.second.begin(), x.second.end(), '_', ' ');
+    }
+
+    input_file.close();
+
+    if (atributes_buffer.empty()) {
+        cerr << "No variables found.\n";
+        return false;
+    }
+
+    // Then set the atributes to witcher
+    loaded_witcher.setName(atributes_buffer["name"]);
+    loaded_witcher.setAge(stoi(atributes_buffer["age"]));
+    loaded_witcher.setCoins(stod(atributes_buffer["coins"]));
+
+    // Sets the atributes to its level
+    loaded_witcher.setCategory(atributes_buffer["category"]);
+    loaded_witcher.setLevel(stoi(atributes_buffer["level"]));
+    loaded_witcher.update_atributes();
+
+    // Recovers the current health and stamina
+    loaded_witcher.setHealth(stoi(atributes_buffer["health"]));
+    loaded_witcher.setStamina(stoi(atributes_buffer["stamina"]));
+
+    // Then load the inventory
+    cout << "Loading inventory...\n";
+    loaded_witcher.load_inventory();
+
+    return true;
+}
+
+void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
+
+    // First creates a buffer map to store the atributes of each item
+    map<string, string> items_atributes_buffer;
+    // First load the swords
+    ifstream input_file(name_file_swords);
+    if (!input_file.is_open()) {
+        cerr << "Error opening  " << name_file_swords << " file." << '\n';
+        return; // Exit with an error code
+    }
+    // Unpacking variables
+    string line;
+    string atribute_name;
+    char equal_sign;
+    string value;
+
+    while (getline(input_file, line)) {
+        istringstream line_stream(line);
+        line_stream >> atribute_name >> equal_sign >> value;
+        // Skips to next sword and stores the previous one
+        // reusing the same buffer for all swords
+        if (atribute_name == "next" && equal_sign == '=' && value == "item") {
+            // Converts underscores from string atributes to spaces
+            // so that the string turns back to original form
+            for (auto &x : items_atributes_buffer) {
+                replace(x.second.begin(), x.second.end(), '_', ' ');
+            }
+            // Creates a temporary sword and adds it to the inventory
+            Sword * new_sword = new Sword(items_atributes_buffer["name"], 
+                                    items_atributes_buffer["description"], 
+                                    stoi(items_atributes_buffer["physical_damage"]),
+                                    stoi(items_atributes_buffer["fire_damage"]),
+                                    stoi(items_atributes_buffer["poison_damage"]),
+                                    stoi(items_atributes_buffer["ice_damage"]),
+                                    stoi(items_atributes_buffer["silver_damage"]));
+            // add_item already cleans "new_sword" buffer
+            add_item(*new_sword);
+            // Cleans buffer variable
+            items_atributes_buffer.clear();
+        }
+        // Stores values in buffer iteratively
+        items_atributes_buffer[atribute_name] = value;
+    }
+    // Closes swords file
+    input_file.close();
+
+    // Then load the armors
+    // Reuse same ifstream variable
+    input_file.open(name_file_armors);
+        if (!input_file.is_open()) {
+        cerr << "Error opening " << name_file_armors << " file." << '\n';
+        return; // Exit with an error code
+    }
+
+    while (getline(input_file, line)) {
+        istringstream line_stream(line);
+        // Reuses same unpacking variables
+        line_stream >> atribute_name >> equal_sign >> value;
+        // Skips to next armor and stores the previous one
+        // reusing the same buffer for all armors
+        if (atribute_name == "next" && equal_sign == '=' && value == "item") {
+            // Converts underscores from string atributes to spaces
+            // so that the string turns back to original form
+            for (auto &x : items_atributes_buffer) {
+                replace(x.second.begin(), x.second.end(), '_', ' ');
+            }
+            // Creates a temporary armor and adds it to the inventory
+            Armor * new_armor = new Armor(items_atributes_buffer["name"], 
+                                    items_atributes_buffer["description"], 
+                                    stoi(items_atributes_buffer["physical_defense"]), 
+                                    stoi(items_atributes_buffer["fire_defense"]),
+                                    stoi(items_atributes_buffer["poison_defense"]),
+                                    stoi(items_atributes_buffer["ice_defense"]),
+                                    stoi(items_atributes_buffer["silver_defense"]));
+            // add_item already cleans "new_armor" buffer
+            add_item(*new_armor);
+            // Cleans buffer variable
+            items_atributes_buffer.clear();
+        }
+        // Stores values in buffer iteratively
+        // Reuses same map
+        items_atributes_buffer[atribute_name] = value;
+    }
+    // Closes armors file
+    input_file.close();
+
+    return;
+}
+
+      //3. salvamento dessas variáveis. 
+
+bool save_witcher( Witcher &saved_witcher, 
+                   string name_file = "save-files/config-witcher/config_atributes.txt" )
+{
+    // unequip all items, to they're saved in the inventory
+    for (int i = 0; i < TOTAL_ITEM_TYPES; i++) {
+        saved_witcher.unequip_item(i);
+    }
+    // creates a buffer map to store the atributes of wicther
+    map<string, string> atributes;
+    // save the witcher atributes
+    // update the atributes map
+    atributes["name"] = saved_witcher.getName();
+    atributes["age"] = to_string(saved_witcher.getAge());
+    atributes["coins"] = to_string(saved_witcher.getCoins());
+
+    // save level and category
+    atributes["category"] = saved_witcher.getCategory();
+    atributes["level"] = to_string(saved_witcher.getLevel());
+
+    // saves current health and stamina
+    atributes["health"] = to_string(saved_witcher.getHealth());
+    atributes["stamina"] = to_string(saved_witcher.getStamina());
+
+    // converts spaces to underscores in string atributes
+    // so that the string can be saved in a file
+    for (auto &x : atributes) {
+        replace(x.second.begin(), x.second.end(), ' ', '_');
+    }
+    
+    // Open the file for writing
+    ofstream output_file(name_file, std::ios::out | std::ios::trunc);
+    if (!output_file.is_open()) {
+        cerr << "Erro ao abrir aquivo para escrita!" << '\n';
+        return false; //
+    }
+    // First writes that there is a witcher saved
+    output_file << "Witcher = 1\n";
+    // Then writes all the atributes according to their type
+    for (const auto& pair : atributes) {
+        output_file << pair.first << " = " << pair.second << '\n';
+    }
+    // Then closes the file
+    output_file.close();
+
+    // Then save the witcher inventory
+    saved_witcher.save_inventory();
+
+    cout << "Witcher " << saved_witcher.getName() << " has been saved.\n";
+
+    return true;
+}
+
+void Witcher::save_inventory(string name_file_swords, string name_file_armors) {
+    // First creates a buffer map to store the atributes of each item
+    map<string, string> items_atributes_buffer;
+    // First save the swords
+    ofstream output_file(name_file_swords);
+    if (!output_file.is_open()) {
+        cerr << "Error opening file." << '\n';
+        return; // Exit with an error code
+    }
+
+    for (auto sword : this->inventory.swords) {
+        items_atributes_buffer["name"] = sword->getName();
+        items_atributes_buffer["description"] = sword->getDescription();
+        items_atributes_buffer["physical_damage"] = to_string(sword->getPhysical_damage());
+        items_atributes_buffer["fire_damage"] = to_string(sword->getFire_damage());
+        items_atributes_buffer["poison_damage"] = to_string(sword->getPoison_damage());
+        items_atributes_buffer["ice_damage"] = to_string(sword->getIce_damage());
+        items_atributes_buffer["silver_damage"] = to_string(sword->getSilver_damage());
+        // Convert string spaces from string atributes to underscores
+        // so that the file can be read again
+        for (auto &x : items_atributes_buffer) {
+            replace(x.second.begin(), x.second.end(), ' ', '_');
+        }
+        // Stores values in buffer iteratively
+        for (auto const& x : items_atributes_buffer) {
+            output_file << x.first << " = " << x.second << '\n';
+        }
+        // Stores next item separator
+        output_file << "next = item\n";
+        items_atributes_buffer.clear();
+    }
+    // Closes swords file
+    output_file.close();
+
+    // Then save the armors
+    // Reuse same ofstream variable
+    output_file.open(name_file_armors);
+        if (!output_file.is_open()) {
+        cerr << "Error opening file." << '\n';
+        return; // Exit with an error code
+    }
+
+    for (auto armor : this->inventory.armors) {
+        items_atributes_buffer["name"] = armor->getName();
+        items_atributes_buffer["description"] = armor->getDescription();
+        items_atributes_buffer["physical_defense"] = to_string(armor->getPhysical_defense());
+        items_atributes_buffer["fire_defense"] = to_string(armor->getFire_defense());
+        items_atributes_buffer["poison_defense"] = to_string(armor->getPoison_defense());
+        items_atributes_buffer["ice_defense"] = to_string(armor->getIce_defense());
+        items_atributes_buffer["silver_defense"] = to_string(armor->getSilver_defense());
+        // Convert string spaces from string atributes to underscores
+        // so that the file can be read again
+        for (auto &x : items_atributes_buffer) {
+            replace(x.second.begin(), x.second.end(), ' ', '_');
+        }
+        // Stores values in buffer iteratively
+        for (auto const& x : items_atributes_buffer) {
+            output_file << x.first << " = " << x.second << '\n';
+        }
+        // Stores next item separator
+        output_file << "next = item\n";
+        items_atributes_buffer.clear();
+    }
+
+    // Closes armors file
+    output_file.close();
+}
+
+///Sem o diagrama UML, a saída do programa e o vídeo, o trabalho não será avaliado.
 
     //Link arquivo de configuração no repositório
-
+    // os 3 arquivos de configuração se encontram no diretório:
+    // Link : https://github.com/luiz-fleite/a-witcher-tale/tree/main/save-files/config-witcher
+    // Caminhos relativos:
+    // save-files/config-witcher
+    // o path dos arquivos é:
+    // save-files/config-witcher/config_armors.txt
+    // save-files/config-witcher/config_atributes.txt
+    // save-files/config-witcher/config_swords.txt
 
     //Link vídeo mostrando a execução do código usando o arquivo de configuração
-
+    // https://drive.google.com/drive/folders/19zTKEHwtlts1WFDu0uHt2Zwy0f5eKu12?usp=sharing
