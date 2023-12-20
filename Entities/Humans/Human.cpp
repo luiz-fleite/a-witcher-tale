@@ -185,6 +185,7 @@ void Human::update_all_weaknesses() {
 
 void Human::level_up() {
     level++;
+    cout << "Level up! " << name << " is now level " << this->level << ".\n";
     Entity::update_global_danger(level);
 
     update_atributes();

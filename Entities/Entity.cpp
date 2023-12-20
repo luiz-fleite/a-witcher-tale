@@ -570,6 +570,8 @@ void Entity::print_info() const{
 void Entity::update_global_danger(int higher_level) {
     if (higher_level > global_danger) {
         global_danger = higher_level;
+        cout << "Creatures are getting stronger!\n";
+        // cout << "Global danger level is now " << global_danger << ".\n";
     }
 }
 

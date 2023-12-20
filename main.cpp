@@ -28,8 +28,10 @@
 
 int main(void) {
 
-
     cout << "=========Before battle==========\n";
+
+    cout << "O jogador começa como Geralt e se prepara para enfrentar 3 Ghouls.\n";
+
     Witcher * w1 = new Witcher("Geralt");
     cout << *w1;
 
@@ -56,6 +58,8 @@ int main(void) {
 
     cout << "===============================\n";
 
+    cout << "Inicialmente não há itens no chão.\n";
+
     vector <Item *> floor_items;
     cout << "Floor items: " << floor_items.size() << "\n";
 
@@ -66,15 +70,27 @@ int main(void) {
     b1->add_enemy(*g3);
 
     b1->begin();
+
     b1->get_floor_items(floor_items);
 
     cout << "===============================\n";
     cout << "=========After battle==========\n";
+    cout << "Depois da batalha Geralt vence os 3 Ghouls, \n";
+    cout << "ganha 150 de xp e sobe de nivel e ganha as recompensas em moedas.\n";
+ 
+    
     cout << *w1 << *g1 << *g2 << *g3;
 
     cout << "===============================\n";
 
+    cout << "E os itens dos Ghouls caem no chão.\n";
     cout << "Floor items: " << floor_items.size() << "\n";
+
+    cout << "===============================\n";
+
+    cout << "Após isso, Geralt recupera os itens do chão.\n";
+    
+    
 
     return 0;
 }

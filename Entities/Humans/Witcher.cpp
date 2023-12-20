@@ -439,9 +439,11 @@ void Witcher::attack(Entity &entity, int attack_option, int technique) {
                           total_ice_damage, 
                           total_silver_damage);
 
-    if (!entity)
+    if (!entity) {
         gain_xp(entity.getXp_reward());
-
+        this->coins += entity.getCoins();
+        entity.setCoins(0);
+    }
     return;
 }
 
