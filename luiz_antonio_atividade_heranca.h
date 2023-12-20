@@ -1151,8 +1151,12 @@ void Witcher::load_inventory(string name_file_swords, string name_file_armors) {
 }
         // tambem se especializa no seu ataque possuindo diversas
         // formas de atacar
+void Witcher::attack(Entity &entity, int attack_option, int technique) {
 
-void Witcher::attack(Entity &entity, int weapon_type) {
+    if (!entity) {
+        cout << entity.getName() << "is already dead.\n";
+        return;
+    }
 
     cout << name << " attacked " << entity.getName() << ".\n";
 
@@ -1182,30 +1186,30 @@ void Witcher::attack(Entity &entity, int weapon_type) {
     // cout << "bonus_witcher_damage: " << bonus_witcher_damage << "\n";
 
     // First checks if the witcher is unarmed
-    switch (weapon_type)
+    switch (attack_option)
     {
     case STEEL_SWORD:
         if (equipped.steel_sword == 0) {
-            weapon_type = UNARMED;
+            attack_option = UNARMED;
         }
         break;
     case IGNI:
         if (signs.igni == 0) {
-            weapon_type = UNARMED;
+            attack_option = UNARMED;
         }
         if (signs.igni->getIs_unlocked() == false) {
-            weapon_type = UNARMED;
+            attack_option = UNARMED;
         }
         break;
     default:
-        // If weapon_type is invalid, witcher is unarmed
-        weapon_type = UNARMED;
+        // If attack_option is invalid, witcher is unarmed
+        attack_option = UNARMED;
         break;
     }
 
     // Then puts each damage type to damage buffer variables
-    // according to the respective weapon choosed
-    switch (weapon_type)
+    // according to the respective attack option choosed
+    switch (attack_option)
     {
     case UNARMED:
         // Always check stamina first
@@ -1264,15 +1268,23 @@ void Witcher::attack(Entity &entity, int weapon_type) {
         
         break;
     
-    
-    
     }
+    
 
     // After calculating all damage especifically
     // sends it to attacked entity
 
-    entity.receive_damage(total_physical_damage, total_fire_damage, total_poison_damage, total_ice_damage, total_silver_damage);
+    entity.receive_damage(total_physical_damage, 
+                          total_fire_damage, 
+                          total_poison_damage, 
+                          total_ice_damage, 
+                          total_silver_damage);
 
+    if (!entity) {
+        gain_xp(entity.getXp_reward());
+        this->coins += entity.getCoins();
+        entity.setCoins(0);
+    }
     return;
 }
 

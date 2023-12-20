@@ -53,8 +53,6 @@ private:
 
     bool is_enraged = false;
 
-    int silver_weakness = 1;
-
     const static int GHOUL_ATTACK_COST = 10;
     const static int MAX_GHOUL_DAMAGE = 7;
     const static int MIN_GHOUL_DAMAGE = 3;
