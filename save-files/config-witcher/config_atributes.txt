@@ -1,8 +1,8 @@
 Witcher = 1
 age = 200
 category = E
-coins = 200.000000
-health = 44
-level = 10
+coins = 290.000000
+health = 60
+level = 11
 name = Geralt
-stamina = 50
+stamina = 65

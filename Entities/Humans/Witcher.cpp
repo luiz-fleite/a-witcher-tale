@@ -62,7 +62,7 @@ Witcher::Witcher(string name,
 
     date_of_birth = Date(1, 1, 1000 - age);
 
-    equipped.steel_sword = new Sword();
+    equipped.steel_sword = new Sword("Witcher Sword", "An special sword good against monsters", 5, 1, 1, 1, 6);
     equipped.armor = new Armor("Witcher Armor", "An special armor that protects agains monsters", 7, 3, 2, 2, 2);
     update_all_resistances();
 }

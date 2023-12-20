@@ -88,9 +88,63 @@ int main(void) {
 
     cout << "===============================\n";
 
-    cout << "Após isso, Geralt recupera os itens do chão.\n";
+    cout << "Após isso, Geralt recupera todos os itens do chão.\n";
+    while (!floor_items.empty()) {
+        w1->grab_item(floor_items);
+    }
     
-    
+    cout << "Floor items: " << floor_items.size() << "\n";
+
+    cout << "===============================\n";
+
+    cout << "E os itens são adicionados ao inventário de Geralt.\n";
+    cout << *w1;
+
+    cout << "O Geralt compara os itens novos com os equipados e percebe que são melhores.\n";
+    cout << "Então ele equipa os novos itens.\n";
+    w1->equip_item(SWORD, 1);
+    w1->equip_item(ARMOR, 0);
+    cout << *w1;
+
+    cout << "===============================\n";
+
+    cout << "Depois disso, Geralt encontra um novo Ghoul mais forte que o anteriores, \n";
+    cout << "pois o jogador subiu de nivel e as novas criaturas geradas \n";
+    cout << "devem acompanhar seu nivel, e o jogador é atacado e foge.\n";
+
+    Ghoul * g4 = new Ghoul("Ghoul 4");
+    cout << *g4;
+    g4->attack(*w1);
+
+    cout << "===============================\n";
+
+    cout << "Em seguida, o jogador percebe que precisa salvar o jogo para \n";
+    cout << "preservar seus itens e voltar uma outra hora.\n";
+
+    if (save_witcher(*w1)) {
+        cout << "Jogo salvo com sucesso!\n";
+    }
+    else {
+        cout << "Erro ao salvar o jogo!\n";
+    }
+
+    delete w1;
+    delete g1;
+    delete g2;
+    delete g3;
+
+    cout << "===============================\n";
+    cout << "Depois de um tempo o jogador retorna para jogar novamente e carrega o jogo.\n";
+    Witcher * w2 = new Witcher();
+    if (load_witcher(*w2)) {
+        cout << "Jogo carregado com sucesso!\n";
+    }
+    else {
+        cout << "Erro ao carregar o jogo!\n";
+    }
+    cout << *w2;
+    cout << "Como é possível observar, o jogador esta com todos os atributos "; 
+    cout << "e itens salvos com sucesso.\n";
 
     return 0;
 }
