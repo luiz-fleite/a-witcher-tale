@@ -1,0 +1,177 @@
+@@startuml
+
+abstract class Entity {
+    - global_danger static : int
+
+    # CATEGORIES const static: string[]
+    # MAX_NAME_SIZE const : int
+
+    # NEXT_LEVEL_XP_LINEAR_COEF const static : int
+    # NEXT_LEVEL_XP_ANGULAR_COEF const static : int
+
+    # inventory : inventory_items
+
+    + getGlobal_danger() static : int
+    + setGlobal_danger(int) static : void
+    + update_global_danger(int higher_level) static : void
+
+    + {abstract} level_up() : void
+    + {abstract} update_atributes() : void
+    + {abstract} update_all_resistances() : void
+    + {abstract} update_all_weaknesses() : void
+
+    + {abstract} attack(Entity &) : void
+    + virtual receive_damage(int) : void
+
+}
+
+class Human {
+    - HEALTH_LINEAR_COEF const static : int
+    - HEALTH_ANGULAR_COEF const static : int 
+
+    - STAMINA_LINEAR_COEF const static : int 
+    - STAMINA_ANGULAR_COEF const static : int 
+
+    # equipped : equipped_items
+
+    + equip_item(int item_type, int item_index) : void
+    + unequip_item(int item_type) : void
+
+    + virtual level_up() : void
+    + virtual update_atributes() : void
+    + virtual update_all_resistances() : void
+    + virtual update_all_weaknesses() : void
+
+    + virtual attack(Entity &) : void
+ 
+}
+
+class Witcher {
+    - WITCHER_ATTACK_COST const : int
+    - MAX_WITCHER_DAMAGE const : int
+    - MIN_WITCHER_DAMAGE const : int
+
+    - HEALTH_LINEAR_COEF const static : int 
+    - HEALTH_ANGULAR_COEF const static : int 
+    
+    - STAMINA_LINEAR_COEF const static : int 
+    - STAMINA_ANGULAR_COEF const static : int 
+
+    - signs : signs 
+
+    + update_atributes() : void
+
+    + attack(Entity &) : void
+
+}
+
+class Ghoul {
+    - GHOUL_ATTACK_COST const static : int
+    - MAX_GHOUL_DAMAGE const static : int
+    - MIN_GHOUL_DAMAGE const static : int
+
+    - HEALTH_LINEAR_COEF const static : int
+    - HEALTH_ANGULAR_COEF const static : int
+
+    - STAMINA_LINEAR_COEF const static : int
+    - STAMINA_ANGULAR_COEF const static : int
+    
+    + level_up() : void
+    + update_atributes() : void
+    + update_all_resistances() : void
+    + update_all_weaknesses() : void
+
+    + attack(Entity &) : void
+
+}
+
+abstract class Item {
+    # MAX_NAME_SIZE const static : int
+    # MAX_DESCRIPTION_SIZE const static : int
+
+    + {abstract} use(int technique) : map<string, int>
+
+}
+
+abstract class Weapon {
+    + {abstract} use(int technique) : map<string, int>
+
+}
+
+class Sword {
+    + use(int technique) : map<string, int>
+
+}
+
+class Armor {
+    + use(int technique) : map<string, int>
+
+}
+
+abstract class Spell {
+    + {abstract} use(int technique) : map<string, int>
+
+}
+
+abstract class Signs {
+    + {abstract} use(int technique) : map<string, int>
+
+}
+
+class Igni {
+    + use(int technique) : map<string, int>
+
+}
+
+class Battle {
+    - allies[] : Entity*
+    - enemies[] : Entity*
+    - deads[] : Entity*
+    - floor_items[] : Item*
+}
+
+struct inventory_items {
+    swords[] : Sword*
+    armors[] : Armor*
+}
+
+struct equipped_items {
+    sword : Sword*
+    armor : Armor*
+}
+
+struct signs {
+    igni : Igni*
+}
+
+class Date {
+
+}
+
+Entity <|-- Human
+Entity <|-- Ghoul
+Human <|-- Witcher
+
+Item <|-- Weapon
+Item <|-- Armor
+Weapon <|-- Sword
+
+Spell <|-- Signs
+Signs <|-- Igni
+
+Entity *-- Date
+Entity *-- inventory_items
+
+Human *-- equipped_items
+
+Witcher *-- signs
+
+signs o-- Igni
+
+inventory_items o-- Sword
+inventory_items o-- Armor
+
+Battle o-- Entity
+Battle o-- Item
+
+@@enduml

@@ -1,10 +1,12 @@
 @@startuml
 
 abstract class Entity {
+    - global_danger static : int
     # name : string
     # age : int
     # coins : double
 
+    # is_dead : bool
     # max_health : int
     # health : int
     # max_stamina : int
@@ -14,6 +16,7 @@ abstract class Entity {
     # level : int
     # next_level_xp : int
     # xp : int
+    # xp_reward : int
 
     # is_stunned : bool
 
@@ -35,16 +38,22 @@ abstract class Entity {
 
     # CATEGORIES const static: string[]
     # MAX_NAME_SIZE const : int
+
     # NEXT_LEVEL_XP_LINEAR_COEF const static : int
     # NEXT_LEVEL_XP_ANGULAR_COEF const static : int
 
     + Entity()
     + Entity(const Entity &)
 
+    + getGlobal_danger() static : int
+    + setGlobal_danger(int) static : void
+    + update_global_danger(int higher_level) static : void
+
     + add_item(Item&) : void
     + remove_item(int item_type, int item_index) : void
     + grab_item(Item*[] & source_items, int item_index)
     + drop_item(Item*[] & destiny_items, int item_type, int item_index) : void
+    + virtual drop_all_items(Item*[]) : void
 
     + print_inventory() const : void
 
@@ -72,6 +81,7 @@ abstract class Entity {
     + operator=(const Entity &) : Entity &
     + operator==(const Entity &) : bool
     + operator!=(const Entity &) : bool
+    + operator!() : bool
 }
 
 class Human {
@@ -306,6 +316,24 @@ struct signs {
     igni : Igni*
 }
 
+class Battle {
+    - allies[] : Entity*
+    - enemies[] : Entity*
+    - deads[] : Entity*
+    - floor_items[] : Item*
+    + Battle()
+    + Battle(const Battle &)
+
+    + begin() : void
+
+    + print_allies() const : void
+    + print_enemies() const : void
+
+    + add_ally(Entity &) : void
+    + add_enemy(Entity &) : void
+    + get_floor_item(Item*[] &) : void
+}
+
 class Date {
     - day : int
     - month : int
@@ -337,5 +365,7 @@ signs o-- Igni
 inventory_items o-- Sword
 inventory_items o-- Armor
 
+Battle o-- Entity
+Battle o-- Item
 
 @@enduml

@@ -44,6 +44,13 @@ class Igni {
 
 }
 
+class Battle {
+    - allies[] : Entity*
+    - enemies[] : Entity*
+    - deads[] : Entity*
+    - floor_items[] : Item*
+}
+
 struct inventory_items {
     swords[] : Sword*
     armors[] : Armor*
@@ -85,5 +92,7 @@ signs o-- Igni
 inventory_items o-- Sword
 inventory_items o-- Armor
 
+Battle o-- Entity
+Battle o-- Item
 
 @@enduml
