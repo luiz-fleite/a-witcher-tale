@@ -64,11 +64,11 @@ int main(void) {
     cout << "This is your character:\n\n";
     cout << player << "\n\n";
 
-    cout << "Você acorda em um frio quarto de pedra, a luz fraca mal iluminando as paredes desgastadas de Kaer Morhen, a fortaleza dos bruxos. Ao se levantar, você percebe que está vestido com o característico manto dos witchers, e a lembrança de treinamentos rigorosos e mutações começa a ecoar em sua mente.
+    cout << "Você acorda em um frio quarto de pedra, a luz fraca mal iluminando as paredes desgastadas de Kaer Morhen, a fortaleza dos bruxos. Ao se levantar, você percebe que está vestido com o característico manto dos witchers, e a lembrança de treinamentos rigorosos e mutações começa a ecoar em sua mente.";
 
-Ao explorar os corredores familiares da fortaleza, você encontra Vesemir, o velho mentor dos bruxos, que informa sobre a terrível ameaça que assola Kaer Morhen. Ghouls, criaturas necrófagas conhecidas por sua fome insaciável, invadiram os arredores da fortaleza. Os witchers, sua irmandade, estão prontos para enfrentar a ameaça, mas a batalha será feroz.
+    cout << "Ao explorar os corredores familiares da fortaleza, você encontra Vesemir, o velho mentor dos bruxos, que informa sobre a terrível ameaça que assola Kaer Morhen. Ghouls, criaturas necrófagas conhecidas por sua fome insaciável, invadiram os arredores da fortaleza. Os witchers, sua irmandade, estão prontos para enfrentar a ameaça, mas a batalha será feroz.";
 
-Você é convocado para se juntar aos witchers na linha de frente. Os sons distantes de uivos e arranhões ecoam pelos corredores enquanto você se equipa com sua espada de prata e poções preparadas para o combate. A atmosfera tensa em Kaer Morhen é palpável, pois a noite se aproxima e os ghouls se preparam para o ataque final.";
+    cout << "Você é convocado para se juntar aos witchers na linha de frente. Os sons distantes de uivos e arranhões ecoam pelos corredores enquanto você se equipa com sua espada de prata e poções preparadas para o combate. A atmosfera tensa em Kaer Morhen é palpável, pois a noite se aproxima e os ghouls se preparam para o ataque final.";
     cout << "\n\n";
 
     cout << "1. Pausar jogo\n";
@@ -142,7 +142,7 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
             cin >> choice;
             cin.ignore();
 
-            player.equip_armor(ARMOR, choice);
+            player.equip_item(ARMOR, choice);
         }
         else {
             cout << "Opção inválida!\n";
@@ -153,8 +153,8 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
     if (choice == 3) {
         cout << "Explorando Kaer Morhen...\n";
         cout << "Você encontra um equipamento de bruxo!\n";
-        Sword * sword1 = new Sword("Espada de prata", 6, 2, 2, 10);
-        player.add_item(sword1);
+        Sword * sword1 = new Sword("Espada de prata", "Uma espada feita de prata especial contra monstros.", 6, 2, 2, 10);
+        player.add_item(*sword1);
         player.print_inventory();
     }
 
@@ -163,14 +163,14 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
     Ghoul * ghoul1 = new Ghoul("Ghoul 1");
     Ghoul * ghoul2 = new Ghoul("Ghoul 2");
     Ghoul * ghoul3 = new Ghoul("Ghoul 3");
-    Sword * sword1 = new Sword("Aerondight", 100, 100, 100, 100);
-    Armor * armor1 = new Armor("Armadura da escola do lobo", 100, 100, 100, 100);
-    ghoul1->add_item(sword1);
-    ghoul3->add_item(armor1);
+    Sword * sword1 = new Sword("Aerondight", "Uma misteriosa espada mágica muito poderosa", 100, 100, 100, 100);
+    Armor * armor1 = new Armor("Armadura da escola do lobo", "Uma armadura especial anti-monstro feita para bruxos da escola do lobo", 100, 100, 100, 100);
+    ghoul1->add_item(*sword1);
+    ghoul3->add_item(*armor1);
 
     vector <Item *> floor_items;
 
-    Battle * battle1 = new Battle(player, ghoul1);
+    Battle * battle1 = new Battle(player, *ghoul1);
     battle1->add_enemy(*ghoul2);
     battle1->add_enemy(*ghoul3);
     
@@ -181,17 +181,26 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
 
     if (!player) {
         cout << "GAME OVER\n";
+    cout << "Parabéns, você completou a primeira aventura de \"A Witcher Tale\", essa é apenas uma versão alfa do jogo, feita com muito amor.";
+    cout << "Ajude o pobre desenvolvedor ;-;\n";
+    cout << "playlists pra ouvir enquanto joga (e dá a nota):\n\n";
+    cout << "https://www.youtube.com/watch?v=K6ZJQjFLD58 \n";
+    cout << "https://www.youtube.com/watch?v=HRpHG9Gd1qw \n";
+    cout << "https://www.youtube.com/watch?v=perTTMRpc_U \n";
+    cout << "https://www.youtube.com/watch?v=TNM31H0BtWE \n\n";
+    cout << "E lembre-se! Como disse um sábio uma vez: \n \"Na senda do coração, como a água que flui suavemente, o amor e a misericórdia são as pontes que atravessamos para encontrar a paz. No jardim do entendimento, floresce a compaixão, nutrindo a alma como a chuva alimenta a terra seca. A verdadeira grandeza está na capacidade de amar incondicionalmente e estender a mão da misericórdia, pois, assim como a lua suaviza as águas agitadas, o amor e a misericórdia acalmam as tormentas do coração.\"\n    - Chat Generative Pre-trained Transformer v.3.5 \n\n";
+
         return 0;
     }
 
-    cout << "Você se destaca na batalha, enfrentando os ghouls com habilidade afiada. A adrenalina pulsa em suas veias, enquanto o clangor de espadas, o uivo dos monstros e a magia dos bruxos se entrelaçam em uma sinfonia caótica.
+    cout << "Você se destaca na batalha, enfrentando os ghouls com habilidade afiada. A adrenalina pulsa em suas veias, enquanto o clangor de espadas, o uivo dos monstros e a magia dos bruxos se entrelaçam em uma sinfonia caótica.";
 
-À medida que a poeira da batalha assenta, você percebe que a vitória é de vocês, mas Kaer Morhen sofreu ferimentos profundos. Vesemir agradece a todos por sua bravura, mas adverte que a ameaça dos ghouls é apenas o começo de uma jornada mais sombria.";
+    cout << "À medida que a poeira da batalha assenta, você percebe que a vitória é de vocês, mas Kaer Morhen sofreu ferimentos profundos. Vesemir agradece a todos por sua bravura, mas adverte que a ameaça dos ghouls é apenas o começo de uma jornada mais sombria.";
     cout << "\n\n";
     cout << "Após a batalha, você encontra os itens que os ghouls deixaram para trás:\n";
-    for (auto item : floor_items) {
-        cout << *item << "\n";
-    }
+    
+    cout << floor_items.size() << "\n";
+
     cout << "\n\n";
     cout << "1. Pausar jogo.\n";
     cout << "2. Pegar os itens.\n";
@@ -236,7 +245,7 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
     }
     else if (choice == 2) {
         for (int i = 0; i < floor_items.size(); i++) {
-            player.add_item(floor_items[0]);
+            player.grab_item(floor_items);
         }
         player.print_inventory();
     }
@@ -249,6 +258,13 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
     cout << "\n\n";
     cout << "Parabéns, você completou a primeira aventura de \"A Witcher Tale\", essa é apenas uma versão alfa do jogo, feita com muito amor.";
     cout << "Ajude o pobre desenvolvedor ;-;\n";
+    cout << "playlists pra ouvir enquanto joga (e dá a nota):\n\n";
+    cout << "https://www.youtube.com/watch?v=K6ZJQjFLD58 \n";
+    cout << "https://www.youtube.com/watch?v=HRpHG9Gd1qw \n";
+    cout << "https://www.youtube.com/watch?v=perTTMRpc_U \n";
+    cout << "https://www.youtube.com/watch?v=TNM31H0BtWE \n\n";
+    cout << "E lembre-se! Como disse um sábio uma vez: \n \"Na senda do coração, como a água que flui suavemente, o amor e a misericórdia são as pontes que atravessamos para encontrar a paz. No jardim do entendimento, floresce a compaixão, nutrindo a alma como a chuva alimenta a terra seca. A verdadeira grandeza está na capacidade de amar incondicionalmente e estender a mão da misericórdia, pois, assim como a lua suaviza as águas agitadas, o amor e a misericórdia acalmam as tormentas do coração.\"\n    - Chat Generative Pre-trained Transformer v.3.5\n\n";
+
 
     return 0;
 }
