@@ -247,8 +247,8 @@ Você é convocado para se juntar aos witchers na linha de frente. Os sons dista
 
     cout << "O destino dos witchers agora está em suas mãos. A estrada está aberta, cheia de perigos e escolhas. Aonde você irá a partir daqui, Witcher?\n";
     cout << "\n\n";
-    cout << "Parabéns, você completou a primeira aventura de \"A Witcher Tale\", essa é apensa uma versão alfa do jogo, feita com muito amor.";
+    cout << "Parabéns, você completou a primeira aventura de \"A Witcher Tale\", essa é apenas uma versão alfa do jogo, feita com muito amor.";
     cout << "Ajude o pobre desenvolvedor ;-;\n";
-    
+
     return 0;
 }
