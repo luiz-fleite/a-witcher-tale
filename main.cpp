@@ -24,127 +24,231 @@
 
 #include "./Utils/load_save.h"
 
-// #include "./Utils/ui.h"
+#include "./Utils/ui.h"
 
 int main(void) {
 
-    cout << "=========Before battle==========\n";
+    cout << "Welcome to \"A Witcher Tale\"!\n";
 
-    cout << "O jogador começa como Geralt e se prepara para enfrentar 3 Ghouls.\n";
+    Witcher player;
+    Witcher * witcher_buffer = new Witcher("Geralt", 200, 200, 10, "S");
+    string name_buffer;
 
-    Witcher * w1 = new Witcher("Geralt");
-    cout << *w1;
+    int choice = menu();
+    if (choice == ERROR) {
+        cout << "Invalid choice!\n";
+        return 1;
+    }
+    else if (choice == NEW_GAME) {
+        cout << "Starting new game...\n";
+        cout << "Insert your name: ";
+        getline(cin, name_buffer);
+        cin.ignore();
+        player = *witcher_buffer;
 
-    cout << "===============================\n";
+        player.setName(name_buffer);
 
-    Ghoul * g1 = new Ghoul("Ghoul 1");
-    Sword * s1 = new Sword("Sharpened sword", "Well sharpened steel sword", 10, 10, 10);
-    g1->add_item(*s1);
-    cout << *g1;
+        cout << "Welcome, " << player.getName() << "!\n";
+    }
+    else if (choice == LOAD_GAME) {
+        cout << "Loading game...\n";
+        load_witcher(player);
+        cout << "Welcome back, " << player.getName() << "!\n";
 
-    cout << "===============================\n";
+    }
+    else {
+        cout << "Invalid choice!\n";
+        return 1;
+    }
 
-    Ghoul * g2 = new Ghoul("Ghoul 2");
-    Armor * a1 = new Armor("Steel armor", "Well crafted steel armor", 10, 10, 10);
-    g2->add_item(*a1);
-    cout << *g2;
+    cout << "This is your character:\n\n";
+    cout << player << "\n\n";
 
-    cout << "===============================\n";
+    cout << "Você acorda em um frio quarto de pedra, a luz fraca mal iluminando as paredes desgastadas de Kaer Morhen, a fortaleza dos bruxos. Ao se levantar, você percebe que está vestido com o característico manto dos witchers, e a lembrança de treinamentos rigorosos e mutações começa a ecoar em sua mente.
 
-    Ghoul * g3 = new Ghoul("Ghoul 3");
-    Sword * s2 = new Sword("Broken sword", "A rusty broken steel sword", 1);
-    g3->add_item(*s2);
-    cout << *g3;
+Ao explorar os corredores familiares da fortaleza, você encontra Vesemir, o velho mentor dos bruxos, que informa sobre a terrível ameaça que assola Kaer Morhen. Ghouls, criaturas necrófagas conhecidas por sua fome insaciável, invadiram os arredores da fortaleza. Os witchers, sua irmandade, estão prontos para enfrentar a ameaça, mas a batalha será feroz.
 
-    cout << "===============================\n";
+Você é convocado para se juntar aos witchers na linha de frente. Os sons distantes de uivos e arranhões ecoam pelos corredores enquanto você se equipa com sua espada de prata e poções preparadas para o combate. A atmosfera tensa em Kaer Morhen é palpável, pois a noite se aproxima e os ghouls se preparam para o ataque final.";
+    cout << "\n\n";
 
-    cout << "Inicialmente não há itens no chão.\n";
+    cout << "1. Pausar jogo\n";
+    cout << "2. Gerenciar inventário\n";
+    cout << "3. Explorar Kaer Morhen\n";
+    cout << "4. Pronto para ir para a linha de frente.\n";
+    cout << "Escolha: \n";
+    cin >> choice;
+    cin.ignore();
+
+    if (choice == 1) {
+        cout << "1. Salvar jogo\n";
+        cout << "2. Sair do jogo\n";
+        cout << "3. Sair e salvar.\n";
+        cout << "Escolha: \n";
+        cin >> choice;
+        cin.ignore();
+        if (choice == 1) {
+            if (save_witcher(player)) {
+                cout << "Jogo salvo com sucesso!\n";
+            }
+            else {
+                cout << "Erro ao salvar jogo!\n";
+            }
+
+        }
+        else if (choice == 2) {
+            cout << "Saindo do jogo...\n";
+            return 0;
+        }
+        else if (choice == 3) {
+            if (save_witcher(player)) {
+                cout << "Jogo salvo com sucesso!\n";
+            }
+            else {
+                cout << "Erro ao salvar jogo!\n";
+            }
+
+            cout << "Saindo do jogo...\n";
+            return 0;
+        }
+        else {
+            cout << "Opção inválida!\n";
+            return 1;
+        }
+    }
+
+    if (choice == 2) {
+        player.print_inventory();
+        player.print_equipped_items();
+
+        cout << "1. Ver inventário.\n";
+        cout << "2. Equipar espada.\n";
+        cout << "3. Equipar armadura.\n";
+        cout << "Escolha: \n";
+        cin >> choice;
+        cin.ignore();
+        if (choice == 1) {
+            player.print_inventory();
+            player.print_equipped_items();
+
+        }
+        else if (choice == 2) {
+            cout << "Escolha a espada: \n";
+            cin >> choice;
+            cin.ignore();
+            player.equip_item(SWORD, choice);
+        }
+        else if (choice == 3) {
+            cout << "Escolha a armadura: \n";
+            cin >> choice;
+            cin.ignore();
+
+            player.equip_armor(ARMOR, choice);
+        }
+        else {
+            cout << "Opção inválida!\n";
+            return 1;
+        }
+    }
+
+    if (choice == 3) {
+        cout << "Explorando Kaer Morhen...\n";
+        cout << "Você encontra um equipamento de bruxo!\n";
+        Sword * sword1 = new Sword("Espada de prata", 6, 2, 2, 10);
+        player.add_item(sword1);
+        player.print_inventory();
+    }
+
+    cout << "Você se junta aos witchers na linha de frente.\n";
+    cout << "A batalha começa!\n";
+    Ghoul * ghoul1 = new Ghoul("Ghoul 1");
+    Ghoul * ghoul2 = new Ghoul("Ghoul 2");
+    Ghoul * ghoul3 = new Ghoul("Ghoul 3");
+    Sword * sword1 = new Sword("Aerondight", 100, 100, 100, 100);
+    Armor * armor1 = new Armor("Armadura da escola do lobo", 100, 100, 100, 100);
+    ghoul1->add_item(sword1);
+    ghoul3->add_item(armor1);
 
     vector <Item *> floor_items;
-    cout << "Floor items: " << floor_items.size() << "\n";
 
-    cout << "===============================\n";
-    cout << "=========During battle=========\n";
-    Battle * b1 = new Battle(*w1, *g1);
-    b1->add_enemy(*g2);
-    b1->add_enemy(*g3);
-
-    b1->begin();
-
-    b1->get_floor_items(floor_items);
-
-    cout << "===============================\n";
-    cout << "=========After battle==========\n";
-    cout << "Depois da batalha Geralt vence os 3 Ghouls, \n";
-    cout << "ganha 150 de xp e sobe de nivel e ganha as recompensas em moedas.\n";
- 
+    Battle * battle1 = new Battle(player, ghoul1);
+    battle1->add_enemy(*ghoul2);
+    battle1->add_enemy(*ghoul3);
     
-    cout << *w1 << *g1 << *g2 << *g3;
 
-    cout << "===============================\n";
+    battle1->begin();
 
-    cout << "E os itens dos Ghouls caem no chão.\n";
-    cout << "Floor items: " << floor_items.size() << "\n";
+    battle1->get_floor_items(floor_items);
 
-    cout << "===============================\n";
-
-    cout << "Após isso, Geralt recupera todos os itens do chão.\n";
-    while (!floor_items.empty()) {
-        w1->grab_item(floor_items);
+    if (!player) {
+        cout << "GAME OVER\n";
+        return 0;
     }
-    
-    cout << "Floor items: " << floor_items.size() << "\n";
 
-    cout << "===============================\n";
+    cout << "Você se destaca na batalha, enfrentando os ghouls com habilidade afiada. A adrenalina pulsa em suas veias, enquanto o clangor de espadas, o uivo dos monstros e a magia dos bruxos se entrelaçam em uma sinfonia caótica.
 
-    cout << "E os itens são adicionados ao inventário de Geralt.\n";
-    cout << *w1;
+À medida que a poeira da batalha assenta, você percebe que a vitória é de vocês, mas Kaer Morhen sofreu ferimentos profundos. Vesemir agradece a todos por sua bravura, mas adverte que a ameaça dos ghouls é apenas o começo de uma jornada mais sombria.";
+    cout << "\n\n";
+    cout << "Após a batalha, você encontra os itens que os ghouls deixaram para trás:\n";
+    for (auto item : floor_items) {
+        cout << *item << "\n";
+    }
+    cout << "\n\n";
+    cout << "1. Pausar jogo.\n";
+    cout << "2. Pegar os itens.\n";
+    cout << "Escolha: \n";
+    cin >> choice;
+    cin.ignore();
+    if (choice == 1) {
+        cout << "1. Salvar jogo\n";
+        cout << "2. Sair do jogo\n";
+        cout << "3. Sair e salvar.\n";
+        cout << "Escolha: \n";
+        cin >> choice;
+        cin.ignore();
+        if (choice == 1) {
+            if (save_witcher(player)) {
+                cout << "Jogo salvo com sucesso!\n";
+            }
+            else {
+                cout << "Erro ao salvar jogo!\n";
+            }
 
-    cout << "O Geralt compara os itens novos com os equipados e percebe que são melhores.\n";
-    cout << "Então ele equipa os novos itens.\n";
-    w1->equip_item(SWORD, 1);
-    w1->equip_item(ARMOR, 0);
-    cout << *w1;
+        }
+        else if (choice == 2) {
+            cout << "Saindo do jogo...\n";
+            return 0;
+        }
+        else if (choice == 3) {
+            if (save_witcher(player)) {
+                cout << "Jogo salvo com sucesso!\n";
+            }
+            else {
+                cout << "Erro ao salvar jogo!\n";
+            }
 
-    cout << "===============================\n";
-
-    cout << "Depois disso, Geralt encontra um novo Ghoul mais forte que o anteriores, \n";
-    cout << "pois o jogador subiu de nivel e as novas criaturas geradas \n";
-    cout << "devem acompanhar seu nivel, e o jogador é atacado e foge.\n";
-
-    Ghoul * g4 = new Ghoul("Ghoul 4");
-    cout << *g4;
-    g4->attack(*w1);
-
-    cout << "===============================\n";
-
-    cout << "Em seguida, o jogador percebe que precisa salvar o jogo para \n";
-    cout << "preservar seus itens e voltar uma outra hora.\n";
-
-    if (save_witcher(*w1)) {
-        cout << "Jogo salvo com sucesso!\n";
+            cout << "Saindo do jogo...\n";
+            return 0;
+        }
+        else {
+            cout << "Opção inválida!\n";
+            return 1;
+        }
+    }
+    else if (choice == 2) {
+        for (int i = 0; i < floor_items.size(); i++) {
+            player.add_item(floor_items[0]);
+        }
+        player.print_inventory();
     }
     else {
-        cout << "Erro ao salvar o jogo!\n";
+        cout << "Opção inválida!\n";
+        return 1;
     }
 
-    delete w1;
-    delete g1;
-    delete g2;
-    delete g3;
-
-    cout << "===============================\n";
-    cout << "Depois de um tempo o jogador retorna para jogar novamente e carrega o jogo.\n";
-    Witcher * w2 = new Witcher();
-    if (load_witcher(*w2)) {
-        cout << "Jogo carregado com sucesso!\n";
-    }
-    else {
-        cout << "Erro ao carregar o jogo!\n";
-    }
-    cout << *w2;
-    cout << "Como é possível observar, o jogador esta com todos os atributos "; 
-    cout << "e itens salvos com sucesso.\n";
-
+    cout << "O destino dos witchers agora está em suas mãos. A estrada está aberta, cheia de perigos e escolhas. Aonde você irá a partir daqui, Witcher?\n";
+    cout << "\n\n";
+    cout << "Parabéns, você completou a primeira aventura de \"A Witcher Tale\", essa é apensa uma versão alfa do jogo, feita com muito amor.";
+    cout << "Ajude o pobre desenvolvedor ;-;\n";
+    
     return 0;
 }

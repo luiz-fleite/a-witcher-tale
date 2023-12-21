@@ -79,7 +79,7 @@ void Battle::begin() {
             allies[i]->stamina_regen(6);
 
             allies[i]->attack(*enemies[enemy_id], 1, 0);
-            // sleep(1);
+            sleep(1);
 
             // apos atacar a vitima, verifica se ela morreu
             if (!*enemies[enemy_id]) {
@@ -107,7 +107,7 @@ void Battle::begin() {
             //cout << "ally id: " << ally_id << "\n";
 
             enemies[i]->attack(*allies[ally_id], 0, 0);
-            // sleep(1);
+            sleep(1);
 
             // apos atacar a vitima, verifica se ela morreu
             if (!*allies[ally_id]) {
